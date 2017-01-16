@@ -2,3 +2,5 @@
 !.gitignore
 !.vimrc
 !.zshrc
+!.bashrc
+!.bash_profile
