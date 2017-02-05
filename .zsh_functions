@@ -1,0 +1,21 @@
+# edit the selected bash config file
+function editbash {
+    if [[ "$1" == "f" ]]; then
+        vim ~/.zsh_functions
+    else
+        vim ~/.zshrc
+    fi
+}
+
+# shortcut for compiling and running Java programs (I use this for competitions)
+function jj {
+    filename="${1%.*}"
+    javac $filename.java
+    if [[ $? == 0 ]]; then
+       java $filename
+    fi
+}
+
+function comp() {
+	echo %:e
+}

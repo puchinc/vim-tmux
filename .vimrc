@@ -20,10 +20,20 @@ filetype plugin on
 
 set enc=utf8
 colors elflord
-nmap<F6> :!xelatex % && rm %<.out && rm %<.log && rm %<.aux && open %<.pdf <CR>
-nmap<F7> :!gcc -g % -o %<.out && ./%<.out <CR>
-nmap<F8> :!javac %<.java && java %<<CR>
-" nmap<F7> :!g++ -g % -o %<.out && ./%<.out <CR>
+nmap<F1> :call Compile()<CR>
+function Compile()
+	if expand('%:e') ==# "java"
+		:!javac %<.java && java %<
+	elseif expand('%:e') ==# "py"
+		:!python %
+	elseif expand('%:e') ==# "tex"
+		:!xelatex % && rm %<.out && rm %<.log && rm %<.aux && open %<.pdf
+	elseif expand('%:e') ==# "c"
+		:!gcc -g % -o %<.out && ./%<.out
+	elseif expand('%:e') ==# "cpp"
+		:!g++ -g % -o %<.out && ./%<.out
+	endif
+endfunction
 
 " insert mode shortcut
 inoremap <C-h> <Left>
@@ -52,10 +62,9 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 
 " emmet setting
-" let g:user_emmet_install_global = 0
-" autocmd FileType html,css,php EmmetInstall
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-
+let g:user_emmet_install_global = 0
+autocmd FileType html,css,php,js EmmetInstall
+autocmd FileType html,css,php,js imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
 
 if &term =~ "xterm" || &term =~ "screen" || &term =~ "builtin_gui"

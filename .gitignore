@@ -2,5 +2,7 @@
 !.gitignore
 !.vimrc
 !.zshrc
+!.zsh_aliases
+!.zsh_functions
 !.bashrc
 !.bash_profile

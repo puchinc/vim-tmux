@@ -1,3 +1,6 @@
+[[ -f ~/.zsh_functions ]] && . ~/.zsh_functions
+[[ -f ~/.zsh_aliases ]] && . ~/.zsh_aliases
+
 export PATH=/usr/local/bin:$PATH
 export NODE_PATH=/usr/lib/node_modules:$NODE_PATH
 export NVM_DIR="$HOME/.nvm" 
@@ -5,7 +8,6 @@ export NVM_DIR="$HOME/.nvm"
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-
 # prompt username
 DEFAULT_USER=`whoami`
 
@@ -94,15 +96,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias cdd="cd ~/Desktop"
-alias resume="cd /Users/puchin/Dropbox/Public/UCLA/Career/Resume; vim Pu-Chin-CHEN-Resume.tex"
-alias leet="cd /Users/puchin/Dropbox/Public/UCLA/Leetcode"
-alias javat='function j(){echo "public class $1{\n\tpublic static void main(String[] args) {\n\n\t}\n}" > $1.java;vim $1.java};cdd;j'
-alias leetcode='function j(){echo "public class $1{\n\tpublic static void main(String[] args) {\n\n\t}\n}" > $1.java; vim $1.java};leet;j'
-alias cs143="ssh localhost -p 1432 -l cs143;"
-alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
-alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
-
 # place this after nvm initialization!
 autoload -U add-zsh-hook
 load-nvmrc() {
