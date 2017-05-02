@@ -4,11 +4,15 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias cdd="cd ~/Desktop"
 
+alias vimrc="vim ~/.vimrc"
+alias hisnu="history | awk '{$1="";print substr($0,2)}'"
+alias python='python3'
+
 alias resume="cd /Users/puchin/Dropbox/Public/UCLA/Career/Resume; vim Pu-Chin-CHEN-Resume.tex"
-alias leet="cd /Users/puchin/Dropbox/Public/UCLA/Leetcode"
-alias ucla="cd /Users/puchin/Dropbox/Public/UCLA/Data\ Mining/Homeworks/"
-alias javat='function j(){echo "public class $1{\n\tpublic static void main(String[] args) {\n\n\t}\n}" > $1.java;vim $1.java};cdd;j'
-alias leetcode='function j(){echo "public class $1{\n\tpublic static void main(String[] args) {\n\n\t}\n}" > $1.java; vim $1.java};leet;j'
+alias leetcode="cd /Users/puchin/Dropbox/Public/UCLA/Career/Interview/Leetcode"
+alias ucla="cd /Users/puchin/Dropbox/Public/UCLA/"
+alias cs249="cd /Users/puchin/Dropbox/Public/UCLA/DS"
+alias cs236="cd /Users/puchin/Dropbox/Public/UCLA/Security"
 alias cs143="ssh localhost -p 1432 -l cs143;"
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'

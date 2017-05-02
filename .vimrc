@@ -1,148 +1,155 @@
+" General
 syntax on
 set nu
 set hlsearch
-
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set backspace=2
 " set clipboard=unnamed
-
+" set pastetoggle=<C-V>
+set noeb vb t_vb=
 set nocp
 set autoindent
 set smartindent
 set nomodeline
 set splitright
 set splitbelow
-set pastetoggle=<C-V>
-filetype indent on
-filetype plugin on
-
+set ignorecase
+"set smartcase
+set incsearch
 set enc=utf8
 colors elflord
-nmap<F1> :call Compile()<CR>
-function Compile()
-	if expand('%:e') ==# "java"
-		:!javac %<.java && java %<
-	elseif expand('%:e') ==# "py"
-		:!python %
-	elseif expand('%:e') ==# "tex"
-		:!xelatex % && rm %<.out && rm %<.log && rm %<.aux && open %<.pdf
-	elseif expand('%:e') ==# "c"
-		:!gcc -g % -o %<.out && ./%<.out
-	elseif expand('%:e') ==# "cpp"
-		:!g++ -g % -o %<.out && ./%<.out
-	endif
-endfunction
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
 
 " insert mode shortcut
+inoremap <C-CR> <Esc>o
+inoremap { {}<ESC>i
+inoremap {<CR> {<CR>}<Esc>O
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
-inoremap {<CR> {<CR>}<Esc>ko
+inoremap <C-v> <Esc>"+pi
 
-" pathogen setting
-execute pathogen#infect()
-nnoremap <silent> <F5> :NERDTree<CR>
+" normal mode shortcut
+"nmap <C-]>r :!ctags -R .<CR>
+nmap <Leader>n :set invnumber<CR>
+nmap <C-@> :call Compile()<CR>
+
+" Vundle
+set nocompatible              " be iMproved, required
+filetype off                  " required
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdcommenter'
+" nerdcommenter
 map <Leader><Leader> <Leader>c<space>
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
- " Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
- " Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" emmet setting
+Plugin 'scrooloose/nerdtree'
+" NERDTree
+map ,, :NERDTreeToggle<CR>
+Plugin 'mattn/emmet-vim'
+" emmet
 let g:user_emmet_install_global = 0
 autocmd FileType html,css,php,js EmmetInstall
-autocmd FileType html,css,php,js imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+autocmd FileType html,css,php,js imap <expr> <tab> emmet#expandabbrintelligent("\<tab>")
+Plugin 'rking/ag.vim'
+Plugin 'terryma/vim-multiple-cursors'
+" vim-multiple-cursors 
+"let g:multi_cursor_next_key='<c-n>'
+let g:multi_cursor_prev_key='<c-b>'
+"let g:multi_cursor_skip_key='<c-x>'
+"let g:multi_cursor_quit_key='<esc>'
+nnoremap <silent> <m-j> :multiplecursorsfind <c-r>/<cr>
+vnoremap <silent> <m-j> :multiplecursorsfind <c-r>/<cr>
+Plugin 'kien/ctrlp.vim'
+Plugin 'easymotion/vim-easymotion'
+" easymotion
+map <leader> <plug>(easymotion-prefix)
+" <leader>f{char} to move to {char}
+map  <leader>f <plug>(easymotion-bd-f)
+nmap <leader>f <plug>(easymotion-overwin-f)
+" s{char}{char} to move to {char}{char}
+nmap s <plug>(easymotion-overwin-f2)
+" move to line
+map <leader>l <plug>(easymotion-bd-jk)
+nmap <leader>l <plug>(easymotion-overwin-line)
+" move to word
+map  <leader>w <plug>(easymotion-bd-w)
+nmap <leader>w <plug>(easymotion-overwin-w)
+Plugin 'shougo/neocomplete.vim'
+"neocomplete
+" disable autocomplpop.
+let g:acp_enableatstartup = 0
+" use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
 
+" define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $home.'/.vimshell_hist',
+    \ 'scheme' : $home.'/.gosh_completions'
+        \ }
 
-if &term =~ "xterm" || &term =~ "screen" || &term =~ "builtin_gui"
-  " Ctrl-Enter
-  set  <F13>=[25~
-  map  <F13> <C-CR>
-  map! <F13> <C-CR>
-
-  " Shift-Enter
-  set  <F14>=[27~
-  map  <F14> <S-CR>
-  map! <F14> <S-CR>
-
-  " Ctrl-Space
-  set  <F15>=[29~
-  map  <F15> <C-Space>
-  map! <F15> <C-Space>
-
-  " Shift-Space
-  set  <F16>=[30~
-  map  <F16> <S-Space>
-  map! <F16> <S-Space>
-
-  " Ctrl-Backspace
-  set  <F17>=[1;5P
-  map  <F17> <C-BS>
-  map! <F17> <C-BS>
-
-  " Alt-Tab
-  set  <F18>=[1;5Q
-  map  <F18> <M-Tab>
-  map! <F18> <M-Tab>
-
-  " Alt-Shift-Tab
-  set  <F19>=[1;5R
-  map  <F19> <M-S-Tab>
-  map! <F19> <M-S-Tab>
-
-  " Ctrl-Up
-  set  <F20>=[1;5A
-  map  <F20> <C-Up>
-  map! <F20> <C-Up>
-
-  " Ctrl-Down
-  set  <F21>=[1;5B
-  map  <F21> <C-Down>
-  map! <F21> <C-Down>
-
-  " Ctrl-Right
-  set  <F22>=[1;5C
-  map  <F22> <C-Right>
-  map! <F22> <C-Right>
-
-  " Ctrl-Left
-  set  <F23>=[1;5D
-  map  <F23> <C-Left>
-  map! <F23> <C-Left>
-
-  " Ctrl-Tab
-  set  <F24>=[31~
-  map  <F24> <C-Tab>
-  map! <F24> <C-Tab>
-
-  " Ctrl-Shift-Tab
-  set  <F25>=[32~
-  map  <F25> <C-S-Tab>
-  map! <F25> <C-S-Tab>
-
-  " Ctrl-Comma
-  set  <F26>=[33~
-  map  <F26> <C-,>
-  map! <F26> <C-,>
-
-  " Ctrl-Shift-Space
-  set  <F27>=[34~
-  map  <F27> <C-S-Space>
-  map! <F27> <C-S-Space>
+" define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
 endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-inoremap <C-CR> <Esc>o
-inoremap <C-@> <Esc>l
+" plugin key-mappings.
+"inoremap <expr><c-g>     neocomplete#undo_completion()
+"inoremap <expr><c-l>     neocomplete#complete_common_string()
+
+" recommended key-mappings.
+" <cr>: close popup and save indent.
+inoremap <silent> <cr> <c-r>=<sid>my_cr_function()<cr>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<c-y>" : "" ) . "\<cr>"
+  " for no inserting <cr> key.
+  "return pumvisible() ? "\<c-y>" : "\<cr>"
+endfunction
+" <tab>: completion.
+inoremap <expr><tab>  pumvisible() ? "\<c-n>" : "\<tab>"
+" <c-h>, <bs>: close popup and delete backword char.
+"inoremap <expr><c-h> neocomplete#smart_close_popup()."\<c-h>"
+inoremap <expr><bs> neocomplete#smart_close_popup()."\<c-h>"
+" close popup by <space>.
+"inoremap <expr><space> pumvisible() ? "\<c-y>" : "\<space>"
+
+" autocomplpop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><tab>  pumvisible() ? "\<down>" : "\<c-x>\<c-u>"
+
+" enable omni completion.
+autocmd filetype css setlocal omnifunc=csscomplete#completecss
+autocmd filetype html,markdown setlocal omnifunc=htmlcomplete#completetags
+autocmd filetype javascript setlocal omnifunc=javascriptcomplete#completejs
+autocmd filetype python setlocal omnifunc=pythoncomplete#complete
+autocmd filetype xml setlocal omnifunc=xmlcomplete#completetags
+
+" enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" for perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+call vundle#end()            " required
+filetype plugin indent on    " required
