@@ -2,16 +2,17 @@
 syntax on
 set nu
 set hlsearch
-set shiftwidth=4
+set expandtab
 set tabstop=4
+set shiftwidth=4
 set softtabstop=4
 set backspace=2
+set autoindent
+set smartindent
 " set clipboard=unnamed
 " set pastetoggle=<C-V>
 set noeb vb t_vb=
 set nocp
-set autoindent
-set smartindent
 set nomodeline
 set splitright
 set splitbelow

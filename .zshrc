@@ -1,6 +1,7 @@
 [[ -f ~/.zsh_aliases ]] && . ~/.zsh_aliases
 [[ -f ~/.zsh_functions ]] && . ~/.zsh_functions
 
+export LANG=en_US.UTF-8
 export PATH=/usr/local/bin:$PATH
 export NODE_PATH=/usr/lib/node_modules:$NODE_PATH
 export NVM_DIR="$HOME/.nvm" 
