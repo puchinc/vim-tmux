@@ -23,6 +23,7 @@ set enc=utf8
 colors elflord
 autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview
+autocmd Filetype gitcommit setlocal spell textwidth=80
 
 " insert mode shortcut
 inoremap <C-CR> <Esc>o
