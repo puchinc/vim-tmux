@@ -1,7 +1,5 @@
 /*
 !.gitignore
-!.gitmessage
-!.gitconfig
 !.zshrc
 !.zsh_aliases
 !.zsh_functions
@@ -9,3 +7,4 @@
 !.bash_profile
 !.vimrc
 !/.vim
+!README.md
