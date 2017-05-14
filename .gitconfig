@@ -1,0 +1,13 @@
+[user]
+	name = michaelchen110
+	email = puching110@gmail.com
+[apply]
+     whitespace = nowarn
+[color]
+     ui = true
+[credential]
+	helper = osxkeychain
+[push]
+	default = simple
+[commit]
+    template = ~/.gitmessage

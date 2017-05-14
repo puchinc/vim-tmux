@@ -1,0 +1,181 @@
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+argglobal
+let s:cpo_save=&cpo
+set cpo&vim
+inoremap <buffer> <Plug>(emmet-anchorize-summary) =emmet#util#closePopup()=emmet#anchorizeURL(1)
+inoremap <buffer> <Plug>(emmet-anchorize-url) =emmet#util#closePopup()=emmet#anchorizeURL(0)
+inoremap <buffer> <Plug>(emmet-remove-tag) =emmet#util#closePopup()=emmet#removeTag()
+inoremap <buffer> <Plug>(emmet-split-join-tag) :call emmet#splitJoinTag()
+inoremap <buffer> <Plug>(emmet-toggle-comment) =emmet#util#closePopup()=emmet#toggleComment()
+inoremap <buffer> <Plug>(emmet-image-size) =emmet#util#closePopup()=emmet#imageSize()
+inoremap <buffer> <Plug>(emmet-move-prev-item) :call emmet#moveNextPrevItem(1)
+inoremap <buffer> <Plug>(emmet-move-next-item) :call emmet#moveNextPrevItem(0)
+inoremap <buffer> <Plug>(emmet-move-prev) :call emmet#moveNextPrev(1)
+inoremap <buffer> <Plug>(emmet-move-next) :call emmet#moveNextPrev(0)
+inoremap <buffer> <Plug>(emmet-balance-tag-outword) :call emmet#balanceTag(-1)
+inoremap <buffer> <Plug>(emmet-balance-tag-inward) :call emmet#balanceTag(1)
+inoremap <buffer> <Plug>(emmet-update-tag) =emmet#util#closePopup()=emmet#updateTag()
+inoremap <buffer> <Plug>(emmet-expand-word) =emmet#util#closePopup()=emmet#expandAbbr(1,"")
+inoremap <buffer> <Plug>(emmet-expand-abbr) =emmet#util#closePopup()=emmet#expandAbbr(0,"")
+vmap <buffer> c <Plug>(emmet-code-pretty)
+vmap <buffer> m <Plug>(emmet-merge-lines)
+nmap <buffer> A <Plug>(emmet-anchorize-summary)
+nmap <buffer> a <Plug>(emmet-anchorize-url)
+nmap <buffer> k <Plug>(emmet-remove-tag)
+nmap <buffer> j <Plug>(emmet-split-join-tag)
+nmap <buffer> / <Plug>(emmet-toggle-comment)
+nmap <buffer> i <Plug>(emmet-image-size)
+nmap <buffer> N <Plug>(emmet-move-prev)
+nmap <buffer> n <Plug>(emmet-move-next)
+vmap <buffer> D <Plug>(emmet-balance-tag-outword)
+nmap <buffer> D <Plug>(emmet-balance-tag-outword)
+vmap <buffer> d <Plug>(emmet-balance-tag-inward)
+nmap <buffer> d <Plug>(emmet-balance-tag-inward)
+nmap <buffer> u <Plug>(emmet-update-tag)
+nmap <buffer> ; <Plug>(emmet-expand-word)
+vmap <buffer> , <Plug>(emmet-expand-abbr)
+nmap <buffer> , <Plug>(emmet-expand-abbr)
+vnoremap <buffer> <Plug>(emmet-code-pretty) :call emmet#codePretty()
+vnoremap <buffer> <Plug>(emmet-merge-lines) :call emmet#mergeLines()
+nnoremap <buffer> <Plug>(emmet-anchorize-summary) :call emmet#anchorizeURL(1)
+nnoremap <buffer> <Plug>(emmet-anchorize-url) :call emmet#anchorizeURL(0)
+nnoremap <buffer> <Plug>(emmet-remove-tag) :call emmet#removeTag()
+nnoremap <buffer> <Plug>(emmet-split-join-tag) :call emmet#splitJoinTag()
+nnoremap <buffer> <Plug>(emmet-toggle-comment) :call emmet#toggleComment()
+nnoremap <buffer> <Plug>(emmet-image-size) :call emmet#imageSize()
+nnoremap <buffer> <Plug>(emmet-move-prev-item) :call emmet#moveNextPrevItem(1)
+nnoremap <buffer> <Plug>(emmet-move-next-item) :call emmet#moveNextPrevItem(0)
+nnoremap <buffer> <Plug>(emmet-move-prev) :call emmet#moveNextPrev(1)
+nnoremap <buffer> <Plug>(emmet-move-next) :call emmet#moveNextPrev(0)
+vnoremap <buffer> <Plug>(emmet-balance-tag-outword) :call emmet#balanceTag(-2)
+nnoremap <buffer> <Plug>(emmet-balance-tag-outword) :call emmet#balanceTag(-1)
+vnoremap <buffer> <Plug>(emmet-balance-tag-inward) :call emmet#balanceTag(2)
+nnoremap <buffer> <Plug>(emmet-balance-tag-inward) :call emmet#balanceTag(1)
+nnoremap <buffer> <Plug>(emmet-update-tag) :call emmet#updateTag()
+nnoremap <buffer> <Plug>(emmet-expand-word) :call emmet#expandAbbr(1,"")
+vnoremap <buffer> <Plug>(emmet-expand-abbr) :call emmet#expandAbbr(2,"")
+nnoremap <buffer> <Plug>(emmet-expand-abbr) :call emmet#expandAbbr(3,"")
+imap <buffer> A <Plug>(emmet-anchorize-summary)
+imap <buffer> a <Plug>(emmet-anchorize-url)
+imap <buffer> k <Plug>(emmet-remove-tag)
+imap <buffer> j <Plug>(emmet-split-join-tag)
+imap <buffer> / <Plug>(emmet-toggle-comment)
+imap <buffer> i <Plug>(emmet-image-size)
+imap <buffer> N <Plug>(emmet-move-prev)
+imap <buffer> n <Plug>(emmet-move-next)
+imap <buffer> D <Plug>(emmet-balance-tag-outword)
+imap <buffer> d <Plug>(emmet-balance-tag-inward)
+imap <buffer> u <Plug>(emmet-update-tag)
+imap <buffer> ; <Plug>(emmet-expand-word)
+imap <buffer> , <Plug>(emmet-expand-abbr)
+let &cpo=s:cpo_save
+unlet s:cpo_save
+setlocal autoindent
+setlocal backupcopy=
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal nocindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal completefunc=
+setlocal nocopyindent
+setlocal cryptmethod=
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal expandtab
+if &filetype != 'css'
+setlocal filetype=css
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=croql
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=0
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
+setlocal includeexpr=
+setlocal indentexpr=GetCSSIndent()
+setlocal indentkeys=0{,0},!^F,o,O
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispwords=
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=csscomplete#CompleteCSS
+setlocal path=
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal norelativenumber
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=4
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=
+setlocal suffixesadd=
+setlocal swapfile
+setlocal synmaxcol=3000
+if &syntax != 'css'
+setlocal syntax=css
+endif
+setlocal tabstop=4
+setlocal tags=
+setlocal textwidth=0
+setlocal thesaurus=
+setlocal noundofile
+setlocal undolevels=-123456
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal wrap
+setlocal wrapmargin=0
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+" vim: set ft=vim :

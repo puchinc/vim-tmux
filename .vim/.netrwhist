@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/Users/puchin/Desktop/ccsp-project/node_modules/mongodb/node_modules/bson/ext'
+let g:netrw_dirhist_2='/Users/puchin/Desktop/yahoo interview/ccsp-project'
+let g:netrw_dirhist_3='/Users/puchin/Dropbox/Public/workspace/ardroneforp5/examples/ARDroneForP5_Sample'

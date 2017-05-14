@@ -1,8 +1,11 @@
-*
+/*
 !.gitignore
-!.vimrc
+!.gitmessage
+!.gitconfig
 !.zshrc
 !.zsh_aliases
 !.zsh_functions
 !.bashrc
 !.bash_profile
+!.vimrc
+!/.vim
