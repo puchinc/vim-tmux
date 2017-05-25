@@ -43,7 +43,7 @@ setlocal dictionary=
 setlocal nodiff
 setlocal equalprg=
 setlocal errorformat=
-setlocal noexpandtab
+setlocal expandtab
 if &filetype != 'vim'
 setlocal filetype=vim
 endif
@@ -79,7 +79,7 @@ setlocal nolist
 setlocal makeencoding=
 setlocal makeprg=
 setlocal matchpairs=(:),{:},[:]
-setlocal nomodeline
+setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,octal,hex
 setlocal number
@@ -122,27 +122,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-2,41fold
-51,52fold
-54,55fold
-57,60fold
-63,69fold
-72,84fold
-86,155fold
-156,156fold
-86,157fold
-2
-normal! zo
-86
-normal! zo
-156
-normal! zo
-let s:l = 30 - ((17 * winheight(0) + 16) / 33)
+let s:l = 22 - ((21 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-30
-normal! 019|
+22
+normal! 0
 let &so = s:so_save | let &siso = s:siso_save
 doautoall SessionLoadPost
 " vim: set ft=vim :

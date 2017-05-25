@@ -1,8 +1,9 @@
 [[ -f ~/.zsh_aliases ]] && . ~/.zsh_aliases
 [[ -f ~/.zsh_functions ]] && . ~/.zsh_functions
 
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=/usr/local/mysql/bin:$PATH
 export LANG=en_US.UTF-8
-export PATH=/usr/local/bin:$PATH
 export NODE_PATH=/usr/lib/node_modules:$NODE_PATH
 export NVM_DIR="$HOME/.nvm" 
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
@@ -11,6 +12,12 @@ export NVM_DIR="$HOME/.nvm"
 export ZSH=$HOME/.oh-my-zsh
 # prompt username
 DEFAULT_USER=`whoami`
+
+# added by Anaconda3 4.3.1 installer
+#export PATH="/Users/puchin/anaconda/bin:$PATH"
+
+## added by Anaconda2 4.3.1 installer
+#export PATH="/Users/puchinchen/anaconda/bin:$PATH"
 
 # zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
@@ -117,4 +124,15 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
-export PATH=/usr/local/mysql/bin:$PATH
+
+export VIRTUAL_ENV_DISABLE_PROMPT=yes
+
+function virtenv_indicator {
+    if [[ -z $VIRTUAL_ENV ]] then
+        psvar[1]=''
+    else
+        psvar[1]=${VIRTUAL_ENV##*/}
+    fi
+}
+
+add-zsh-hook precmd virtenv_indicator
