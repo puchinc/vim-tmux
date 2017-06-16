@@ -13,6 +13,9 @@ zsh-autosuggestions
 git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 # add this line into .zshrc
 plugins=(zsh-autosuggestions)
+# add this line into this file
+bindkey '^l' autosuggest-accept
+$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ```
 
 setup my environment
