@@ -18,6 +18,25 @@ bindkey '^l' autosuggest-accept
 $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ```
 
+Add into ~/.vimrc
+```
+"autocmd BufEnter * silent! lcd %:p:h
+set autochdir
+set tags+=tags;/
+```
+
+Powerline
+```
+# clone
+git clone https://github.com/powerline/fonts.git
+# install
+cd fonts
+./install.sh
+# clean-up a bit
+cd ..
+rm -rf fonts
+```
+
 setup my environment
 ```
 git clone https://github.com/michaelchen110/Environment.git 
