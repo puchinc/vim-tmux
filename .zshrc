@@ -4,7 +4,12 @@
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH
 export LANG=en_US.UTF-8
-export TERM="xterm-256color"
+
+# vi style incremental search
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh

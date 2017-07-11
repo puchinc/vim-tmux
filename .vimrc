@@ -20,6 +20,8 @@ set ignorecase
 set incsearch
 set enc=utf8
 colors elflord
+
+" fold setting
 set foldmarker={{,}} foldlevel=0 
 autocmd FileType vim setlocal foldmethod=marker
 
@@ -27,6 +29,7 @@ autocmd FileType vim setlocal foldmethod=marker
 "autocmd BufEnter * silent! lcd %:p:h
 set autochdir
 set tags+=tags;/
+
 map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " insert mode shortcut
 inoremap <C-CR> <Esc>o
@@ -58,6 +61,7 @@ Plugin 'rking/ag.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
+"Plugin 'Lokaltog/vim-powerline'
 "Airline {{
     Plugin 'vim-airline/vim-airline'
     let g:airline#extensions#tabline#enabled = 1
