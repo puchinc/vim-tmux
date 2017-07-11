@@ -1,0 +1,42 @@
+# edit the selected bash config file
+function editbash {
+    if [[ "$1" == "f" ]]; then
+        vim ~/.zsh_functions
+    else
+        vim ~/.zshrc
+    fi
+}
+function leet {
+code="import java.util.*;
+
+public class $1 {
+	public static void main(String[] args) {
+		$1 tester = new $1();
+		tester.unitTest();
+	}
+	public void unitTest() {
+
+	}
+}"
+	leetcode
+	echo $code > $1.java
+	vim $1.java
+}
+
+function javat {
+code="import java.util.*;
+
+public class $1{\n\tpublic static void main(String[] args) {\n\n\t}\n}"; 
+	cdd
+	echo $code > $1.java
+	vim $1.java
+}
+
+# shortcut for compiling and running Java programs (I use this for competitions)
+function jj {
+    filename="${1%.*}"
+    javac $filename.java
+    if [[ $? == 0 ]]; then
+       java $filename
+    fi
+}

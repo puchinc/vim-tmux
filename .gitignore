@@ -1,0 +1,11 @@
+/*
+!.gitignore
+!.zshrc
+!.zsh_aliases
+!.zsh_functions
+!.vimrc
+!/.vim
+!/.oh-my-zsh
+!/.tmux.conf
+!/.ctags
+!README.md
