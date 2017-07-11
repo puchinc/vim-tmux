@@ -56,6 +56,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'rking/ag.vim'
 Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
 "Airline {{
     Plugin 'vim-airline/vim-airline'
     let g:airline#extensions#tabline#enabled = 1

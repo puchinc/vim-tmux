@@ -20,6 +20,7 @@ DEFAULT_USER=`whoami`
 # zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -72,6 +73,7 @@ ZSH_THEME="ys"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 plugins=(zsh-autosuggestions)
+bindkey '^l' autosuggest-accept
 
 # User configuration
 
