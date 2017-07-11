@@ -1,5 +1,6 @@
-cd Environment
-mv -r .ctags .tmux.conf .vimrc .zsh_aliases .zsh_functions .zshrc .vim/ ~
+mv .ctags .tmux.conf .vimrc .zsh_aliases .zsh_functions .zshrc ~
+rm -rf ~/.vim
+mv .vim/ ~
 cd ..
 rm -rf Environment
 apt-get install zsh
