@@ -6,7 +6,3 @@ alias cdd="cd ~/Desktop"
 
 alias vimrc="vim ~/.vimrc"
 alias hisnu="history | awk '{$1="";print substr($0,2)}'"
-
-alias kkbox="cd /Users/puchinchen/Dropbox/KKBOX"
-alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
-alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'

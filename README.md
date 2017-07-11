@@ -3,9 +3,16 @@
 
 install zsh && oh-my-zsh
 ```
-brew install zsh
-chsh -s /usr/local/bin/zs
+brew install zsh 
+chsh -s $(which zsh)
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+```
+
+Linux
+```
+apt-get install zsh
+chsh -s $(which zsh)
+git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 ```
 
 zsh-autosuggestions
@@ -16,13 +23,6 @@ plugins=(zsh-autosuggestions)
 # add this line into this file
 bindkey '^l' autosuggest-accept
 $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-```
-
-Add into ~/.vimrc
-```
-"autocmd BufEnter * silent! lcd %:p:h
-set autochdir
-set tags+=tags;/
 ```
 
 Powerline

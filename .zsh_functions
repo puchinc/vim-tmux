@@ -1,5 +1,5 @@
 # edit the selected bash config file
-function editbash {
+function zshrc {
     if [[ "$1" == "f" ]]; then
         vim ~/.zsh_functions
     else
