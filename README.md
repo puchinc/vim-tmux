@@ -8,12 +8,6 @@ chsh -s /usr/local/bin/zs
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
-<<<<<<< HEAD
-setup my environment
-```
-git clone https://github.com/michaelchen110/Environment.git 
-mv Environment/.* . && rm -r Environment
-=======
 zsh-autosuggestions
 ```
 git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
@@ -47,7 +41,6 @@ setup my environment
 ```
 git clone https://github.com/michaelchen110/Environment.git 
 mv Environment/.* . || rm -r Environment
->>>>>>> dd5f6ebd7291185119b510f5e3a808cd217616fa
 source ~/.zshrc
 ```
 
