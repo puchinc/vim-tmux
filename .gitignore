@@ -4,8 +4,8 @@
 !.zsh_aliases
 !.zsh_functions
 !.vimrc
+!.tmux.conf
+!.ctags
 !/.vim
 !/.oh-my-zsh
-!/.tmux.conf
-!/.ctags
 !README.md
