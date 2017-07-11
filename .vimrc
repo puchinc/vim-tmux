@@ -28,7 +28,6 @@ autocmd FileType vim setlocal foldmethod=marker
 set autochdir
 set tags+=tags;/
 map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-
 " insert mode shortcut
 inoremap <C-CR> <Esc>o
 inoremap { {}<ESC>i
@@ -43,7 +42,6 @@ noremap <leader>y "*y
 noremap <leader>yy "*Y
 " Preserve indentation while pasting text from the OS X clipboard 
 noremap <leader>p :set paste<CR>:put *<CR>:set nopaste<CR>
-
 " normal mode shortcut
 "nmap <C-]>r :!ctags -R .<CR>
 nmap <Leader>n :set invnumber<CR>

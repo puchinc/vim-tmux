@@ -25,7 +25,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 # ZSH_THEME="robbyrussell"
-#ZSH_THEME="agnoster"
+# ZSH_THEME="agnoster"
 ZSH_THEME="ys"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -106,7 +106,6 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # place this after nvm initialization!
 autoload -U add-zsh-hook
-
 export VIRTUAL_ENV_DISABLE_PROMPT=yes
 
 function virtenv_indicator {
