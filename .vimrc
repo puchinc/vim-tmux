@@ -1,6 +1,8 @@
 " General
-syntax on
-set nu
+if !exists("g:syntax_on")
+    syntax enable
+endif
+
 set hlsearch
 set expandtab
 set tabstop=4
@@ -10,24 +12,44 @@ set backspace=2
 set autoindent
 set smartindent
 set clipboard=unnamed
-set noeb vb t_vb=
+set noeb vb t_vb= " disable sound
+
 set nocp
 set nomodeline
+set noshowmode " do not display current mode
 set splitright
 set splitbelow
 set ignorecase
 "set smartcase
-set incsearch
 set enc=utf8
-colors elflord
+set mouse=a " click to change cursor
 
-" fold setting
-set foldmarker={{,}} foldlevel=0 
-autocmd FileType vim setlocal foldmethod=marker
+colors solarized
+"colors elflord
+"colors gruvbox
+
+" line numbers
+set number " show line numbers
+set rnu " show relative line numbers
+set numberwidth=4 " line numbers width
+hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE 
+hi CursorLineNr term=bold ctermfg=white 
+
+" how many characters in a line
+"set textwidth=80 " make it obvious where 80 characters is
+"set colorcolumn=+1 " color column after 'textwidth
+
+set nobackup " no back up file
+set noswapfile " you can open the same file in different places
+
+"set tmux window name automatically 
+if exists('$TMUX')
+    autocmd BufEnter * call system("tmux rename-window " . expand("%:t"))
+    autocmd VimLeave * call system("tmux setw automatic-rename")
+endif
 
 "ctags
 "autocmd BufEnter * silent! lcd %:p:h
-set autochdir
 set tags+=tags;/
 
 map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
@@ -41,14 +63,18 @@ inoremap <C-k> <Up>
 inoremap <C-l> <Right>
 
 " Yank text to the OS X clipboard" 
-noremap <leader>y "*y
-noremap <leader>yy "*Y
+"noremap <leader>y "*y
+"noremap <leader>yy "*Y
 " Preserve indentation while pasting text from the OS X clipboard 
-noremap <leader>p :set paste<CR>:put *<CR>:set nopaste<CR>
+"noremap <leader>p :set paste<CR>:put *<CR>:set nopaste<CR>
 " normal mode shortcut
 "nmap <C-]>r :!ctags -R .<CR>
 nmap <Leader>n :set invnumber<CR>
 nmap <C-@> :call Compile()<CR>
+
+" fold setting
+set foldmarker={{,}} foldlevel=0 
+autocmd FileType vim setlocal foldmethod=marker
 
 " Vundle
 set nocompatible              " be iMproved, required
@@ -56,48 +82,71 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
 Plugin 'rking/ag.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-"Plugin 'Lokaltog/vim-powerline'
+" Incsearch {{
+    Plugin 'haya14busa/incsearch.vim'
+    "map /  <Plug>(incsearch-forward)
+    "map ?  <Plug>(incsearch-backward)
+    "map g/ <Plug>(incsearch-stay)
+
+    " :h g:incsearch#auto_nohlsearch
+    set hlsearch
+    let g:incsearch#auto_nohlsearch = 1
+    map n  <Plug>(incsearch-nohl-n)
+    map N  <Plug>(incsearch-nohl-N)
+    map *  <Plug>(incsearch-nohl-*)
+    map #  <Plug>(incsearch-nohl-#)
+    map g* <Plug>(incsearch-nohl-g*)
+    map g# <Plug>(incsearch-nohl-g#)
+
+    Plugin 'haya14busa/incsearch-fuzzy.vim'
+    map / <Plug>(incsearch-fuzzy-/)
+    map ? <Plug>(incsearch-fuzzy-?)
+    map g/ <Plug>(incsearch-fuzzy-stay)
+
+"}}
+
 "Airline {{
-    Plugin 'vim-airline/vim-airline'
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#left_sep = ' '
-    let g:airline#extensions#tabline#left_alt_sep = '|'
-    " air-line
-    let g:airline_powerline_fonts = 1
+    "Plugin 'vim-airline/vim-airline'
 
-    if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
-    endif
+    "set noshowmode " do not display current mode
+    "let g:airline#extensions#tabline#enabled = 1
+    "let g:airline#extensions#tabline#left_sep = ' '
+    "let g:airline#extensions#tabline#left_alt_sep = '|'
+    "" air-line
+    "let g:airline_powerline_fonts = 1
 
-    " unicode symbols
-    let g:airline_left_sep = '»'
-    let g:airline_left_sep = '▶'
-    let g:airline_right_sep = '«'
-    let g:airline_right_sep = '◀'
-    let g:airline_symbols.linenr = '␊'
-    let g:airline_symbols.linenr = '␤'
-    let g:airline_symbols.linenr = '¶'
-    let g:airline_symbols.branch = '⎇'
-    let g:airline_symbols.paste = 'ρ'
-    let g:airline_symbols.paste = 'Þ'
-    let g:airline_symbols.paste = '∥'
-    let g:airline_symbols.whitespace = 'Ξ'
+    "if !exists('g:airline_symbols')
+        "let g:airline_symbols = {}
+    "endif
 
-    "" airline symbols
-    let g:airline_left_sep = ''
-    let g:airline_left_alt_sep = ''
-    let g:airline_right_sep = ''
-    let g:airline_right_alt_sep = ''
-    let g:airline_symbols.branch = ''
-    let g:airline_symbols.readonly = ''
-    let g:airline_symbols.linenr = ''
-    set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:s14
-    Plugin 'vim-airline/vim-airline-themes'
+    "" unicode symbols
+    "let g:airline_left_sep = '»'
+    "let g:airline_left_sep = '▶'
+    "let g:airline_right_sep = '«'
+    "let g:airline_right_sep = '◀'
+    "let g:airline_symbols.linenr = '␊'
+    "let g:airline_symbols.linenr = '␤'
+    "let g:airline_symbols.linenr = '¶'
+    "let g:airline_symbols.branch = '⎇'
+    "let g:airline_symbols.paste = 'ρ'
+    "let g:airline_symbols.paste = 'Þ'
+    "let g:airline_symbols.paste = '∥'
+    "let g:airline_symbols.whitespace = 'Ξ'
+
+    """ airline symbols
+    "let g:airline_left_sep = ''
+    "let g:airline_left_alt_sep = ''
+    "let g:airline_right_sep = ''
+    "let g:airline_right_alt_sep = ''
+    "let g:airline_symbols.branch = ''
+    "let g:airline_symbols.readonly = ''
+    "let g:airline_symbols.linenr = ''
+    "set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:s14
+    "Plugin 'vim-airline/vim-airline-themes'
 "}}
 
 "Nerd commenter/tree {{
