@@ -7,7 +7,7 @@ rm -rf Environment
 
 if [ "$(uname)" == "Darwin" ]; then
     brew install zsh
-    brew instll vim --with-lua
+    brew install vim --with-lua
 else
     apt-get install zsh
 fi
