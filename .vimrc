@@ -24,6 +24,10 @@ set ignorecase
 set enc=utf8
 set mouse=a " click to change cursor
 
+<<<<<<< HEAD
+=======
+set background=dark
+>>>>>>> 0c12314800f462b6feded6b63a02943d9eaccd43
 colors solarized
 "colors elflord
 "colors gruvbox

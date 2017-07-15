@@ -6,7 +6,6 @@
 !.vimrc
 !.tmux.conf
 !.ctags
-!.install.sh
 !/.vim
-!/.oh-my-zsh
 !README.md
+!install.sh
