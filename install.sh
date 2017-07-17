@@ -1,21 +1,23 @@
 cd Environment
 mv .ctags .tmux.conf .vimrc .zsh_aliases .zsh_functions .zshrc ~
-rm -rf ~/.vim
-mv .vim/ ~
+mkdir ~/.vim 2>/dev/null
+mv .vim/* ~/.vim
 cd ..
 rm -rf Environment
 
 if [ "$(uname)" == "Darwin" ]; then
     brew install zsh
+    brew install tmux
     brew install vim --with-lua
 else
-    apt-get install zsh
+    sudo apt-get install zsh
+    sudo apt-get install tmux
+    sudo apt-get install vim
 fi
-
-chsh -s $(which zsh)
 
 git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+chsh -s $(which zsh)
 source ~/.zshrc
 vim +PluginInstall +qall

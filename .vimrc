@@ -11,8 +11,9 @@ set softtabstop=4
 set backspace=2
 set autoindent
 set smartindent
-set clipboard=unnamed
+set clipboard+=unnamed " unnamed register "
 set noeb vb t_vb= " disable sound
+
 
 set nocp
 set nomodeline
@@ -24,10 +25,7 @@ set ignorecase
 set enc=utf8
 set mouse=a " click to change cursor
 
-<<<<<<< HEAD
-=======
 set background=dark
->>>>>>> 0c12314800f462b6feded6b63a02943d9eaccd43
 colors solarized
 "colors elflord
 "colors gruvbox
@@ -38,6 +36,17 @@ set rnu " show relative line numbers
 set numberwidth=4 " line numbers width
 hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE 
 hi CursorLineNr term=bold ctermfg=white 
+
+set laststatus=2
+set statusline=
+set statusline+=%1*
+set statusline+=%2*%=%m%r%w\ %t
+"set statusline+=%1*
+"set statusline+=%2*%=%t\ %m%r%w
+hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE 
+hi User2 term=NONE cterm=bold ctermfg=white ctermbg=NONE 
+"hi User2 term=bold cterm=bold ctermfg=NONE ctermbg=white 
+"hi StatusLine term=bold cterm=bold ctermfg=white ctermbg=NONE 
 
 " how many characters in a line
 "set textwidth=80 " make it obvious where 80 characters is

@@ -2,5 +2,5 @@
 
 ```
 git clone https://github.com/michaelchen110/Environment.git
-bash Environment/install.sh
+./Environment/install.sh
 ```
