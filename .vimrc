@@ -3,6 +3,20 @@ if !exists("g:syntax_on")
     syntax enable
 endif
 
+set background=dark
+colors solarized
+"colors elflord
+
+if &term =~ '^xterm'
+  " solid underscore
+  let &t_SI .= "\<Esc>[3 q"
+  " solid block
+  let &t_SR .= "\<Esc>[0 q"
+  let &t_EI .= "\<Esc>[0 q"
+  " 1 or 0 -> blinking block
+  " 3 -> blinking underscore
+endif
+
 set hlsearch
 set expandtab
 set tabstop=4
@@ -14,7 +28,6 @@ set smartindent
 set clipboard+=unnamed " unnamed register "
 set noeb vb t_vb= " disable sound
 set nomodeline
-set noshowmode " do not display current mode
 
 set nocp
 set splitright
@@ -24,9 +37,6 @@ set ignorecase
 set enc=utf8
 set mouse=a " click to change cursor
 
-set background=dark
-colors solarized
-"colors elflord
 
 " line numbers
 set number " show line numbers
@@ -65,15 +75,13 @@ endif
 "autocmd BufEnter * silent! lcd %:p:h
 set tags+=tags;/
 
-map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " insert mode shortcut
 inoremap <C-CR> <Esc>o
-inoremap { {}<ESC>i
-inoremap {<CR> {<CR>}<Esc>O
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
+map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Yank text to the OS X clipboard" 
 "noremap <leader>y "*y
@@ -164,3 +172,5 @@ Plugin 'tpope/vim-repeat'
 Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+set noshowmode " do not display current mode

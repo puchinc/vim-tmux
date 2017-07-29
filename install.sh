@@ -8,11 +8,9 @@ rm -rf Environment
 if [ "$(uname)" == "Darwin" ]; then
     brew install zsh
     brew install tmux
-    brew install vim --with-lua
 else
     sudo apt-get install zsh
     sudo apt-get install tmux
-    sudo apt-get install vim
 fi
 
 git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
