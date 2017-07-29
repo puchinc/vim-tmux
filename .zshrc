@@ -1,4 +1,3 @@
-
 [[ -f ~/.zsh_aliases ]] && . ~/.zsh_aliases
 [[ -f ~/.zsh_functions ]] && . ~/.zsh_functions
 
@@ -36,7 +35,34 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 # time that oh-my-zsh is loaded.
 # ZSH_THEME="robbyrussell"
 # ZSH_THEME="agnoster"
-ZSH_THEME="ys"
+ #ZSH_THEME="ys"
+ZSH_THEME=""
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git)
+plugins=(zsh-autosuggestions)
+
+source $ZSH/oh-my-zsh.sh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
+
+autoload -U promptinit; promptinit
+prompt pure
+
+# ys prompt add virtualenv
+#PROMPT="
+#%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \ #%(#,%{$bg[yellow]%}%{$fg[black]%}%n%{$reset_color%},%{$fg[cyan]%}%n) \
+#%{$fg[white]%}@ \
+#%{$fg[green]%}%m \
+#%{$fg[white]%}in \
+#%{$terminfo[bold]$fg[yellow]%}%~%{$reset_color%}\
+#${hg_info}\
+#${git_info}\
+ #\
+#%{$fg[white]%}[%*] $exit_code %(1V.(%1v).)
+#%{$terminfo[bold]$fg[red]%}$ %{$reset_color%}"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -75,30 +101,6 @@ ZSH_THEME="ys"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-plugins=(zsh-autosuggestions)
-
-source $ZSH/oh-my-zsh.sh
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
-PROMPT="
-%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
-%(#,%{$bg[yellow]%}%{$fg[black]%}%n%{$reset_color%},%{$fg[cyan]%}%n) \
-%{$fg[white]%}@ \
-%{$fg[green]%}%m \
-%{$fg[white]%}in \
-%{$terminfo[bold]$fg[yellow]%}%~%{$reset_color%}\
-${hg_info}\
-${git_info}\
- \
-%{$fg[white]%}[%*] $exit_code %(1V.(%1v).)
-%{$terminfo[bold]$fg[red]%}$ %{$reset_color%}"
-
-
 
 # User configuration
 

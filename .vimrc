@@ -5,6 +5,7 @@ endif
 
 set background=dark
 colors solarized
+"colors material-theme
 "colors elflord
 
 if &term =~ '^xterm'
@@ -42,8 +43,9 @@ set mouse=a " click to change cursor
 set number " show line numbers
 set rnu " show relative line numbers
 set numberwidth=4 " line numbers width
-hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE 
+hi LineNr term=NONE cterm=NONE ctermfg=grey ctermbg=NONE 
 hi CursorLineNr term=bold ctermfg=white 
+"hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE 
 
 set ruler
 set rulerformat=%40(%=%1*%m%r%w\ %t%)
@@ -92,6 +94,8 @@ map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 "nmap <C-]>r :!ctags -R .<CR>
 nmap <Leader>n :set invnumber<CR>
 nmap <C-@> :call Compile()<CR>
+" copy full path
+noremap <leader>p :let @+ = expand('%:p')<CR>
 
 " fold setting
 set foldmarker={{,}} foldlevel=0 
