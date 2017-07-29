@@ -1,4 +1,4 @@
-" General
+ "General
 if !exists("g:syntax_on")
     syntax enable
 endif
@@ -13,11 +13,10 @@ set autoindent
 set smartindent
 set clipboard+=unnamed " unnamed register "
 set noeb vb t_vb= " disable sound
-
-
-set nocp
 set nomodeline
 set noshowmode " do not display current mode
+
+set nocp
 set splitright
 set splitbelow
 set ignorecase
@@ -28,7 +27,6 @@ set mouse=a " click to change cursor
 set background=dark
 colors solarized
 "colors elflord
-"colors gruvbox
 
 " line numbers
 set number " show line numbers
@@ -37,16 +35,18 @@ set numberwidth=4 " line numbers width
 hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE 
 hi CursorLineNr term=bold ctermfg=white 
 
-set laststatus=2
-set statusline=
-set statusline+=%1*
-set statusline+=%2*%=%m%r%w\ %t
-"set statusline+=%1*
-"set statusline+=%2*%=%t\ %m%r%w
+set ruler
+set rulerformat=%40(%=%1*%m%r%w\ %t%)
 hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE 
-hi User2 term=NONE cterm=bold ctermfg=white ctermbg=NONE 
+
+"set laststatus=2
+set statusline=
+set statusline+=%2*
+set statusline+=%3*%=%m%r%w\ %t
+hi User2 term=NONE cterm=NONE ctermfg=black ctermbg=cyan 
+hi User3 term=NONE cterm=NONE ctermfg=black ctermbg=cyan
 "hi User2 term=bold cterm=bold ctermfg=NONE ctermbg=white 
-"hi StatusLine term=bold cterm=bold ctermfg=white ctermbg=NONE 
+"hi StatusLine term=bold cterm=bold ctermfg=NONE ctermbg=white 
 
 " how many characters in a line
 "set textwidth=80 " make it obvious where 80 characters is
@@ -96,14 +96,13 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'rking/ag.vim'
-Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 " Incsearch {{
     Plugin 'haya14busa/incsearch.vim'
-    "map /  <Plug>(incsearch-forward)
-    "map ?  <Plug>(incsearch-backward)
-    "map g/ <Plug>(incsearch-stay)
+    map /  <Plug>(incsearch-forward)
+    map ?  <Plug>(incsearch-backward)
+    map g/ <Plug>(incsearch-stay)
 
     " :h g:incsearch#auto_nohlsearch
     set hlsearch
@@ -116,52 +115,11 @@ Plugin 'tpope/vim-repeat'
     map g# <Plug>(incsearch-nohl-g#)
 
     Plugin 'haya14busa/incsearch-fuzzy.vim'
-    map / <Plug>(incsearch-fuzzy-/)
-    map ? <Plug>(incsearch-fuzzy-?)
-    map g/ <Plug>(incsearch-fuzzy-stay)
+    map z/ <Plug>(incsearch-fuzzy-/)
+    map z? <Plug>(incsearch-fuzzy-?)
+    map zg/ <Plug>(incsearch-fuzzy-stay)
 
 "}}
-
-"Airline {{
-    "Plugin 'vim-airline/vim-airline'
-
-    "set noshowmode " do not display current mode
-    "let g:airline#extensions#tabline#enabled = 1
-    "let g:airline#extensions#tabline#left_sep = ' '
-    "let g:airline#extensions#tabline#left_alt_sep = '|'
-    "" air-line
-    "let g:airline_powerline_fonts = 1
-
-    "if !exists('g:airline_symbols')
-        "let g:airline_symbols = {}
-    "endif
-
-    "" unicode symbols
-    "let g:airline_left_sep = '»'
-    "let g:airline_left_sep = '▶'
-    "let g:airline_right_sep = '«'
-    "let g:airline_right_sep = '◀'
-    "let g:airline_symbols.linenr = '␊'
-    "let g:airline_symbols.linenr = '␤'
-    "let g:airline_symbols.linenr = '¶'
-    "let g:airline_symbols.branch = '⎇'
-    "let g:airline_symbols.paste = 'ρ'
-    "let g:airline_symbols.paste = 'Þ'
-    "let g:airline_symbols.paste = '∥'
-    "let g:airline_symbols.whitespace = 'Ξ'
-
-    """ airline symbols
-    "let g:airline_left_sep = ''
-    "let g:airline_left_alt_sep = ''
-    "let g:airline_right_sep = ''
-    "let g:airline_right_alt_sep = ''
-    "let g:airline_symbols.branch = ''
-    "let g:airline_symbols.readonly = ''
-    "let g:airline_symbols.linenr = ''
-    "set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:s14
-    "Plugin 'vim-airline/vim-airline-themes'
-"}}
-
 "Nerd commenter/tree {{
     Plugin 'scrooloose/nerdcommenter'
     " nerdcommenter
@@ -170,7 +128,6 @@ Plugin 'tpope/vim-repeat'
     " NERDTree
     map ,, :NERDTreeToggle<CR>
 "}}
-
 "Emmet {{
     Plugin 'mattn/emmet-vim'
     " emmet
@@ -178,7 +135,6 @@ Plugin 'tpope/vim-repeat'
     autocmd FileType html,css,php,js EmmetInstall
     autocmd FileType html,css,php,js imap <expr> <tab> emmet#expandabbrintelligent("\<tab>")
 "}}
-
 " Multi-Cursors{{
     Plugin 'terryma/vim-multiple-cursors'
     " vim-multiple-cursors 
@@ -189,7 +145,6 @@ Plugin 'tpope/vim-repeat'
     nnoremap <silent> <m-j> :multiplecursorsfind <c-r>/<cr>
     vnoremap <silent> <m-j> :multiplecursorsfind <c-r>/<cr>
 "}}
-
 "Easy Motion {{
     Plugin 'easymotion/vim-easymotion'
     " easymotion
@@ -206,79 +161,6 @@ Plugin 'tpope/vim-repeat'
     map  <leader>w <plug>(easymotion-bd-w)
     nmap <leader>w <plug>(easymotion-overwin-w)
 "}}
-
-"Neocomplete {{
-    Plugin 'shougo/neocomplete.vim'
-    "neocomplete
-    " disable autocomplpop.
-    let g:acp_enableatstartup = 0
-    " use neocomplete.
-    let g:neocomplete#enable_at_startup = 1
-    " use smartcase.
-    let g:neocomplete#enable_smart_case = 1
-    " set minimum syntax keyword length.
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-    " define dictionary.
-    let g:neocomplete#sources#dictionary#dictionaries = {
-        \ 'default' : '',
-        \ 'vimshell' : $home.'/.vimshell_hist',
-        \ 'scheme' : $home.'/.gosh_completions'
-            \ }
-
-    " define keyword.
-    if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
-    endif
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-    " plugin key-mappings.
-    "inoremap <expr><c-g>     neocomplete#undo_completion()
-    "inoremap <expr><c-l>     neocomplete#complete_common_string()
-
-    " recommended key-mappings.
-    " <cr>: close popup and save indent.
-    inoremap <silent> <cr> <c-r>=<sid>my_cr_function()<cr>
-    function! s:my_cr_function()
-      return (pumvisible() ? "\<c-y>" : "" ) . "\<cr>"
-      " for no inserting <cr> key.
-      "return pumvisible() ? "\<c-y>" : "\<cr>"
-    endfunction
-    " <tab>: completion.
-    inoremap <expr><tab>  pumvisible() ? "\<c-n>" : "\<tab>"
-    " <c-h>, <bs>: close popup and delete backword char.
-    "inoremap <expr><c-h> neocomplete#smart_close_popup()."\<c-h>"
-    inoremap <expr><bs> neocomplete#smart_close_popup()."\<c-h>"
-    " close popup by <space>.
-    "inoremap <expr><space> pumvisible() ? "\<c-y>" : "\<space>"
-
-    " autocomplpop like behavior.
-    "let g:neocomplete#enable_auto_select = 1
-
-    " shell like behavior(not recommended).
-    "set completeopt+=longest
-    "let g:neocomplete#enable_auto_select = 1
-    "let g:neocomplete#disable_auto_complete = 1
-    "inoremap <expr><tab>  pumvisible() ? "\<down>" : "\<c-x>\<c-u>"
-
-    " enable omni completion.
-    autocmd filetype css setlocal omnifunc=csscomplete#completecss
-    autocmd filetype html,markdown setlocal omnifunc=htmlcomplete#completetags
-    autocmd filetype javascript setlocal omnifunc=javascriptcomplete#completejs
-    autocmd filetype python setlocal omnifunc=pythoncomplete#complete
-    autocmd filetype xml setlocal omnifunc=xmlcomplete#completetags
-
-    " enable heavy omni completion.
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-      let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-    "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-    " for perlomni.vim setting.
-    " https://github.com/c9s/perlomni.vim
-    let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-"}}
+Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
 call vundle#end()            " required
 filetype plugin indent on    " required
