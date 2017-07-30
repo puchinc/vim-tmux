@@ -38,9 +38,9 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 autoload -U promptinit; promptinit
 prompt pure
 #Virtual Env Prompt
-RPROMPT=%(1V.(%1v)\ .)
+RPROMPT=%(1V.(%1v).)
 # prompt username
-DEFAULT_USER=`whoami`
+#DEFAULT_USER=`whoami`
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
