@@ -51,6 +51,8 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 autoload -U promptinit; promptinit
 prompt pure
 
+PROMPT=%(1V.(%1v)\ .)%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f\ 
+
 # ys prompt add virtualenv
 #PROMPT="
 #%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \ #%(#,%{$bg[yellow]%}%{$fg[black]%}%n%{$reset_color%},%{$fg[cyan]%}%n) \

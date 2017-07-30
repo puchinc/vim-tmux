@@ -43,9 +43,8 @@ set mouse=a " click to change cursor
 set number " show line numbers
 set rnu " show relative line numbers
 set numberwidth=4 " line numbers width
-hi LineNr term=NONE cterm=NONE ctermfg=grey ctermbg=NONE 
 hi CursorLineNr term=bold ctermfg=white 
-"hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE 
+hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE 
 
 set ruler
 set rulerformat=%40(%=%1*%m%r%w\ %t%)

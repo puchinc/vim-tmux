@@ -3,6 +3,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias cdd="cd ~/Desktop"
+alias ws="cd ~/workspace"
 
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
