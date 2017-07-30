@@ -82,6 +82,8 @@ inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
+inoremap <C-e> <Esc>$a
+inoremap <C-f> <Esc>wa
 map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Yank text to the OS X clipboard" 

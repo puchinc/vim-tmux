@@ -4,6 +4,8 @@
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH
 export LANG=en_US.UTF-8
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
 
 # vi style incremental search
 bindkey '^R' history-incremental-search-backward
@@ -14,28 +16,13 @@ bindkey '^N' history-search-forward
 #setopt CORRECT
 #setopt AUTO_CD
 
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-# prompt username
-DEFAULT_USER=`whoami`
-
-# added by Anaconda3 4.3.1 installer
-#export PATH="/Users/puchin/anaconda/bin:$PATH"
-
-## added by Anaconda2 4.3.1 installer
-#export PATH="/Users/puchinchen/anaconda/bin:$PATH"
 
 # zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
 # ZSH_THEME="robbyrussell"
 # ZSH_THEME="agnoster"
- #ZSH_THEME="ys"
+# ZSH_THEME="ys"
 ZSH_THEME=""
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
@@ -50,21 +37,10 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 
 autoload -U promptinit; promptinit
 prompt pure
-
-PROMPT=%(1V.(%1v)\ .)%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f\ 
-
-# ys prompt add virtualenv
-#PROMPT="
-#%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \ #%(#,%{$bg[yellow]%}%{$fg[black]%}%n%{$reset_color%},%{$fg[cyan]%}%n) \
-#%{$fg[white]%}@ \
-#%{$fg[green]%}%m \
-#%{$fg[white]%}in \
-#%{$terminfo[bold]$fg[yellow]%}%~%{$reset_color%}\
-#${hg_info}\
-#${git_info}\
- #\
-#%{$fg[white]%}[%*] $exit_code %(1V.(%1v).)
-#%{$terminfo[bold]$fg[red]%}$ %{$reset_color%}"
+#Virtual Env Prompt
+RPROMPT=%(1V.(%1v)\ .)
+# prompt username
+DEFAULT_USER=`whoami`
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
