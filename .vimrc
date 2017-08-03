@@ -8,16 +8,6 @@ colors solarized
 "colors material-theme
 "colors elflord
 
-if &term =~ '^xterm'
-  " solid underscore
-  let &t_SI .= "\<Esc>[3 q"
-  " solid block
-  let &t_SR .= "\<Esc>[0 q"
-  let &t_EI .= "\<Esc>[0 q"
-  " 1 or 0 -> blinking block
-  " 3 -> blinking underscore
-endif
-
 set hlsearch
 set expandtab
 set tabstop=4
@@ -54,8 +44,8 @@ hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE
 set statusline=
 set statusline+=%2*
 set statusline+=%3*%=%m%r%w\ %t
-hi User2 term=NONE cterm=NONE ctermfg=black ctermbg=cyan 
-hi User3 term=NONE cterm=NONE ctermfg=black ctermbg=cyan
+hi User2 term=NONE cterm=NONE ctermfg=black ctermbg=white 
+hi User3 term=NONE cterm=bold ctermfg=black ctermbg=white
 "hi User2 term=bold cterm=bold ctermfg=NONE ctermbg=white 
 "hi StatusLine term=bold cterm=bold ctermfg=NONE ctermbg=white 
 

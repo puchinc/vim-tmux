@@ -16,14 +16,13 @@ bindkey '^N' history-search-forward
 #setopt CORRECT
 #setopt AUTO_CD
 
-
 # zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
 # ZSH_THEME="robbyrussell"
 # ZSH_THEME="agnoster"
-# ZSH_THEME="ys"
-ZSH_THEME=""
+ ZSH_THEME="ys"
+#ZSH_THEME=""
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -35,8 +34,8 @@ plugins=(zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 
-autoload -U promptinit; promptinit
-prompt pure
+#autoload -U promptinit; promptinit
+#prompt pure
 #Virtual Env Prompt
 RPROMPT=%(1V.(%1v).)
 # prompt username

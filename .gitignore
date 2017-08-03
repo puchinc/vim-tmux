@@ -7,5 +7,5 @@
 !.tmux.conf
 !.ctags
 !/.vim
+!.install.sh
 !README.md
-!install.sh
