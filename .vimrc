@@ -1,4 +1,3 @@
- "General
 if !exists("g:syntax_on")
     syntax enable
 endif
@@ -7,7 +6,7 @@ endif
 set foldmarker={{,}} foldlevel=0 
 autocmd FileType vim setlocal foldmethod=marker
 
-" Vundle
+" Vundle{{
 set nocompatible              " be iMproved, required
 filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -86,12 +85,9 @@ let g:autotagTagsFile=".tags"
 Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
 call vundle#end()            " required
 filetype plugin indent on    " required
+"}}
 
-set background=dark
-colors solarized 
-"colors material-theme 
-"colors elflord
-
+ "General{{
 set hlsearch
 set expandtab
 set tabstop=4
@@ -101,17 +97,45 @@ set backspace=2
 set autoindent
 set smartindent
 set clipboard+=unnamed " unnamed register "
-set noeb vb t_vb= " disable sound
-set nomodeline
-set noshowmode " do not display current mode
-
-set nocp
 set splitright
 set splitbelow
 set ignorecase
 "set smartcase
 set enc=utf8
 set mouse=a " click to change cursor
+set nobackup " no back up file
+set noswapfile " you can open the same file in different places
+set noeb vb t_vb= " disable sound
+set nomodeline
+set noshowmode " do not display current mode
+set nocp
+
+"ctags
+"autocmd BufEnter * silent! lcd %:p:h
+set tags+=.tags,tags,./tags;
+
+" Insert mode shortcut
+inoremap <C-CR> <Esc>o
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+inoremap <C-e> <Esc>$a
+inoremap <C-f> <Esc>wa
+map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+" Copy full path
+noremap <leader>p :let @+ = expand('%:p')<CR>
+"}}
+
+" THEME{{
+set background=dark
+colors solarized 
+"colors material-theme 
+"colors elflord
+
+" Hide Line Number
+nmap <Leader>n :set invnumber<CR>:set invrnu<CR> 
 
 " line numbers
 set number " show line numbers
@@ -124,7 +148,6 @@ set ruler
 set rulerformat=%40(%=%1*%m%r%w\ %t%)
 hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE 
 
-"set laststatus=2
 set statusline=
 set statusline+=%2*
 set statusline+=%3*%=%m%r%w\ %t
@@ -134,29 +157,9 @@ hi User3 term=NONE cterm=bold ctermfg=black ctermbg=white
 " how many characters in a line
 "set textwidth=80 " make it obvious where 80 characters is
 "set colorcolumn=+1 " color column after 'textwidth
+"}}
 
-set nobackup " no back up file
-set noswapfile " you can open the same file in different places
-
-"ctags
-"autocmd BufEnter * silent! lcd %:p:h
-set tags+=./tags,.tags,tags;
-
-" insert mode shortcut
-inoremap <C-CR> <Esc>o
-inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
-inoremap <C-e> <Esc>$a
-inoremap <C-f> <Esc>wa
-map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-
-nmap <Leader>n :set invnumber<CR>
-nmap <C-@> :call Compile()<CR>
-" copy full path
-noremap <leader>p :let @+ = expand('%:p')<CR>
-
+" SELF DEFINED FUNCTION{{
 " rsync{{
 set exrc
 set secure
@@ -173,6 +176,7 @@ endfunction
 au BufWritePost,FileWritePost * silent call RemoteSync()
 "}}
 "Compile{{
+nmap <C-@> :call Compile()<CR>
 function Compile()
 	if expand('%:e') ==# "java"
 		:!javac % && java %<
@@ -274,4 +278,5 @@ if &term =~ "xterm" || &term =~ "screen" || &term =~ "builtin_gui"
   map  <F27> <C-S-Space>
   map! <F27> <C-S-Space>
 endif
+"}}
 "}}
