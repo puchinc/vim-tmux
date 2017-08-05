@@ -9,6 +9,26 @@ function rsvim {
 	echo $conf > $dir/.exrc
 }
 
+# replace gf functionality. jump to file by file name
+function ctag {
+    ctags -R --extra=+f .
+    awk '
+        match($1, /.*\./) {
+            file=substr($1, RSTART, RLENGTH-1)
+        }
+        {
+            if ($1 ~ /.*\./) {
+                #print $1
+                print file"\t"$2"\t"$3"\t"$4
+            }
+            else {
+                print $0
+            }
+        }
+    ' tags | rev | rev >  .tags
+    rm tags
+}
+
 # edit the selected bash config file
 function zshrc {
     if [[ "$1" == "f" ]]; then

@@ -6,7 +6,7 @@ endif
 set foldmarker={{,}} foldlevel=0 
 autocmd FileType vim setlocal foldmethod=marker
 
-" Vundle{{
+" VUNDLE{{
 set nocompatible              " be iMproved, required
 filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -87,7 +87,7 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 "}}
 
- "General{{
+ "GENERAL{{
 set hlsearch
 set expandtab
 set tabstop=4
@@ -99,8 +99,8 @@ set smartindent
 set clipboard+=unnamed " unnamed register "
 set splitright
 set splitbelow
-set ignorecase
-"set smartcase
+set ignorecase " Case-insensitive searching.
+set smartcase  " But case-sensitive if expression contains a capital letter.
 set enc=utf8
 set mouse=a " click to change cursor
 set nobackup " no back up file
