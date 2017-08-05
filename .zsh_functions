@@ -1,3 +1,14 @@
+function rsvim {
+    conf="
+        let g:enable_rsync  = 1
+        let g:rsync_remote  = '$1'
+        let g:rsync_local   = '$2'
+    "
+    dir=$(echo $1 | rev | cut -d'/' -f-1 | rev)
+    rsync -avr --exclude=data $1 $2
+	echo $conf > $dir/.exrc
+}
+
 # edit the selected bash config file
 function zshrc {
     if [[ "$1" == "f" ]]; then
