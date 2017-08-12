@@ -10,4 +10,6 @@ alias vim='printf "\033[2 q"; mvim -v'
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias ipython='printf "\033[2 q"; ipython --TerminalInteractiveShell.editing_mode=vi'
-alias hisnu="history | awk '{$1="";print substr($0,2)}'"
+
+alias stop="curl http://192.168.200.112:15678/ec2-change-state/puchinchen_gpu/stopped"
+alias run="curl http://192.168.200.112:15678/ec2-change-state/puchinchen_gpu/running"
