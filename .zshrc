@@ -5,12 +5,14 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH export LANG=en_US.UTF-8 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+# Set Vim as default editor
+export EDITOR=vim
+
 # vi style incremental search
 #bindkey '^R' history-incremental-search-backward
 #bindkey '^S' history-incremental-search-forward
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
-
 
 #setopt CORRECT
 #setopt AUTO_CD
@@ -34,8 +36,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 
 #autoload -U promptinit; promptinit
 #prompt pure
-#Virtual Env Prompt
-#RPROMPT=%(1V.(%1v).)
 # prompt username
 #DEFAULT_USER=`whoami`
 
@@ -59,7 +59,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
@@ -121,19 +121,18 @@ add-zsh-hook precmd virtenv_indicator
 
 bindkey -v
 function zle-line-init zle-keymap-select {
-    VPROMPT="%{$fg[white]%}%(1V.(%1v).)%{$reset_color%}"
-    #RPS1="${${KEYMAP/vicmd/}/(main|viins)/[INSERT]}$VPROMPT"
-    RPS1="${${KEYMAP/vicmd/[NORMAL]}/(main|viins)/$VPROMPT}"
+    VRP="%{$fg[white]%}%(1V. (%1v).)"
+    VIRP="%{$fg[blue]%}${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/}"
+    #RPS1="$VIRP$VRP%{$reset_color%}"
+    RPS1="$VRP%{$reset_color%}"
+    case $KEYMAP in
+         #solid block
+        vicmd)      printf "\033[2 q";; 
+         #solid underscore
+        viins|main) printf "\033[3 q";; 
+    esac
     zle reset-prompt
 }
 zle -N zle-line-init
 zle -N zle-keymap-select
 export KEYTIMEOUT=1
-
-#terminfo_down_sc=$terminfo[cud1]$terminfo[cuu1]$terminfo[sc]$terminfo[cud1]
-#function zle-line-init zle-keymap-select {
-    #VIMPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/}"
-    #PS1="%{$terminfo_down_sc$VIMPS1$terminfo[rc]%}%~ %# "
-    #zle reset-prompt
-#}
-#preexec () { print -rn -- $terminfo[el]; }

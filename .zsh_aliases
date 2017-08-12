@@ -5,8 +5,8 @@ alias ....='cd ../../..'
 alias cdd="cd ~/Desktop"
 alias ws="cd ~/workspace"
 
+alias vim='printf "\033[2 q"; mvim -v'
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
+alias ipython='printf "\033[2 q"; ipython --TerminalInteractiveShell.editing_mode=vi'
 alias hisnu="history | awk '{$1="";print substr($0,2)}'"
-
-alias vim="mvim -v"

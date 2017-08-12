@@ -110,6 +110,18 @@ set nocp
 set nomodeline
 set noshowmode " do not display current mode
 
+if &term =~ '^xterm'
+  " 4 -> solid underscore
+  let &t_SI .= "\<Esc>[3 q"
+  " solid block
+  let &t_SR .= "\<Esc>[2 q"
+  let &t_EI .= "\<Esc>[2 q"
+  " 1 or 0 -> blinking block
+  " 3 -> blinking underscore
+endif
+"refresh tmux current window
+autocmd VimLeave * call system("set-window-option -g window-status-current-format '#[bg=yellow,fg=black] #I #(echo "#{pane_current_path}" | rev | cut -d'/' -f-1 | rev) #[bg=blue,fg=black] #{pane_current_command}'")
+
 "ctags
 "autocmd BufEnter * silent! lcd %:p:h
 set tags+=.tags,./.tags;
@@ -126,6 +138,8 @@ map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Copy full path
 noremap <leader>p :let @+ = expand('%:p')<CR>
+
+set timeoutlen=1000 ttimeoutlen=0
 "}}
 
 " THEME{{
