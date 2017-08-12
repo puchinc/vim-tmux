@@ -47,7 +47,7 @@ let g:autotagTagsFile=".tags"
     map <Leader><Leader> <Leader>c<space>
     Plugin 'scrooloose/nerdtree'
     " NERDTree
-    map ,, :NERDTreeToggle<CR>
+    map <Tab> :NERDTreeToggle<CR>
 "}}
 "Emmet {{
     Plugin 'mattn/emmet-vim'
@@ -106,13 +106,13 @@ set mouse=a " click to change cursor
 set nobackup " no back up file
 set noswapfile " you can open the same file in different places
 set noeb vb t_vb= " disable sound
+set nocp
 set nomodeline
 set noshowmode " do not display current mode
-set nocp
 
 "ctags
 "autocmd BufEnter * silent! lcd %:p:h
-set tags+=.tags,tags,./tags;
+set tags+=.tags,./.tags;
 
 " Insert mode shortcut
 inoremap <C-CR> <Esc>o

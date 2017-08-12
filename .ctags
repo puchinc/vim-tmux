@@ -1,4 +1,4 @@
---python-kinds=-i
+--python-kinds=-iv
 
 --recurse=yes
 --tag-relative=yes

@@ -2,16 +2,15 @@
 [[ -f ~/.zsh_functions ]] && . ~/.zsh_functions
 
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
-export PATH=/usr/local/mysql/bin:$PATH
-export LANG=en_US.UTF-8
-# Path to your oh-my-zsh installation.
+export PATH=/usr/local/mysql/bin:$PATH export LANG=en_US.UTF-8 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
 # vi style incremental search
-bindkey '^R' history-incremental-search-backward
-bindkey '^S' history-incremental-search-forward
+#bindkey '^R' history-incremental-search-backward
+#bindkey '^S' history-incremental-search-forward
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
+
 
 #setopt CORRECT
 #setopt AUTO_CD
@@ -21,15 +20,14 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 
 # ZSH_THEME="robbyrussell"
 # ZSH_THEME="agnoster"
- ZSH_THEME="ys"
+ZSH_THEME="ys"
 #ZSH_THEME=""
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-plugins=(zsh-autosuggestions)
+plugins=(git zsh-autosuggestions vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
@@ -37,7 +35,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
 #autoload -U promptinit; promptinit
 #prompt pure
 #Virtual Env Prompt
-RPROMPT=%(1V.(%1v).)
+#RPROMPT=%(1V.(%1v).)
 # prompt username
 #DEFAULT_USER=`whoami`
 
@@ -112,7 +110,6 @@ RPROMPT=%(1V.(%1v).)
 # place this after nvm initialization!
 autoload -U add-zsh-hook
 export VIRTUAL_ENV_DISABLE_PROMPT=yes
-
 function virtenv_indicator {
     if [[ -z $VIRTUAL_ENV ]] then
         psvar[1]=''
@@ -120,5 +117,23 @@ function virtenv_indicator {
         psvar[1]=${VIRTUAL_ENV##*/}
     fi
 }
-
 add-zsh-hook precmd virtenv_indicator
+
+bindkey -v
+function zle-line-init zle-keymap-select {
+    VPROMPT="%{$fg[white]%}%(1V.(%1v).)%{$reset_color%}"
+    #RPS1="${${KEYMAP/vicmd/}/(main|viins)/[INSERT]}$VPROMPT"
+    RPS1="${${KEYMAP/vicmd/[NORMAL]}/(main|viins)/$VPROMPT}"
+    zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+export KEYTIMEOUT=1
+
+#terminfo_down_sc=$terminfo[cud1]$terminfo[cuu1]$terminfo[sc]$terminfo[cud1]
+#function zle-line-init zle-keymap-select {
+    #VIMPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/}"
+    #PS1="%{$terminfo_down_sc$VIMPS1$terminfo[rc]%}%~ %# "
+    #zle reset-prompt
+#}
+#preexec () { print -rn -- $terminfo[el]; }
