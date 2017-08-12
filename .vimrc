@@ -119,8 +119,8 @@ if &term =~ '^xterm'
   " 1 or 0 -> blinking block
   " 3 -> blinking underscore
 endif
-"refresh tmux current window
-autocmd VimLeave * call system("set-window-option -g window-status-current-format '#[bg=yellow,fg=black] #I #(echo "#{pane_current_path}" | rev | cut -d'/' -f-1 | rev) #[bg=blue,fg=black] #{pane_current_command}'")
+" Eliminate Strange tmux status window disappear bug
+autocmd VimLeave * execute "echo ''"
 
 "ctags
 "autocmd BufEnter * silent! lcd %:p:h

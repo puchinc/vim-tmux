@@ -6,3 +6,7 @@
 git clone https://github.com/michaelchen110/Environment.git
 ./Environment/.install.sh
 ```
+
+```
+install MacVim for utilizing YouCompleteMe
+```
