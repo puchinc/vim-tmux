@@ -148,6 +148,9 @@ colors solarized
 "colors material-theme 
 "colors elflord
 
+set textwidth=80 " make it obvious where 80 characters is
+set colorcolumn=+1 " color column after 'textwidth
+
 " Hide Line Number
 nmap <Leader>n :set invnumber<CR>:set invrnu<CR> 
 
