@@ -86,7 +86,6 @@ Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
 call vundle#end()            " required
 filetype plugin indent on    " required
 "}}
-
  "GENERAL{{
 set hlsearch
 set expandtab
@@ -105,47 +104,39 @@ set enc=utf8
 set mouse=a " click to change cursor
 set nobackup " no back up file
 set noswapfile " you can open the same file in different places
-set noeb vb t_vb= " disable sound
 set nocp
 set nomodeline
 set noshowmode " do not display current mode
-
-if &term =~ '^xterm'
-  " 4 -> solid underscore
-  let &t_SI .= "\<Esc>[3 q"
-  " solid block
-  let &t_SR .= "\<Esc>[2 q"
-  let &t_EI .= "\<Esc>[2 q"
-  " 1 or 0 -> blinking block
-  " 3 -> blinking underscore
-endif
-" Eliminate Strange tmux status window disappear bug
-autocmd VimLeave * execute "echo ''"
-
+set noeb vb t_vb= " disable sound
+set timeoutlen=500 ttimeoutlen=0
 "ctags
 "autocmd BufEnter * silent! lcd %:p:h
 set tags+=.tags,./.tags;
 
-" Insert mode shortcut
-inoremap <C-CR> <Esc>o
-inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
-inoremap <C-e> <Esc>$a
-inoremap <C-f> <Esc>wa
-map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+" Treat long lines as break lines (useful when moving around in them)
+set wrap " wrap lines
+set linebreak
+nnoremap <buffer> <silent> k gk
+nnoremap <buffer> <silent> j gj
+nnoremap <buffer> <silent> 0 g^
+nnoremap <buffer> <silent> $ g$
+vnoremap <buffer> <silent> k gk
+vnoremap <buffer> <silent> j gj
+vnoremap <buffer> <silent> 0 g^
+vnoremap <buffer> <silent> $ g$
 
+inoremap <C-CR> <Esc>o
+inoremap <C-e> <Esc>$a
+map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " Copy full path
 noremap <leader>p :let @+ = expand('%:p')<CR>
 
-set timeoutlen=1000 ttimeoutlen=0
+set list listchars=tab:»·,trail:· " show tab and trailing whitespaces
+nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 "}}
-
 " THEME{{
 set background=dark
 colors solarized 
-"colors material-theme 
 "colors elflord
 
 set textwidth=80 " make it obvious where 80 characters is
@@ -172,10 +163,21 @@ hi User2 term=NONE cterm=NONE ctermfg=black ctermbg=white
 hi User3 term=NONE cterm=bold ctermfg=black ctermbg=white
 
 " how many characters in a line
-"set textwidth=80 " make it obvious where 80 characters is
-"set colorcolumn=+1 " color column after 'textwidth
-"}}
+set textwidth=80 " make it obvious where 80 characters is
+set colorcolumn=+1 " color column after 'textwidth
 
+if &term =~ '^xterm'
+  " 4 -> solid underscore
+  let &t_SI .= "\<Esc>[3 q"
+  " solid block
+  let &t_SR .= "\<Esc>[2 q"
+  let &t_EI .= "\<Esc>[2 q"
+  " 1 or 0 -> blinking block
+  " 3 -> blinking underscore
+endif
+" Eliminate Strange tmux status window disappear bug
+autocmd VimLeave * execute "echo ''"
+"}}
 " SELF DEFINED FUNCTION{{
 " rsync{{
 set exrc
@@ -295,5 +297,102 @@ if &term =~ "xterm" || &term =~ "screen" || &term =~ "builtin_gui"
   map  <F27> <C-S-Space>
   map! <F27> <C-S-Space>
 endif
+"}}
+"{{ Autoload
+function! WatchForChanges(bufname, ...)
+  " Figure out which options are in effect
+  if a:bufname == '*'
+    let id = 'WatchForChanges'.'AnyBuffer'
+    " If you try to do checktime *, you'll get E93: More than one match for * is given
+    let bufspec = ''
+  else
+    if bufnr(a:bufname) == -1
+      echoerr "Buffer " . a:bufname . " doesn't exist"
+      return
+    end
+    let id = 'WatchForChanges'.bufnr(a:bufname)
+    let bufspec = a:bufname
+  end
+  if len(a:000) == 0
+    let options = {}
+  else
+    if type(a:1) == type({})
+      let options = a:1
+    else
+      echoerr "Argument must be a Dict"
+    end
+  end
+  let autoread    = has_key(options, 'autoread')    ? options['autoread']    : 0
+  let toggle      = has_key(options, 'toggle')      ? options['toggle']      : 0
+  let disable     = has_key(options, 'disable')     ? options['disable']     : 0
+  let more_events = has_key(options, 'more_events') ? options['more_events'] : 1
+  let while_in_this_buffer_only = has_key(options, 'while_in_this_buffer_only') ? options['while_in_this_buffer_only'] : 0
+  if while_in_this_buffer_only
+    let event_bufspec = a:bufname
+  else
+    let event_bufspec = '*'
+  end
+  let reg_saved = @"
+  "let autoread_saved = &autoread
+  let msg = "\n"
+  " Check to see if the autocommand already exists
+  redir @"
+    silent! exec 'au '.id
+  redir END
+  let l:defined = (@" !~ 'E216: No such group or event:')
+  " If not yet defined...
+  if !l:defined
+    if l:autoread
+      let msg = msg . 'Autoread enabled - '
+      if a:bufname == '*'
+        set autoread
+      else
+        setlocal autoread
+      end
+    end
+    silent! exec 'augroup '.id
+      if a:bufname != '*'
+        "exec "au BufDelete    ".a:bufname . " :silent! au! ".id . " | silent! augroup! ".id
+        "exec "au BufDelete    ".a:bufname . " :echomsg 'Removing autocommands for ".id."' | au! ".id . " | augroup! ".id
+        exec "au BufDelete    ".a:bufname . " execute 'au! ".id."' | execute 'augroup! ".id."'"
+      end
+        exec "au BufEnter     ".event_bufspec . " :checktime ".bufspec
+        exec "au CursorHold   ".event_bufspec . " :checktime ".bufspec
+        exec "au CursorHoldI  ".event_bufspec . " :checktime ".bufspec
+      " The following events might slow things down so we provide a way to disable them...
+      " vim docs warn:
+      "   Careful: Don't do anything that the user does
+      "   not expect or that is slow.
+      if more_events
+        exec "au CursorMoved  ".event_bufspec . " :checktime ".bufspec
+        exec "au CursorMovedI ".event_bufspec . " :checktime ".bufspec
+      end
+    augroup END
+    let msg = msg . 'Now watching ' . bufspec . ' for external updates...'
+  end
+  " If they want to disable it, or it is defined and they want to toggle it,
+  if l:disable || (l:toggle && l:defined)
+    if l:autoread
+      let msg = msg . 'Autoread disabled - '
+      if a:bufname == '*'
+        set noautoread
+      else
+        setlocal noautoread
+      end
+    end
+    " Using an autogroup allows us to remove it easily with the following
+    " command. If we do not use an autogroup, we cannot remove this
+    " single :checktime command
+    " augroup! checkforupdates
+    silent! exec 'au! '.id
+    silent! exec 'augroup! '.id
+    let msg = msg . 'No longer watching ' . bufspec . ' for external updates.'
+  elseif l:defined
+    let msg = msg . 'Already watching ' . bufspec . ' for external updates'
+  end
+  let @"=reg_saved
+endfunction
+"let autoreadargs={'autoread':1}
+"execute WatchForChanges("*",autoreadargs)
 "}}
 "}}
