@@ -2,7 +2,8 @@
 [[ -f ~/.zsh_functions ]] && . ~/.zsh_functions
 
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
-export PATH=/usr/local/mysql/bin:$PATH export LANG=en_US.UTF-8 # Path to your oh-my-zsh installation.
+export PATH=/usr/local/mysql/bin:$PATH 
+export LANG=en_US.UTF-8 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
 # Set Vim as default editor
@@ -13,6 +14,10 @@ export EDITOR=vim
 #bindkey '^S' history-incremental-search-forward
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
+bindkey '^S' beginning-of-line
+bindkey '^U' backward-kill-line 
+bindkey '^T' kill-line
+bindkey '^K' kill-whole-line
 
 #setopt CORRECT
 #setopt AUTO_CD
@@ -137,4 +142,3 @@ zle -N zle-line-init
 zle -N zle-keymap-select
 export KEYTIMEOUT=1
 
-bindkey '^U' backward-kill-line 

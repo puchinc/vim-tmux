@@ -3,7 +3,7 @@ if !exists("g:syntax_on")
 endif
 
 " fold setting
-set foldmarker={{,}} foldlevel=0 
+set foldmarker={{,}} foldlevel=0
 autocmd FileType vim setlocal foldmethod=marker
 
 " VUNDLE{{
@@ -58,7 +58,7 @@ let g:autotagTagsFile=".tags"
 "}}
 " Multi-Cursors{{
     Plugin 'terryma/vim-multiple-cursors'
-    " vim-multiple-cursors 
+    " vim-multiple-cursors
     "let g:multi_cursor_next_key='<c-n>'
     let g:multi_cursor_prev_key='<c-b>'
     "let g:multi_cursor_skip_key='<c-x>'
@@ -127,44 +127,44 @@ vnoremap <buffer> <silent> $ g$
 
 inoremap <C-CR> <Esc>o
 inoremap <C-e> <Esc>$a
-map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+nnoremap <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " Copy full path
 noremap <leader>p :let @+ = expand('%:p')<CR>
 
-set list listchars=tab:»·,trail:· " show tab and trailing whitespaces
+"set list listchars=tab:»·,trail:· " show tab and trailing whitespaces
 nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 "}}
 " THEME{{
 set background=dark
-colors solarized 
+colors solarized
 "colors elflord
 
-set textwidth=80 " make it obvious where 80 characters is
-set colorcolumn=+1 " color column after 'textwidth
-
 " Hide Line Number
-nmap <Leader>n :set invnumber<CR>:set invrnu<CR> 
+nmap <Leader>n :set invnumber<CR>:set invrnu<CR>
 
 " line numbers
 set number " show line numbers
 set rnu " show relative line numbers
 set numberwidth=4 " line numbers width
-hi CursorLineNr term=bold ctermfg=white 
-hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE 
+hi CursorLineNr term=bold ctermfg=white
+hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
 
 set ruler
 set rulerformat=%40(%=%1*%m%r%w\ %t%)
-hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE 
+hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE
 
 set statusline=
 set statusline+=%2*
 set statusline+=%3*%=%m%r%w\ %t
-hi User2 term=NONE cterm=NONE ctermfg=black ctermbg=white 
+hi User2 term=NONE cterm=NONE ctermfg=black ctermbg=white
 hi User3 term=NONE cterm=bold ctermfg=black ctermbg=white
 
 " how many characters in a line
-set textwidth=80 " make it obvious where 80 characters is
-set colorcolumn=+1 " color column after 'textwidth
+"set textwidth=80 " make it obvious where 80 characters is
+"set colorcolumn=+1 " color column after 'textwidth
+set colorcolumn=81 " color column after 'textwidth
+"highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+"match OverLength /\%81v./
 
 if &term =~ '^xterm'
   " 4 -> solid underscore
