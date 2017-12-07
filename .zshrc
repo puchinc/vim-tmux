@@ -1,8 +1,10 @@
 [[ -f ~/.zsh_aliases ]] && . ~/.zsh_aliases
 [[ -f ~/.zsh_functions ]] && . ~/.zsh_functions
 
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=/usr/bin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH 
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+#export PATH=/usr/local/opt/python/libexec/bin:$PATH
 export LANG=en_US.UTF-8 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -141,4 +143,3 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 export KEYTIMEOUT=1
-

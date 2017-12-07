@@ -5,6 +5,7 @@ endif
 " fold setting
 set foldmarker={{,}} foldlevel=0
 autocmd FileType vim setlocal foldmethod=marker
+let mapleader = " "
 
 " VUNDLE{{
 set nocompatible              " be iMproved, required
@@ -12,12 +13,25 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'lifepillar/vim-solarized8'
 Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
+Plugin 'iamcco/mathjax-support-for-mkdp'
+Plugin 'iamcco/markdown-preview.vim'
+"Markdown"{{
+nmap <silent> <leader>m <Plug>MarkdownPreview
+nmap <silent> <leader>s <Plug>StopMarkdownPreview
+"nmap <silent> <leader>s " for normal mode
+let g:mkdp_path_to_chrome = "open -a Firefox"
+let g:mkdp_auto_start = 1
+" set to 1, the vim will open the preview window once enter the markdown
+" buffer
+"}}
 " Autotag "{{
 Plugin 'craigemery/vim-autotag'
 let g:autotagTagsFile=".tags"
+
 "}}
 " Incsearch {{
     Plugin 'haya14busa/incsearch.vim'
@@ -34,6 +48,7 @@ let g:autotagTagsFile=".tags"
     map #  <Plug>(incsearch-nohl-#)
     map g* <Plug>(incsearch-nohl-g*)
     map g# <Plug>(incsearch-nohl-g#)
+    map <C-o> <C-o>:noh<CR>
 
     Plugin 'haya14busa/incsearch-fuzzy.vim'
     map z/ <Plug>(incsearch-fuzzy-/)
@@ -47,7 +62,8 @@ let g:autotagTagsFile=".tags"
     map <Leader><Leader> <Leader>c<space>
     Plugin 'scrooloose/nerdtree'
     " NERDTree
-    map <Tab> :NERDTreeToggle<CR>
+    map \ :NERDTreeToggle<CR>
+    "map <space><space> :NERDTreeToggle<CR>
 "}}
 "Emmet {{
     Plugin 'mattn/emmet-vim'
@@ -88,11 +104,12 @@ filetype plugin indent on    " required
 "}}
  "GENERAL{{
 set hlsearch
-set expandtab
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set backspace=2
+set expandtab
+"set smarttab
 set autoindent
 set smartindent
 set clipboard+=unnamed " unnamed register "
@@ -125,17 +142,29 @@ vnoremap <buffer> <silent> j gj
 vnoremap <buffer> <silent> 0 g^
 vnoremap <buffer> <silent> $ g$
 
+" Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
+"nnoremap <silent><C-e> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
+"nnoremap <silent><C-y> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
+"nnoremap <silent><C-y> :set paste<CR>m`o<Esc>``:set nopaste<CR>
+"nmap <C-y> m`o<Esc>``
+
 inoremap <C-CR> <Esc>o
 inoremap <C-e> <Esc>$a
+inoremap <C-p> System.out.println();<Esc>hi
+inoremap {<CR> {<CR>}<Esc>O
+
+noremap <leader>h :noh<CR>
+noremap 0 ^
 nnoremap <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " Copy full path
 noremap <leader>p :let @+ = expand('%:p')<CR>
-
 "set list listchars=tab:»·,trail:· " show tab and trailing whitespaces
 nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
 "}}
 " THEME{{
 set background=dark
+"set background=light
 colors solarized
 "colors elflord
 
@@ -162,7 +191,7 @@ hi User3 term=NONE cterm=bold ctermfg=black ctermbg=white
 " how many characters in a line
 "set textwidth=80 " make it obvious where 80 characters is
 "set colorcolumn=+1 " color column after 'textwidth
-set colorcolumn=81 " color column after 'textwidth
+"set colorcolumn=81 " color column after 'textwidth
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 "match OverLength /\%81v./
 
@@ -195,6 +224,7 @@ endfunction
 au BufWritePost,FileWritePost * silent call RemoteSync()
 "}}
 "Compile{{
+nmap <space>s :!mv %<.* ../Solved<CR>:q<CR>
 nmap <C-@> :call Compile()<CR>
 function Compile()
 	if expand('%:e') ==# "java"
@@ -215,8 +245,8 @@ function Compile()
 		:!bash %
 	elseif expand('%:e') ==# "r" || expand('%:e') ==# "R"
 		:!Rscript %
-	elseif expand('%:e') ==# "tex"
-		:!xelatex % && rm %<.out && rm %<.log && rm %<.aux && open %<.pdf
+    elseif expand('%:e') ==# "tex"
+        :!xelatex % && rm %<.out && rm %<.log && rm %<.aux && open %<.pdf
 	endif
 endfunction
 "}}
@@ -392,7 +422,7 @@ function! WatchForChanges(bufname, ...)
   end
   let @"=reg_saved
 endfunction
-"let autoreadargs={'autoread':1}
-"execute WatchForChanges("*",autoreadargs)
+let autoreadargs={'autoread':1}
+execute WatchForChanges("*",autoreadargs)
 "}}
 "}}

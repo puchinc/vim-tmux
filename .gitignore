@@ -1,11 +1,12 @@
 /*
-!.gitignore
+!.vim/
+!.vimrc
+
 !.zshrc
 !.zsh_aliases
 !.zsh_functions
-!.vimrc
+
 !.tmux.conf
 !.ctags
-!/.vim
 !.install.sh
 !README.md

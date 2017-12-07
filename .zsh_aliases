@@ -1,15 +1,29 @@
+alias vim='printf "\033[2 q"; mvim -v'
+#alias vim='printf "\033[2 q"; vim'
+
 # quick directory movement
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias cdd="cd ~/Desktop"
 alias ws="cd ~/workspace"
+alias resume="cd ~/Dropbox/Public/Career; vim PU-CHIN-CHEN-Resume.tex"
+alias ucla="cd ~/Dropbox/Public/UCLA"
+alias research="cd ~/Dropbox/Public/UCLA/Research"
 
-alias vim='printf "\033[2 q"; mvim -v'
-#alias vim='mvim -v'
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
-alias ipython='printf "\033[2 q"; ipython --TerminalInteractiveShell.editing_mode=vi'
+alias aliases="vim ~/.zsh_aliases"
 
-alias stop="curl http://192.168.200.112:15678/ec2-change-state/puchinchen_gpu/stopped"
-alias run="curl http://192.168.200.112:15678/ec2-change-state/puchinchen_gpu/running"
+#alias ipy='printf "\033[2 q";python2 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
+alias ipy='python -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
+alias ipy2='python2 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
+alias ipy3='python3 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
+alias torch='source ~/Dropbox/Public/workspace/venvs/py3/pytorch/bin/activate'
+alias tf='source ~/Dropbox/Public/workspace/venvs/py3/tensorflow/bin/activate'
+alias tf2='source ~/Dropbox/Public/workspace/venvs/py2/tensorflow/bin/activate'
+
+# LEETCODE
+alias solved="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Solved"
+alias leetcode="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Attempted"
+alias useful="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Classic; vim usefullib.java"

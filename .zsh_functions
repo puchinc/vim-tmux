@@ -38,20 +38,26 @@ function zshrc {
     fi
 }
 function leet {
+    name=''
+    for part in "$@"
+    do
+        name=$name$part 
+    done
+
 code="import java.util.*;
 
-public class $1 {
+public class $name {
 	public static void main(String[] args) {
-		$1 tester = new $1();
+		$name tester = new $name();
 		tester.unitTest();
 	}
 	public void unitTest() {
 
 	}
 }"
-	leetcode
-	echo $code > $1.java
-	vim $1.java
+    leetcode
+    echo $code > $name.java
+    vim $name.java
 }
 
 function javat {
