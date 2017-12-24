@@ -1,12 +1,17 @@
 function rsvim {
-    conf="
-        let g:enable_rsync  = 1
-        let g:rsync_remote  = '$1'
-        let g:rsync_local   = '$2'
-    "
+    conf="let g:enable_rsync  = 1
+let g:rsync_remote  = '$1/'
+let g:rsync_local   = '$2/'"
+
     dir=$(echo $1 | rev | cut -d'/' -f-1 | rev)
     rsync -avr --exclude=data $1 $2
 	echo $conf > $dir/.exrc
+    if [ "$2/.gitignore" != "" ]; then
+        exclude='let g:rsync_exclude = ".gitignore"'
+    else
+        exclude='let g:rsync_exclude = ""'
+    fi
+    echo $exclude >> $dir/.exrc
 }
 
 # replace gf functionality. jump to file by file name
@@ -41,7 +46,7 @@ function leet {
     name=''
     for part in "$@"
     do
-        name=$name$part 
+        name=$name$part
     done
 
 code="import java.util.*;
@@ -63,7 +68,7 @@ public class $name {
 function javat {
 code="import java.util.*;
 
-public class $1{\n\tpublic static void main(String[] args) {\n\n\t}\n}"; 
+public class $1{\n\tpublic static void main(String[] args) {\n\n\t}\n}";
 	cdd
 	echo $code > $1.java
 	vim $1.java

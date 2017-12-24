@@ -10,3 +10,10 @@ git clone https://github.com/michaelchen110/Environment.git
 ```
 install MacVim for utilizing YouCompleteMe
 ```
+
+### TODO
+```
+* tmux copy paste mode cannot use ctrl-h to switch pane 
+* sometimes set wrap, set linebreak will be malfunction
+* nerdtree frame ugly
+```

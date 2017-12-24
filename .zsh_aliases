@@ -7,9 +7,9 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias cdd="cd ~/Desktop"
 alias ws="cd ~/workspace"
+alias nlp="cd ~/workspace/NLPLab"
 alias resume="cd ~/Dropbox/Public/Career; vim PU-CHIN-CHEN-Resume.tex"
 alias ucla="cd ~/Dropbox/Public/UCLA"
-alias research="cd ~/Dropbox/Public/UCLA/Research"
 
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
@@ -19,9 +19,9 @@ alias aliases="vim ~/.zsh_aliases"
 alias ipy='python -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
 alias ipy2='python2 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
 alias ipy3='python3 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
-alias torch='source ~/Dropbox/Public/workspace/venvs/py3/pytorch/bin/activate'
-alias tf='source ~/Dropbox/Public/workspace/venvs/py3/tensorflow/bin/activate'
-alias tf2='source ~/Dropbox/Public/workspace/venvs/py2/tensorflow/bin/activate'
+alias torch='source ~/workspace/venvs/py3/pytorch/bin/activate'
+alias tf='source ~/workspace/venvs/py3/tensorflow/bin/activate'
+alias tf2='source ~/workspace/venvs/py2/tensorflow/bin/activate'
 
 # LEETCODE
 alias solved="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Solved"

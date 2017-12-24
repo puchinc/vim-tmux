@@ -24,7 +24,7 @@ nmap <silent> <leader>m <Plug>MarkdownPreview
 nmap <silent> <leader>s <Plug>StopMarkdownPreview
 "nmap <silent> <leader>s " for normal mode
 let g:mkdp_path_to_chrome = "open -a Firefox"
-let g:mkdp_auto_start = 1
+let g:mkdp_auto_start = 0
 " set to 1, the vim will open the preview window once enter the markdown
 " buffer
 "}}
@@ -48,7 +48,8 @@ let g:autotagTagsFile=".tags"
     map #  <Plug>(incsearch-nohl-#)
     map g* <Plug>(incsearch-nohl-g*)
     map g# <Plug>(incsearch-nohl-g#)
-    map <C-o> <C-o>:noh<CR>
+    "map <silent> <C-o> <C-o>:noh<CR>
+    nnoremap <silent> gd gd:noh<CR>
 
     Plugin 'haya14busa/incsearch-fuzzy.vim'
     map z/ <Plug>(incsearch-fuzzy-/)
@@ -60,6 +61,7 @@ let g:autotagTagsFile=".tags"
     Plugin 'scrooloose/nerdcommenter'
     " nerdcommenter
     map <Leader><Leader> <Leader>c<space>
+    let g:NERDDefaultAlign = 'left'
     Plugin 'scrooloose/nerdtree'
     " NERDTree
     map \ :NERDTreeToggle<CR>
@@ -104,14 +106,14 @@ filetype plugin indent on    " required
 "}}
  "GENERAL{{
 set hlsearch
+set autoindent
+set smartindent
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set backspace=2
 set expandtab
 "set smarttab
-set autoindent
-set smartindent
 set clipboard+=unnamed " unnamed register "
 set splitright
 set splitbelow
@@ -153,13 +155,18 @@ inoremap <C-e> <Esc>$a
 inoremap <C-p> System.out.println();<Esc>hi
 inoremap {<CR> {<CR>}<Esc>O
 
-noremap <leader>h :noh<CR>
 noremap 0 ^
+noremap <C-j> gt
+noremap <C-k> gT
+noremap <leader>h :noh<CR>
 nnoremap <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " Copy full path
 noremap <leader>p :let @+ = expand('%:p')<CR>
 "set list listchars=tab:»·,trail:· " show tab and trailing whitespaces
 nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
+" Hide Line Number
+nmap <Leader>n :set invnumber<CR>:set invrnu<CR>
 
 "}}
 " THEME{{
@@ -167,9 +174,6 @@ set background=dark
 "set background=light
 colors solarized
 "colors elflord
-
-" Hide Line Number
-nmap <Leader>n :set invnumber<CR>:set invrnu<CR>
 
 " line numbers
 set number " show line numbers
@@ -208,16 +212,16 @@ endif
 autocmd VimLeave * execute "echo ''"
 "}}
 " SELF DEFINED FUNCTION{{
-" rsync{{
+" Rsync{{
 set exrc
 set secure
 
-function RemoteSync ()
+function! RemoteSync ()
     if !exists("g:enable_rsync") || g:enable_rsync == 0
         return
     endif
 
-    let rsync_command = "rsync -avr " . g:rsync_local . " " . g:rsync_remote . " 1>/dev/null &"
+    let rsync_command = "rsync -avr --exclude='.exrc' --exclude-from=" . g:rsync_local . g:rsync_exclude . " " . g:rsync_local . " " . g:rsync_remote . " 1>/dev/null &"
     execute "!" . rsync_command
 endfunction
 
@@ -225,8 +229,8 @@ au BufWritePost,FileWritePost * silent call RemoteSync()
 "}}
 "Compile{{
 nmap <space>s :!mv %<.* ../Solved<CR>:q<CR>
-nmap <C-@> :call Compile()<CR>
-function Compile()
+nmap <silent> <C-@> :call Compile()<CR>
+function! Compile()
 	if expand('%:e') ==# "java"
 		:!javac % && java %<
 	elseif expand('%:e') ==# "c"
@@ -247,86 +251,10 @@ function Compile()
 		:!Rscript %
     elseif expand('%:e') ==# "tex"
         :!xelatex % && rm %<.out && rm %<.log && rm %<.aux && open %<.pdf
+    elseif expand('%:e') ==# "md"
+        :MarkdownPreview
 	endif
 endfunction
-"}}
-"Modifier Key Mapping{{
-if &term =~ "xterm" || &term =~ "screen" || &term =~ "builtin_gui"
-  " Ctrl-Enter
-  set  <F13>=[25~
-  map  <F13> <C-CR>
-  map! <F13> <C-CR>
-
-  " Shift-Enter
-  set  <F14>=[27~
-  map  <F14> <S-CR>
-  map! <F14> <S-CR>
-
-  " Ctrl-Space
-  set  <F15>=[29~
-  map  <F15> <C-Space>
-  map! <F15> <C-Space>
-
-  " Shift-Space
-  set  <F16>=[30~
-  map  <F16> <S-Space>
-  map! <F16> <S-Space>
-
-  " Ctrl-Backspace
-  set  <F17>=[1;5P
-  map  <F17> <C-BS>
-  map! <F17> <C-BS>
-
-  " Alt-Tab
-  set  <F18>=[1;5Q
-  map  <F18> <M-Tab>
-  map! <F18> <M-Tab>
-
-  " Alt-Shift-Tab
-  set  <F19>=[1;5R
-  map  <F19> <M-S-Tab>
-  map! <F19> <M-S-Tab>
-
-  " Ctrl-Up
-  set  <F20>=[1;5A
-  map  <F20> <C-Up>
-  map! <F20> <C-Up>
-
-  " Ctrl-Down
-  set  <F21>=[1;5B
-  map  <F21> <C-Down>
-  map! <F21> <C-Down>
-
-  " Ctrl-Right
-  set  <F22>=[1;5C
-  map  <F22> <C-Right>
-  map! <F22> <C-Right>
-
-  " Ctrl-Left
-  set  <F23>=[1;5D
-  map  <F23> <C-Left>
-  map! <F23> <C-Left>
-
-  " Ctrl-Tab
-  set  <F24>=[31~
-  map  <F24> <C-Tab>
-  map! <F24> <C-Tab>
-
-  " Ctrl-Shift-Tab
-  set  <F25>=[32~
-  map  <F25> <C-S-Tab>
-  map! <F25> <C-S-Tab>
-
-  " Ctrl-Comma
-  set  <F26>=[33~
-  map  <F26> <C-,>
-  map! <F26> <C-,>
-
-  " Ctrl-Shift-Space
-  set  <F27>=[34~
-  map  <F27> <C-S-Space>
-  map! <F27> <C-S-Space>
-endif
 "}}
 "{{ Autoload
 function! WatchForChanges(bufname, ...)
@@ -424,5 +352,83 @@ function! WatchForChanges(bufname, ...)
 endfunction
 let autoreadargs={'autoread':1}
 execute WatchForChanges("*",autoreadargs)
+"}}
+"Modifier Key Mapping{{
+if &term =~ "xterm" || &term =~ "screen" || &term =~ "builtin_gui"
+  " Ctrl-Enter
+  set  <F13>=[25~
+  map  <F13> <C-CR>
+  map! <F13> <C-CR>
+
+  " Shift-Enter
+  set  <F14>=[27~
+  map  <F14> <S-CR>
+  map! <F14> <S-CR>
+
+  " Ctrl-Space
+  set  <F15>=[29~
+  map  <F15> <C-Space>
+  map! <F15> <C-Space>
+
+  " Shift-Space
+  set  <F16>=[30~
+  map  <F16> <S-Space>
+  map! <F16> <S-Space>
+
+  " Ctrl-Backspace
+  set  <F17>=[1;5P
+  map  <F17> <C-BS>
+  map! <F17> <C-BS>
+
+  " Alt-Tab
+  set  <F18>=[1;5Q
+  map  <F18> <M-Tab>
+  map! <F18> <M-Tab>
+
+  " Alt-Shift-Tab
+  set  <F19>=[1;5R
+  map  <F19> <M-S-Tab>
+  map! <F19> <M-S-Tab>
+
+  " Ctrl-Up
+  set  <F20>=[1;5A
+  map  <F20> <C-Up>
+  map! <F20> <C-Up>
+
+  " Ctrl-Down
+  set  <F21>=[1;5B
+  map  <F21> <C-Down>
+  map! <F21> <C-Down>
+
+  " Ctrl-Right
+  set  <F22>=[1;5C
+  map  <F22> <C-Right>
+  map! <F22> <C-Right>
+
+  " Ctrl-Left
+  set  <F23>=[1;5D
+  map  <F23> <C-Left>
+  map! <F23> <C-Left>
+
+  " Ctrl-Tab
+  set  <F24>=[31~
+  map  <F24> <C-Tab>
+  map! <F24> <C-Tab>
+
+  " Ctrl-Shift-Tab
+  set  <F25>=[32~
+  map  <F25> <C-S-Tab>
+  map! <F25> <C-S-Tab>
+
+  " Ctrl-Comma
+  set  <F26>=[33~
+  map  <F26> <C-,>
+  map! <F26> <C-,>
+
+  " Ctrl-Shift-Space
+  set  <F27>=[34~
+  map  <F27> <C-S-Space>
+  map! <F27> <C-S-Space>
+endif
 "}}
 "}}
