@@ -17,21 +17,21 @@ Plugin 'lifepillar/vim-solarized8'
 Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
+Plugin 'motus/pig.vim'
 Plugin 'iamcco/mathjax-support-for-mkdp'
 Plugin 'iamcco/markdown-preview.vim'
 "Markdown"{{
 nmap <silent> <leader>m <Plug>MarkdownPreview
 nmap <silent> <leader>s <Plug>StopMarkdownPreview
 "nmap <silent> <leader>s " for normal mode
-let g:mkdp_path_to_chrome = "open -a Firefox"
+let g:mkdp_path_to_chrome = ""
 let g:mkdp_auto_start = 0
 " set to 1, the vim will open the preview window once enter the markdown
 " buffer
 "}}
 " Autotag "{{
 Plugin 'craigemery/vim-autotag'
-let g:autotagTagsFile=".tags"
-
+"let g:autotagTagsFile=".tags"
 "}}
 " Incsearch {{
     Plugin 'haya14busa/incsearch.vim'
@@ -71,8 +71,8 @@ let g:autotagTagsFile=".tags"
     Plugin 'mattn/emmet-vim'
     " emmet
     let g:user_emmet_install_global = 0
-    autocmd FileType html,css,php,js EmmetInstall
-    autocmd FileType html,css,php,js imap <expr> <tab> emmet#expandabbrintelligent("\<tab>")
+    "autocmd FileType html,css,php,js EmmetInstall
+    "autocmd FileType html,css,php,js imap <expr> <tab> emmet#expandabbrintelligent("\<tab>")
 "}}
 " Multi-Cursors{{
     Plugin 'terryma/vim-multiple-cursors'
@@ -100,91 +100,70 @@ let g:autotagTagsFile=".tags"
     map  <leader>w <plug>(easymotion-bd-w)
     nmap <leader>w <plug>(easymotion-overwin-w)
 "}}
-Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
+"Deoplete {{
+    "if has('nvim')
+    "  Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    "else
+    "  Plugin 'Shougo/deoplete.nvim'
+    "  Plugin 'roxma/nvim-yarp'
+    "  Plugin 'roxma/vim-hug-neovim-rpc'
+    "endif
+    "" Use deoplete.
+    "let g:deoplete#enable_at_startup = 1
+"}}
+" YouCompleteMe{{
+    Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
+    "let g:ycm_python_binary_path = 'python'
+    set completeopt-=preview
+"}}
 call vundle#end()            " required
 filetype plugin indent on    " required
 "}}
- "GENERAL{{
-set hlsearch
-set autoindent
-set smartindent
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set backspace=2
-set expandtab
-"set smarttab
-set clipboard+=unnamed " unnamed register "
-set splitright
-set splitbelow
-set ignorecase " Case-insensitive searching.
-set smartcase  " But case-sensitive if expression contains a capital letter.
-set enc=utf8
-set mouse=a " click to change cursor
-set nobackup " no back up file
-set noswapfile " you can open the same file in different places
-set nocp
-set nomodeline
-set noshowmode " do not display current mode
-set noeb vb t_vb= " disable sound
-set timeoutlen=500 ttimeoutlen=0
-"ctags
-"autocmd BufEnter * silent! lcd %:p:h
-set tags+=.tags,./.tags;
-
-" Treat long lines as break lines (useful when moving around in them)
-set wrap " wrap lines
-set linebreak
-nnoremap <buffer> <silent> k gk
-nnoremap <buffer> <silent> j gj
-nnoremap <buffer> <silent> 0 g^
-nnoremap <buffer> <silent> $ g$
-vnoremap <buffer> <silent> k gk
-vnoremap <buffer> <silent> j gj
-vnoremap <buffer> <silent> 0 g^
-vnoremap <buffer> <silent> $ g$
-
-" Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
-"nnoremap <silent><C-e> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
-"nnoremap <silent><C-y> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
-"nnoremap <silent><C-y> :set paste<CR>m`o<Esc>``:set nopaste<CR>
-"nmap <C-y> m`o<Esc>``
-
-inoremap <C-CR> <Esc>o
-inoremap <C-e> <Esc>$a
-inoremap <C-p> System.out.println();<Esc>hi
-inoremap {<CR> {<CR>}<Esc>O
-
-noremap 0 ^
-noremap <C-j> gt
-noremap <C-k> gT
-noremap <leader>h :noh<CR>
-nnoremap <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-" Copy full path
-noremap <leader>p :let @+ = expand('%:p')<CR>
-"set list listchars=tab:»·,trail:· " show tab and trailing whitespaces
-nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
-
-" Hide Line Number
-nmap <Leader>n :set invnumber<CR>:set invrnu<CR>
-
-"}}
 " THEME{{
-set background=dark
-"set background=light
-colors solarized
+
+" Set colorscheme to solarized
+colorscheme solarized
 "colors elflord
+
+"set background=dark
+"set background=light
+" Change the Solarized background to dark or light depending upon the time of 
+" day (5 refers to 5AM and 17 to 5PM). Change the background only if it is not 
+" already set to the value we want.
+function! SetSolarizedBackground()
+    if strftime("%H") >= 6 && strftime("%H") < 8 
+        if &background != 'light'
+            set background=light
+        endif
+    else
+        if &background != 'dark'
+            set background=dark
+        endif
+    endif
+endfunction
+call SetSolarizedBackground()
+
+function! MdIndention()
+	if expand('%:e') ==# "md"
+        inoremap <CR> <Esc>yypC
+    endif
+endfunction
+call MdIndention()
 
 " line numbers
 set number " show line numbers
 set rnu " show relative line numbers
 set numberwidth=4 " line numbers width
-hi CursorLineNr term=bold ctermfg=white
+if &background == 'dark'
+    hi CursorLineNr term=bold ctermfg=white
+endif
 hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
 
 set ruler
 set rulerformat=%40(%=%1*%m%r%w\ %t%)
-hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE
+if &background == 'dark'
+    hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE
+endif
 
 set statusline=
 set statusline+=%2*
@@ -247,8 +226,16 @@ function! Compile()
 		:!node %
 	elseif expand('%:e') ==# "sh"
 		:!bash %
+	elseif expand('%:e') ==# "ml"
+		:!ocamlc -o %<.out % && ./%<.out && (rm %<.out && rm %<.cmi && rm %<.cmo)
+	elseif expand('%:e') ==# "pl"
+		:!gplc % && ./%< && rm %<
+	elseif expand('%:e') ==# "ss" || expand('%:e') ==# "scm"
+        :!racket --load % -i
 	elseif expand('%:e') ==# "r" || expand('%:e') ==# "R"
 		:!Rscript %
+    elseif expand('%:e') ==# "pig"
+        :!pig -x local % 
     elseif expand('%:e') ==# "tex"
         :!xelatex % && rm %<.out && rm %<.log && rm %<.aux && open %<.pdf
     elseif expand('%:e') ==# "md"
@@ -431,4 +418,75 @@ if &term =~ "xterm" || &term =~ "screen" || &term =~ "builtin_gui"
   map! <F27> <C-S-Space>
 endif
 "}}
+"}}
+ "GENERAL{{
+set hlsearch
+set autoindent
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set backspace=2
+set expandtab
+"set smarttab
+set clipboard+=unnamed " unnamed register "
+set splitright
+set splitbelow
+set ignorecase " Case-insensitive searching.
+set smartcase  " But case-sensitive if expression contains a capital letter.
+set enc=utf8
+set mouse=a " click to change cursor
+set nobackup " no back up file
+set noswapfile " you can open the same file in different places
+set nocp
+set nomodeline
+set noshowmode " do not display current mode
+set noeb vb t_vb= " disable sound
+set timeoutlen=500 ttimeoutlen=0
+"ctags
+"autocmd BufEnter * silent! lcd %:p:h
+set tags+=.tags,./.tags;
+
+" Treat long lines as break lines (useful when moving around in them)
+set wrap " wrap lines
+set linebreak
+nnoremap <buffer> <silent> k gk
+nnoremap <buffer> <silent> j gj
+"nnoremap <buffer> <silent> 0 g^
+nnoremap <buffer> <silent> 0 g0
+nnoremap <buffer> <silent> $ g$
+vnoremap <buffer> <silent> k gk
+vnoremap <buffer> <silent> j gj
+"vnoremap <buffer> <silent> 0 g^
+vnoremap <buffer> <silent> 0 g0
+vnoremap <buffer> <silent> $ g$
+
+" Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
+"nnoremap <silent><C-e> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
+"nnoremap <silent><C-y> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
+"nnoremap <silent><C-y> :set paste<CR>m`o<Esc>``:set nopaste<CR>
+"nmap <C-y> m`o<Esc>``
+
+inoremap <C-CR> <Esc>o
+inoremap <C-e> <Esc>$a
+inoremap <C-p> System.out.println();<Esc>hi
+inoremap {<CR> {<CR>}<Esc>O
+
+"noremap 0 ^
+noremap <C-j> gT
+noremap <C-k> gt
+"noremap <leader>h :noh<CR>
+nnoremap <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+" Copy full path
+noremap <leader>p :let @+ = expand('%:p')<CR>
+"set list listchars=tab:»·,trail:· " show tab and trailing whitespaces
+nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+"nnoremap dh kA<space>,<Esc>wdb 
+noremap K kJ
+
+" Hide Line Number
+nmap <Leader>n :set invnumber<CR>:set invrnu<CR>
+
+autocmd FileType c,cpp,java set mps+==:;
+
 "}}

@@ -1,19 +1,25 @@
-alias vim='printf "\033[2 q"; mvim -v'
-#alias vim='printf "\033[2 q"; vim'
+#alias vim='printf "\033[2 q"; mvim -v'
+alias vim='printf "\033[2 q"; vim'
 
 # quick directory movement
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias cdd="cd ~/Desktop"
-alias ws="cd ~/workspace"
-alias nlp="cd ~/workspace/NLPLab"
+#alias cdd="cd ~/Desktop"
+#alias ws="cd ~/workspace"
+#alias ucla="cd ~/Dropbox/Public/UCLA"
+#alias cs131="cd ~/Dropbox/Public/UCLA/CS131"
+#alias cs249="cd ~/Dropbox/Public/UCLA/CS249"
+#alias cs230="cd ~/Dropbox/Public/UCLA/CS230"
+#alias blog="ws; cd Blog/_posts"
 alias resume="cd ~/Dropbox/Public/Career; vim PU-CHIN-CHEN-Resume.tex"
-alias ucla="cd ~/Dropbox/Public/UCLA"
 
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias aliases="vim ~/.zsh_aliases"
+
+#alias python='python3'
+#alias pip='pip3'
 
 #alias ipy='printf "\033[2 q";python2 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
 alias ipy='python -c "import IPython; IPython.terminal.ipapp.launch_new_instance()"'
@@ -22,8 +28,17 @@ alias ipy3='python3 -c "import IPython; IPython.terminal.ipapp.launch_new_instan
 alias torch='source ~/workspace/venvs/py3/pytorch/bin/activate'
 alias tf='source ~/workspace/venvs/py3/tensorflow/bin/activate'
 alias tf2='source ~/workspace/venvs/py2/tensorflow/bin/activate'
+alias ocaml="ledit ocaml"
 
 # LEETCODE
 alias solved="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Solved"
 alias leetcode="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Attempted"
-alias useful="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Classic; vim usefullib.java"
+
+# Library
+alias libjava="vim ~/workspace/lib/Java.java"
+alias libtf="vim ~/workspace/lib/tensorflow.py"
+alias libtorch="vim ~/workspace/lib/pytorch.py"
+alias libnp="vim ~/workspace/lib/numpy.py"
+alias libpandas="vim ~/workspace/lib/pandas.py"
+alias libdocker="vim ~/workspace/lib/docker.sh"
+alias libipy="vim ~/workspace/lib/ipython.py"

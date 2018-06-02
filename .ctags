@@ -10,3 +10,7 @@
 --exclude=*.mkd
 --exclude=*/build/*
 --exclude=*/lib/*
+--exclude=vendor/*
+--exclude=node_modules/*
+--exclude=db/*
+--exclude=log/*

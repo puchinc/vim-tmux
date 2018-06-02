@@ -1,6 +1,9 @@
 [[ -f ~/.zsh_aliases ]] && . ~/.zsh_aliases
 [[ -f ~/.zsh_functions ]] && . ~/.zsh_functions
+[[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && . ~/.autojump/etc/profile.d/autojump.sh
+. /Users/puchin/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
+export PATH=/usr/local/bin/vim:$PATH
 export PATH=/usr/bin:$PATH
 export PATH=/usr/local/mysql/bin:$PATH 
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
@@ -20,6 +23,8 @@ bindkey '^S' beginning-of-line
 bindkey '^U' backward-kill-line 
 bindkey '^T' kill-line
 bindkey '^K' kill-whole-line
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
 
 #setopt CORRECT
 #setopt AUTO_CD
@@ -36,7 +41,7 @@ ZSH_THEME="ys"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions vi-mode)
+plugins=(git zsh-autosuggestions vi-mode autojump)
 
 source $ZSH/oh-my-zsh.sh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
