@@ -1,24 +1,43 @@
 function rsvim {
-    rsync -avr --exclude=data $1 $2
+    src=$1
+    des=$2
+    host=$(echo $src | cut -d ':' -f 1)
+    dir_path=$(echo $src | cut -d ':' -f 2)
+    exclude=.rsync_exclude
 
-    conf="let g:enable_rsync  = 1
-let g:rsync_remote  = '$1/'
-let g:rsync_local   = '.'"
-
-    if [ -z "$2" ]; then
-        dir=$(echo $1 | rev | cut -d'/' -f-1 | rev)
-    else 
-        dir=$2
+    # download
+    if [ -z $src ] && [ -z $des ]; then
+        echo "Download from exists..."
+        src=$(cat .exrc | grep remote | cut -d "'" -f 2)
+        des=.
+    # get dir from remote dir name if local argument not provided
+    elif [ -z $des ]; then
+        des=$(echo $src | rev | cut -d'/' -f-1 | rev)
     fi 
 
-    if [ ! -f $dir/.gitignore ]; then
-        exclude='let g:rsync_exclude = ""'
-    else
-        exclude='let g:rsync_exclude = ".gitignore"'
+    if [ ! -f $des/$exclude ] || [ ! -f $des/.exrc ]; then
+        # avoid rsync large files
+        #ssh $host "find $dir_path -size +200M | sed 's/.\///g'" > $exclude
+        ssh $host "cd $dir_path; find . -size +200M | sed 's/^.\///g'" \
+            > $des/$exclude
+
+        # use .gitignore to exclude files
+        # can use .rsync_exclude as another excluding files
+        if [ -f $des/.gitignore ]; then
+            cat $des/.gitignore >> $des/$exclude
+        fi
+
+        # for vim RemoteSync function 
+        conf="let g:enable_rsync  = 1\n" 
+        conf+="let g:rsync_remote  = '$src/'\n"
+        conf+="let g:rsync_local   = '.'\n"
+        conf+="let g:rsync_exclude = '$exclude'"
+
+        echo $conf > $des/.exrc
     fi
 
-    echo $conf > $dir/.exrc
-    echo $exclude >> $dir/.exrc
+    rsync -avr --exclude={$des/.git/,$des/.exrc,$des/$exclude} \
+          --exclude-from=$des/$exclude $src $des
 }
 
 # replace gf functionality. jump to file by file name

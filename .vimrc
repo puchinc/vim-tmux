@@ -31,7 +31,7 @@ let g:mkdp_auto_start = 0
 "}}
 " Autotag "{{
 Plugin 'craigemery/vim-autotag'
-"let g:autotagTagsFile=".tags"
+let g:autotagTagsFile=".tags"
 "}}
 " Incsearch {{
     Plugin 'haya14busa/incsearch.vim'
@@ -194,7 +194,6 @@ autocmd VimLeave * execute "echo ''"
 " Rsync{{
 set exrc
 set secure
-
 function! RemoteSync ()
     if !exists("g:enable_rsync") || g:enable_rsync == 0
         return
@@ -204,7 +203,11 @@ function! RemoteSync ()
     execute "!" . rsync_command
 endfunction
 
+" .exrc exists
 au BufWritePost,FileWritePost * silent call RemoteSync()
+"if exists("g:enable_rsync") 
+"endif
+
 "}}
 "Compile{{
 nmap <space>s :!mv %<.* ../Solved<CR>:q<CR>
@@ -483,6 +486,7 @@ noremap <leader>p :let @+ = expand('%:p')<CR>
 nnoremap <silent> <leader>rt :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 "nnoremap dh kA<space>,<Esc>wdb 
 noremap K kJ
+" increase/decrese number
 
 " Hide Line Number
 nmap <Leader>n :set invnumber<CR>:set invrnu<CR>
