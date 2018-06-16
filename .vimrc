@@ -26,6 +26,12 @@ nmap <silent> <leader>s <Plug>StopMarkdownPreview
 "nmap <silent> <leader>s " for normal mode
 let g:mkdp_path_to_chrome = ""
 let g:mkdp_auto_start = 0
+function! MdIndention()
+	if expand('%:e') ==# "md"
+        inoremap <CR> <Esc>yypC
+    endif
+endfunction
+call MdIndention()
 " set to 1, the vim will open the preview window once enter the markdown
 " buffer
 "}}
@@ -78,7 +84,7 @@ let g:autotagTagsFile=".tags"
     Plugin 'terryma/vim-multiple-cursors'
     " vim-multiple-cursors
     "let g:multi_cursor_next_key='<c-n>'
-    let g:multi_cursor_prev_key='<c-b>'
+    "let g:multi_cursor_prev_key='<C-p>'
     "let g:multi_cursor_skip_key='<c-x>'
     "let g:multi_cursor_quit_key='<esc>'
     nnoremap <silent> <m-j> :multiplecursorsfind <c-r>/<cr>
@@ -143,12 +149,6 @@ function! SetSolarizedBackground()
 endfunction
 call SetSolarizedBackground()
 
-function! MdIndention()
-	if expand('%:e') ==# "md"
-        inoremap <CR> <Esc>yypC
-    endif
-endfunction
-call MdIndention()
 
 " line numbers
 set number " show line numbers
@@ -190,6 +190,7 @@ endif
 " Eliminate Strange tmux status window disappear bug
 autocmd VimLeave * execute "echo ''"
 "}}
+"
 " SELF DEFINED FUNCTION{{
 " Rsync{{
 set exrc

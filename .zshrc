@@ -15,16 +15,22 @@ export ZSH=$HOME/.oh-my-zsh
 export EDITOR=vim
 
 # vi style incremental search
-#bindkey '^R' history-incremental-search-backward
-#bindkey '^S' history-incremental-search-forward
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
-bindkey '^S' beginning-of-line
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+
+# originally set Action: Send Text with "vim" Special Chars 
+# with \033b, \033f in iTerm2 setting
+bindkey '^F' forward-word
+bindkey '^B' backward-word
+
+bindkey '^I' beginning-of-line
 bindkey '^U' backward-kill-line 
 bindkey '^T' kill-line
 bindkey '^K' kill-whole-line
-bindkey "^[[A" history-beginning-search-backward
-bindkey "^[[B" history-beginning-search-forward
 
 #setopt CORRECT
 #setopt AUTO_CD
@@ -147,4 +153,6 @@ function zle-line-init zle-keymap-select {
 }
 zle -N zle-line-init
 zle -N zle-keymap-select
+
+#Let's reduce after you hit the <ESC> key delay to 0.1 seconds.
 export KEYTIMEOUT=1
