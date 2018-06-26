@@ -199,7 +199,7 @@ function! RemoteSync ()
         return
     endif
 
-    let rsync_command = "rsync -avr --exclude='.exrc' --exclude-from=" . g:rsync_exclude . " " . g:rsync_local . " " . g:rsync_remote . " 1>/dev/null &"
+    let rsync_command = "rsync -avr --exclude='.exrc' --exclude-from=" . g:rsync_exclude . " " . g:rsync_local . " " . g:rsync_remote . " 1>/dev/null 2>&1 &"
     execute "!" . rsync_command
 endfunction
 
