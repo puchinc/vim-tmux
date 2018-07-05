@@ -1,3 +1,10 @@
+# Usage: 
+# Clone
+# 1) rsvim uclanlp:~/project 
+# 2) rsvim uclanlp:~/project local_name 
+# Download exist
+# 3) rsvim 
+
 function rsvim {
     src=$1
     des=$2
@@ -92,9 +99,19 @@ public class $name {
 }
 
 function javat {
-    code="import java.util.*;\n\npublic class $1{\n\tpublic static void main(String[] args) {\n\n\t}\n}";
-	echo $code > $1.java
-	vim $1.java
+    class=$1
+    if [ -z $1 ]; then
+        class=Test
+    fi
+
+    code="import java.util.*;\n\n";
+    code+="public class $class{\n";
+    code+="\tpublic static void main(String[] args) {\n\n";
+    code+="\t}\n";
+    code+="}";
+
+	echo $code > ~/Desktop/$class.java
+	vim ~/Desktop/$class.java
 }
 
 # shortcut for compiling and running Java programs (I use this for competitions)

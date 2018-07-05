@@ -24,13 +24,13 @@ bindkey "^[[B" history-beginning-search-forward
 
 # originally set Action: Send Text with "vim" Special Chars 
 # with \033b, \033f in iTerm2 setting
+bindkey '^O' beginning-of-line
 bindkey '^F' forward-word
 bindkey '^B' backward-word
 
-bindkey '^I' beginning-of-line
+bindkey '^K' kill-whole-line
 bindkey '^U' backward-kill-line 
 bindkey '^T' kill-line
-bindkey '^K' kill-whole-line
 
 #setopt CORRECT
 #setopt AUTO_CD

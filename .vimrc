@@ -20,6 +20,19 @@ Plugin 'tpope/vim-repeat'
 Plugin 'motus/pig.vim'
 Plugin 'iamcco/mathjax-support-for-mkdp'
 Plugin 'iamcco/markdown-preview.vim'
+"Dash" {{
+Plugin 'rizzatti/dash.vim'
+noremap <leader>d :Dash<CR>
+"}}
+"Easytags"{{
+Plugin 'xolox/vim-misc'
+Plugin 'majutsushi/tagbar'
+nmap <leader>b :TagbarToggle<CR>
+Plugin 'xolox/vim-easytags'
+let b:easytags_auto_highlight = 0
+let g:easytags_async = 1
+let g:easytags_cmd = '/usr/local/bin/ctags'
+"}}
 "Markdown"{{
 nmap <silent> <leader>m <Plug>MarkdownPreview
 nmap <silent> <leader>s <Plug>StopMarkdownPreview
@@ -34,10 +47,6 @@ endfunction
 call MdIndention()
 " set to 1, the vim will open the preview window once enter the markdown
 " buffer
-"}}
-" Autotag "{{
-Plugin 'craigemery/vim-autotag'
-let g:autotagTagsFile=".tags"
 "}}
 " Incsearch {{
     Plugin 'haya14busa/incsearch.vim'
@@ -190,7 +199,6 @@ endif
 " Eliminate Strange tmux status window disappear bug
 autocmd VimLeave * execute "echo ''"
 "}}
-"
 " SELF DEFINED FUNCTION{{
 " Rsync{{
 set exrc
@@ -200,7 +208,7 @@ function! RemoteSync ()
         return
     endif
 
-    let rsync_command = "rsync -avr --exclude='.exrc' --exclude-from=" . g:rsync_exclude . " " . g:rsync_local . " " . g:rsync_remote . " 1>/dev/null &"
+    let rsync_command = "rsync -avr --exclude='.exrc' --exclude-from=" . g:rsync_exclude . " " . g:rsync_local . " " . g:rsync_remote . " 1>/dev/null 2>&1 &"
     execute "!" . rsync_command
 endfunction
 
@@ -215,7 +223,7 @@ nmap <space>s :!mv %<.* ../Solved<CR>:q<CR>
 nmap <silent> <C-@> :call Compile()<CR>
 function! Compile()
 	if expand('%:e') ==# "java"
-		:!javac % && java %<
+        :!javac % && java -cp %:h %:t:r
 	elseif expand('%:e') ==# "c"
 		:!gcc -g % -o %<.out && ./%<.out
 	elseif expand('%:e') ==# "cpp"
@@ -447,9 +455,6 @@ set nomodeline
 set noshowmode " do not display current mode
 set noeb vb t_vb= " disable sound
 set timeoutlen=500 ttimeoutlen=0
-"ctags
-"autocmd BufEnter * silent! lcd %:p:h
-set tags+=.tags,./.tags;
 
 " Treat long lines as break lines (useful when moving around in them)
 set wrap " wrap lines
