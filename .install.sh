@@ -21,6 +21,7 @@ if [ "$(uname)" == "Darwin" ]; then
     brew install vim && brew install macvim
     brew install zsh
     brew install tmux
+    brew install ctags
 else
     sudo apt-get install zsh
     sudo apt-get install tmux
