@@ -393,11 +393,17 @@ endif
 set hlsearch
 set autoindent
 set smartindent
+
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set backspace=2
 set expandtab
+
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2                                                   
+autocmd FileType html setlocal shiftwidth=2 tabstop=2
+
+
 "set smarttab
 set clipboard+=unnamed " unnamed register "
 set splitright
