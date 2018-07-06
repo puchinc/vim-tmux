@@ -16,6 +16,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'lifepillar/vim-solarized8'
 Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-surround'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-repeat'
 Plugin 'motus/pig.vim'
 Plugin 'iamcco/mathjax-support-for-mkdp'
@@ -32,6 +33,15 @@ Plugin 'xolox/vim-easytags'
 let b:easytags_auto_highlight = 0
 let g:easytags_async = 1
 let g:easytags_cmd = '/usr/local/bin/ctags'
+let g:easytags_languages = {
+\   'javascript': {
+\     'cmd': 'jsctags',
+\       'args': [],
+\   }
+\}
+
+"find . -type f -iregex ".*\.js$" -not -path "./node_modules/*" -exec jsctags {} -f \; | sed '/^$/d' | LANG=C sort > tags
+
 "}}
 "Markdown"{{
 nmap <silent> <leader>m <Plug>MarkdownPreview
@@ -145,13 +155,16 @@ let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
+
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsExpandTrigger="<CR>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+
+
 "}}
 
 call vundle#end()            " required
@@ -499,9 +512,13 @@ vnoremap <buffer> <silent> $ g$
 "nnoremap <silent><C-y> :set paste<CR>m`o<Esc>``:set nopaste<CR>
 "nmap <C-y> m`o<Esc>``
 
+" same behavior in zsh
 inoremap <C-CR> <Esc>o
 inoremap <C-e> <Esc>$a
-inoremap {<CR> {<CR>}<Esc>O
+inoremap <C-u> <Esc>a<space><Esc>d0i
+inoremap <C-k> <Esc>ddO
+
+"inoremap {<CR> {<CR>}<Esc>O
 
 "noremap 0 ^
 noremap <C-j> gT
