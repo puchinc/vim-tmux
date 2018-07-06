@@ -126,11 +126,34 @@ call MdIndention()
     "" Use deoplete.
     "let g:deoplete#enable_at_startup = 1
 "}}
+"https://stackoverflow.com/questions/14896327/ultisnips-and-youcompleteme
+Plugin 'ervandew/supertab'
 " YouCompleteMe{{
     Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
     "let g:ycm_python_binary_path = 'python'
     set completeopt-=preview
 "}}
+" UltiSnips{{
+" Track the engine.
+Plugin 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+"}}
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 "}}
@@ -478,7 +501,6 @@ vnoremap <buffer> <silent> $ g$
 
 inoremap <C-CR> <Esc>o
 inoremap <C-e> <Esc>$a
-inoremap <C-p> System.out.println();<Esc>hi
 inoremap {<CR> {<CR>}<Esc>O
 
 "noremap 0 ^
