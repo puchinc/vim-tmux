@@ -27,6 +27,5 @@ else
     sudo apt-get install tmux
 fi
 vim +PluginInstall +qall
-cd ~/.vim/bundle/YouCompleteMe
-./install.py
+cd ~/.vim/bundle/YouCompleteMe && ./install.py
 cd -
