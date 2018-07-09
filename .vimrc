@@ -19,6 +19,7 @@ let mapleader = " "
     Plugin 'jiangmiao/auto-pairs'
     Plugin 'tpope/vim-repeat'
     Plugin 'motus/pig.vim'
+    Plugin 'pangloss/vim-javascript'
     Plugin 'djoshea/vim-autoread'
     Plugin 'xolox/vim-reload'
     "Undotree {{
