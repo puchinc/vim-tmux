@@ -16,11 +16,15 @@ let mapleader = " "
     Plugin 'lifepillar/vim-solarized8'
     Plugin 'rking/ag.vim'
     Plugin 'tpope/vim-surround'
-    Plugin 'jiangmiao/auto-pairs'
     Plugin 'tpope/vim-repeat'
     Plugin 'motus/pig.vim'
     Plugin 'djoshea/vim-autoread'
     Plugin 'xolox/vim-reload'
+    " Auto Pairs{{
+    Plugin 'jiangmiao/auto-pairs'
+        let g:AutoPairsFlyMode = 0
+        let g:AutoPairsShortcutBackInsert = '<C-b>'
+    "}}
     "Undotree {{
     Plugin 'mbbill/undotree'
         nnoremap <leader>u :UndotreeToggle<CR>
@@ -36,7 +40,7 @@ let mapleader = " "
     "Easytags" {{
     Plugin 'xolox/vim-misc'
     Plugin 'majutsushi/tagbar'
-        nmap <leader>b :TagbarToggle<CR>
+        nmap <leader>t :TagbarToggle<CR>
     Plugin 'xolox/vim-easytags'
         let b:easytags_auto_highlight = 0
         let g:easytags_async = 1
