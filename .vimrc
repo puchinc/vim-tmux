@@ -18,6 +18,7 @@ let mapleader = " "
     Plugin 'tpope/vim-surround'
     Plugin 'tpope/vim-repeat'
     Plugin 'motus/pig.vim'
+    Plugin 'pangloss/vim-javascript'
     Plugin 'djoshea/vim-autoread'
     Plugin 'xolox/vim-reload'
     " Auto Pairs{{
