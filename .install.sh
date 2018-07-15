@@ -1,7 +1,7 @@
 cd ~
 
 # Download all dotfiles by hard link
-ls -a vim-tmux | xargs rm -rf
+#ls -a vim-tmux | xargs rm -rf
 src=vim-tmux
 dst=~
 absolute_dst=$(umask 077 && mkdir -p -- "$dst" && cd -P -- "$dst" && pwd -P) &&
