@@ -63,12 +63,6 @@ let mapleader = " "
         "nmap <silent> <leader>s " for normal mode
         let g:mkdp_path_to_chrome = ""
         let g:mkdp_auto_start = 0
-        function! MdIndention()
-            if expand('%:e') ==# "md"
-                inoremap <CR> <Esc>yypC
-            endif
-        endfunction
-        call MdIndention()
         " set to 1, the vim will open the preview window once enter the markdown
         " buffer
     " }}
@@ -98,13 +92,15 @@ let mapleader = " "
     " }}
     "Nerd commenter/tree  {{
         Plugin 'scrooloose/nerdcommenter'
-        " nerdcommenter
         map <Leader><Leader> <Leader>c<space>
-        let g:NERDDefaultAlign = 'left'
+        map <leader>a <Plug>NERDCommenterAltDelims
+
+        let g:NERDCustomDelimiters = {
+            \ 'javascript': { 'left': '//', 'leftAlt': '{/*', 'rightAlt': '*/}' }
+        \ }
+
         Plugin 'scrooloose/nerdtree'
-        " NERDTree
         map \ :NERDTreeToggle<CR>
-        "map <space><space> :NERDTreeToggle<CR>
     " }}
     "Emmet  {{
         Plugin 'mattn/emmet-vim'
@@ -132,12 +128,17 @@ let mapleader = " "
         nmap <leader>f <plug>(easymotion-overwin-f)
         " s{char}{char} to move to {char}{char}
         nmap s <plug>(easymotion-overwin-f2)
-        " move to line
-        map <leader>l <plug>(easymotion-bd-jk)
-        nmap <leader>l <plug>(easymotion-overwin-line)
         " move to word
         map  <leader>w <plug>(easymotion-bd-w)
         nmap <leader>w <plug>(easymotion-overwin-w)
+
+        " Gif config
+        map <Leader>l <Plug>(easymotion-lineforward)
+        map <Leader>j <Plug>(easymotion-j)
+        map <Leader>k <Plug>(easymotion-k)
+        map <Leader>h <Plug>(easymotion-linebackward)
+
+        let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
     " }}
     "Deoplete  {{
         "if has('nvim')
@@ -163,6 +164,7 @@ let mapleader = " "
 
     " Snippets are separated from the engine. Add this if you want them:
     Plugin 'honza/vim-snippets'
+    Plugin 'epilande/vim-react-snippets'
 
         " make YCM compatible with UltiSnips (using supertab)
         "let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -409,7 +411,7 @@ endif
     autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
     "set smarttab
-    set clipboard+=unnamed " unnamed register "
+    set clipboard=unnamed " unnamed register "
     set splitright
     set splitbelow
     set ignorecase " Case-insensitive searching.
@@ -469,5 +471,11 @@ endif
     nmap <Leader>n :set invnumber<CR>:set invrnu<CR>
 
     "autocmd FileType c,cpp,java set mps+==:;
+    function! MdIndention()
+        if expand('%:e') ==# "md"
+            inoremap <CR> <Esc>yypC
+        endif
+    endfunction
+    call MdIndention()
 
 " }}
