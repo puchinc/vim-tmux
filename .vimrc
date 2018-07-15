@@ -2,7 +2,7 @@ if !exists("g:syntax_on")
     syntax enable
 endif
 
-" fold setting
+ "fold setting
 set foldmarker={{,}} foldlevel=0
 autocmd FileType vim setlocal foldmethod=marker
 let mapleader = " "
@@ -156,6 +156,7 @@ let mapleader = " "
     " YouCompleteMe {{
         Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
         "let g:ycm_python_binary_path = 'python'
+        "let g:ycm_python_binary_path = '/usr/local/bin/python3.6'
         set completeopt-=preview
     " }}
     " UltiSnips {{
