@@ -75,6 +75,7 @@ function zshrc {
         vim ~/.zshrc
     fi
 }
+
 function leet {
     name=''
     for part in "$@"

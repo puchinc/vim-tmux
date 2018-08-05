@@ -28,8 +28,8 @@ alias tf2='source ~/workspace/venvs/py2/tensorflow/bin/activate'
 alias ocaml="ledit ocaml"
 
 # LEETCODE
-alias solved="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Solved"
-alias leetcode="cd /Users/puchin/Dropbox/Public/Career/Interview/Leetcode/Attempted"
+alias solved="cd ~/Dropbox/Public/Career/Interview/Leetcode/Solved"
+alias leetcode="cd ~/Dropbox/Public/Career/Interview/Leetcode/Attempted"
 
 # Library
 alias libjava="vim ~/lib/Java.java"

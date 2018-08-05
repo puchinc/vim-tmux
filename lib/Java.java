@@ -121,10 +121,10 @@ public class usefullibrary{
 		queue.poll(); //null if empty
 		queue.peek();
 		queue.isEmpty();
-        //min heap
-		Queue<E> pq = new PriorityQueue<>();
-        //max heap
-		Queue<E> pqCom = new PriorityQueue<>((a,b) -> b - a);
+        //min heap, poll min, offer bottom, maintain kth largest
+		Queue<E> minHeap = new PriorityQueue<>();
+        //max heap, poll max, offer bottom, maintain kth smallest
+		Queue<E> maxHeap = new PriorityQueue<>((a,b) -> b - a);
 
         /* MAP */
 		Map<K, V> map = new HashMap<>();
@@ -141,6 +141,7 @@ public class usefullibrary{
 		map.containsKey(k);
 		map.containsValue(v);
         map.getOrDefault(Object key, V defaultValue);
+        int[] map = new int[256];
 
         /* SET */
         Set<E> set = new HashSet<>();
@@ -149,6 +150,7 @@ public class usefullibrary{
         set.isEmpty();
         set.remove(e);
         set.size();
+        set.toArray();
 
         /* Iterator */
         Iterator<E> iterator = set.iterator();

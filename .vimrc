@@ -14,18 +14,24 @@ let mapleader = " "
     call vundle#begin()
     Plugin 'VundleVim/Vundle.vim'
     Plugin 'lifepillar/vim-solarized8'
-    Plugin 'rking/ag.vim'
+    Plugin 'mileszs/ack.vim'
+    nnoremap <Leader>a :Ack!<Space>
     Plugin 'tpope/vim-surround'
     Plugin 'tpope/vim-repeat'
     Plugin 'motus/pig.vim'
-    Plugin 'pangloss/vim-javascript'
     Plugin 'djoshea/vim-autoread'
     Plugin 'xolox/vim-reload'
+    " Javascript {{
+        Plugin 'pangloss/vim-javascript'
+        Plugin 'jelera/vim-javascript-syntax'
+        Plugin 'othree/yajs'
+        Plugin 'mxw/vim-jsx'
+    "}}
     " Auto Pairs{{
     Plugin 'jiangmiao/auto-pairs'
         let g:AutoPairsFlyMode = 0
         let g:AutoPairsShortcutBackInsert = '<C-b>'
-    "}}
+    ""}}
     "Undotree {{
     Plugin 'mbbill/undotree'
         nnoremap <leader>u :UndotreeToggle<CR>
@@ -93,7 +99,7 @@ let mapleader = " "
     "Nerd commenter/tree  {{
         Plugin 'scrooloose/nerdcommenter'
         map <Leader><Leader> <Leader>c<space>
-        map <leader>a <Plug>NERDCommenterAltDelims
+        map // <Plug>NERDCommenterAltDelims<leader><leader><Plug>NERDCommenterAltDelims
 
         let g:NERDCustomDelimiters = {
             \ 'javascript': { 'left': '//', 'leftAlt': '{/*', 'rightAlt': '*/}' }
@@ -140,23 +146,12 @@ let mapleader = " "
 
         let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
     " }}
-    "Deoplete  {{
-        "if has('nvim')
-        "  Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-        "else
-        "  Plugin 'Shougo/deoplete.nvim'
-        "  Plugin 'roxma/nvim-yarp'
-        "  Plugin 'roxma/vim-hug-neovim-rpc'
-        "endif
-        "" Use deoplete.
-        "let g:deoplete#enable_at_startup = 1
-    " }}
     "https://stackoverflow.com/questions/14896327/ultisnips-and-youcompleteme
     Plugin 'ervandew/supertab'
     " YouCompleteMe {{
         Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
         "let g:ycm_python_binary_path = 'python'
-        "let g:ycm_python_binary_path = '/usr/local/bin/python3.6'
+        let g:ycm_python_binary_path = '/usr/local/bin/python3.6'
         set completeopt-=preview
     " }}
     " UltiSnips {{

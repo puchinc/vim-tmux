@@ -17,6 +17,7 @@ if [ "$(uname)" == "Darwin" ]; then
     brew install zsh
     brew install tmux
     brew install ctags
+    brew install ack
 else
     sudo apt-get install zsh
     sudo apt-get install tmux
