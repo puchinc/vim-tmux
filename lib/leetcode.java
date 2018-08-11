@@ -6,7 +6,7 @@
 public int bsearch(int[] nums, int target) {
     if (nums.length == 0) return -1;
     int start = 0, end = nums.length - 1;
-    // start = 2, end = 3, mid = always 2, 
+    // start = 2, end = 3, mid = always 2,
     // target = 3, form a inf loop
     while (start + 1 < end) {
         int mid = start + (end - start) / 2;
@@ -27,13 +27,13 @@ public int bsearch(int[] nums, int target, int start, int end) {
 }
 
 
-/* 
+/*
  *  Backtracking
  */
 https://leetcode.com/problems/subsets/discuss/27281/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partitioning)
 
 
-/* 
+/*
  *  Bitwise
  */
 
@@ -59,7 +59,7 @@ mapping
 01 => 1
 10 => 1
 
-/* 
+/*
  *  Linked List
  */
 
@@ -112,7 +112,7 @@ while (lHead != null && rHead != null) {
     lHead = tmp;
 }
 
-/* 
+/*
  * Quick Sort
  */
 
@@ -120,7 +120,7 @@ public void qsort(int[] nums, int low, int high) {
     if (low >= high) return;
     /* solid solution */
     //Random rand = new Random();
-    //int idx = low + rand.nextInt(high - low); 
+    //int idx = low + rand.nextInt(high - low);
     //int pivot = nums[idx];
     //nums[idx] = nums[high];
     //nums[high] = pivot; //pick random pivot and put to high
@@ -150,8 +150,28 @@ public void qsort(int[] nums, int low, int high) {
     else pivot;
 }
 
+/*
+ *  Three way partitioning: small | low _ pivot _ high | large
+ */
 
-/* 
+// given int[] nums, pivot
+int low, high;
+for (int i = low; i <= high; i++) {
+    // three way partition
+    while (i <= high && nums[i] > pivot) {
+        int tmp = nums[i];
+        nums[i] = nums[high];
+        nums[high--] = tmp;
+    }
+    // two way partition
+    if (nums[i] < pivot) {
+        int tmp = nums[i];
+        nums[i] = nums[low];
+        nums[low++] = tmp;
+    }
+}
+
+/*
  * File I/O
  */
 
@@ -197,7 +217,7 @@ public List<List<Integer>> kSum(int[] nums, int k, int target, int start) {
     else {
         for (int i = start; i < len - k + 1; i++) {
             if (i > start && nums[i - 1] == nums[i]) continue;
-            List<List<Integer>> prev = kSum(nums, k-1, target - nums[i], i + 1); 
+            List<List<Integer>> prev = kSum(nums, k-1, target - nums[i], i + 1);
             for (List<Integer> l: prev) l.add(0, nums[i]);
             res.addAll(prev);
         }
@@ -205,6 +225,67 @@ public List<List<Integer>> kSum(int[] nums, int k, int target, int start) {
     return res;
 }
 
+/*
+ * Maximum Subarray
+ */
+
+public int maxSub(int[] nums) {
+    int max = 0, min = nums[0]; // buy and sell stock, lowest profit is 0,
+                                // max = sum - min, but first buying should
+                                // has no profit, min should be nums[0] so as to
+                                // let max = 0
+    int max = Integer.MIN_VALUE, min = 0, sum = 0; //subarray
+                                // lowest value is -inf
+                                // think first max is sum - min, min be 0 to simply
+                                // add 1st element to sum
+    // compute global max in accumulative array
+    for (int i = 0; i < nums.length; i++) {
+        sum += num[i]; // buy and sell no need to create accu
+        max = Math.max(max, sum - min);
+        min = Math.min(min, sum);
+    }
+
+    return max;
+}
+
+
+/*
+ * KMP
+ */
+
+public int[] next(String p) {
+    int[] next = new int[p.length()];
+    next[0] = -1;
+
+    int j = -1;
+    int i = 0;
+    while (i < p.length() - 1)
+    {
+        //p[j] is prefix, p[i] is suffix
+        if (j == -1 || p.charAt(j) == p.charAt(i)) {
+            next[++i] = ++j;
+        }
+        else j = next[j];
+    }
+    return next;
+}
+
+public int KMP(String t, String p) {
+    int[] next = next(p);
+
+    int i = 0; 
+    int j = 0;
+    while (i < t.length() && j < p.length()) {
+        if (j == -1 || t.charAt(j) == p.charAt(i)) {
+            i++;
+            j++;
+        }
+        else j = next[j];
+    }
+
+    if (j == p.length()) return i - j;
+    else return -1;
+}
 
 /*
  * Corner Cases
