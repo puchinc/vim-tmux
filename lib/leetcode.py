@@ -1,3 +1,8 @@
+# TODO Pow(x, n)
+# -1 // 2, special numerical operation handling
+# see how others handle math problem
+# deal with n < 2, e.g. n == -1 , n == 0
+
 ### PYTHON  
 
 # Comparison 
@@ -24,6 +29,8 @@ str.split(',')
 # divide to integer
 5 // 2 == 2
 5 / 2 == 2.5
+
+sys.maxsize
 
 # Catch "", [] or None
 input = "" 
@@ -75,6 +82,7 @@ kwargs = {"a": 10, "b": 20}
 s.upper() 
 s.lower()
 s.replace("old", "new")
+s.find("substring")
 s.isalpha()
 s.isdigit()
 s.split(",")
@@ -96,10 +104,17 @@ vec = [[1,2,3], [4,5,6], [7,8,9]]
 [num for elem in vec for num in elem]
 
 # reverse
-nums[::-1] 
+nums = [1,2,3,4,5]
+nums.reverse() # in-place
+nums[::-1] # new object 
+nums[:1:-2] == [5, 3] # first spot is infered as the last number
 
 # initialize
-[False] * 5
+[False] * 5 # 1D init
+[[0] * 3 for _ in range(10)] # 2D init
+
+# concat
+list1 + list2
 
 # Stack [ ...  top]
 stack = [1,2] # 
@@ -151,19 +166,27 @@ while len(queue) > 0:
 
 # BINARY SEARCH
 
+# [1,1] find 1 inf loop if start < end
 def bsearch(self, nums, target):
     if not nums: 
         return -1
+<<<<<<< HEAD
     start, end = 0, len(nums) - 1
+=======
+>>>>>>> a003b50ff733b3941dfb659552840fc5efa4bbc1
 
+    start, end = 0, len(nums) - 1
     while start + 1 < end;
         mid = (start + end) // 2
         if nums[mid] < target:
             start = mid
         elif nums[mid] > target:
             end = mid
+<<<<<<< HEAD
         else:
             return mid
+=======
+>>>>>>> a003b50ff733b3941dfb659552840fc5efa4bbc1
 
     if nums[start] == target:
         return start
@@ -177,7 +200,7 @@ def qsort(self, nums, low, high):
     # import random
     # idx = random.choice(range(len(nums)))
     # nums[idx], nums[high] = nums[high], nums[idx]
-    pivot = nums[high]
+    pivot = nums[(low+high)//2]
 
     mid = low
     for i in range(low, high):
@@ -200,13 +223,16 @@ def qsort(self, nums, low, high):
 
 
 # Three way partitioning: small | low _ pivot _ high | large
-for i in range(low, high + 1):
+i = low
+while i <= high:
     while i <= high and nums[i] > nums[high]:
         nums[i], nums[high] = nums[high], nums[i]
         high -= 1
+    # two way partition
     if nums[i] < nums[low]:
         nums[i], nums[low] = nums[low], nums[i]
         low += 1
+    i += 1
 
 # Palindrome
 
@@ -215,6 +241,10 @@ left, right = middle, middle + 1 # even
 while low >= 0 and high < len(s) and s[low] == s[high]:
     low -= 1
     high += 1
+<<<<<<< HEAD
 len = high - low - 1
 
 # Bsearch
+=======
+return low >= high # True if palindrom
+>>>>>>> a003b50ff733b3941dfb659552840fc5efa4bbc1
