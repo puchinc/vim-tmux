@@ -79,6 +79,7 @@ s.isalpha()
 s.isdigit()
 s.split(",")
 ",".join(['first', 'second'])
+ord('a') == 97
 
 # List
 l.append(x) # equals to l[len(l):] = [x]
@@ -153,16 +154,17 @@ while len(queue) > 0:
 def bsearch(self, nums, target):
     if not nums: 
         return -1
-    start, end = 0, len(nums)
+    start, end = 0, len(nums) - 1
 
     while start + 1 < end;
-        mid = start + (end - start) / 2
+        mid = (start + end) // 2
         if nums[mid] < target:
             start = mid
         elif nums[mid] > target:
             end = mid
         else:
             return mid
+
     if nums[start] == target:
         return start
     if nums[end] == target:
@@ -213,5 +215,6 @@ left, right = middle, middle + 1 # even
 while low >= 0 and high < len(s) and s[low] == s[high]:
     low -= 1
     high += 1
-return low >= high # True if palindrom
+len = high - low - 1
 
+# Bsearch
