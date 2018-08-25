@@ -155,8 +155,8 @@ public void qsort(int[] nums, int low, int high) {
  */
 
 // given int[] nums, pivot
-int low, high;
-for (int i = low; i <= high; i++) {
+int i = low;
+while (i <= high) {
     // three way partition
     while (i <= high && nums[i] > pivot) {
         int tmp = nums[i];
@@ -169,6 +169,7 @@ for (int i = low; i <= high; i++) {
         nums[i] = nums[low];
         nums[low++] = tmp;
     }
+    i++;
 }
 
 /*
