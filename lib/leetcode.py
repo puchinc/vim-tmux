@@ -3,6 +3,7 @@
 
 https://www.lintcode.com/problem/window-sum/description
 https://www.lintcode.com/problem/triangle-count/description
+myPow
 
 @ Review Later
 https://www.jiuzhang.com/tutorial/segment-tree/237
@@ -201,9 +202,9 @@ TWO POINTERS -> <-
 ### TWO SUM related problems
 left, right = 0, len(nums) - 1
 while left <= right:
-    if nums[left] < pivot:
+    if nums[left] <= pivot: # quick sort use < pivot
         left += 1
-    elif nums[right] >= pivot: # quick sort use > pivot
+    elif nums[right] > pivot: 
         right -= 1
     else:
         nums[left], nums[right] = nums[right], nums[left]
@@ -279,33 +280,52 @@ while i <= right:
         # right -= 1
 
 # QUICK SORT
+"""
+tricky part when encountering pivot value
+nums[left] < pivot: left++
+nums[right] > pivot: right--
+
+1. avoid inf loop
+if set <= pivot or >= pivot, then when one part 
+is always <= pivot or >= pivot, divide and conquer
+will divide them into [nums] [] and cause inf loop 
+
+2. balance
+swap pivot value so as to maintain split size silimar
+to equally divided, as the result, when [pivot pivot ... pivot],
+it will be divided into two subarray and will not cause 
+inf loop
+
+each time it is done, 
+right | left  or  right | pivot | left
+
+"""
 def qsort(self, nums, start, end):
     if start >= end:
         return
 
     pivot = nums[(start + end) // 2]
 
-    left, right = start, end
+    left, right = start, end-1
     while left <= right: 
-        while left <= right and nums[left] < pivot:
+        if nums[left] < pivot:
             left += 1
-        while left <= right and nums[right] > pivot:
+        elif nums[right] > pivot:
             right -= 1
-        if left <= right:
+        else:
             nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
 
-    left, right = right, left
     # qsort  
-    self.qsort(nums, start, left)
-    self.qsort(nums, right, end)
+    self.qsort(nums, start, right)
+    self.qsort(nums, left, end)
  
     # qselect kth idx
-    if k <= left:
-        self.qselect(nums, start, left, k)
-    elif k >= right:
-        self.qselect(nums, right, end, k)
+    if k <= right:
+        self.qselect(nums, start, right, k)
+    elif k >= left:
+        self.qselect(nums, left, end, k)
     else: 
         return pivot
 
