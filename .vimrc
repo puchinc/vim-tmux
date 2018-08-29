@@ -28,9 +28,9 @@ let mapleader = " "
         Plugin 'mxw/vim-jsx'
     "}}
     " Auto Pairs{{
-    Plugin 'jiangmiao/auto-pairs'
-        let g:AutoPairsFlyMode = 0
-        let g:AutoPairsShortcutBackInsert = '<C-b>'
+    "Plugin 'jiangmiao/auto-pairs'
+        "let g:AutoPairsFlyMode = 0
+        "let g:AutoPairsShortcutBackInsert = '<C-b>'
     ""}}
     "Undotree {{
     Plugin 'mbbill/undotree'

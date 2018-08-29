@@ -12,12 +12,12 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 
 """
 
-
-
 # TODO Pow(x, n)
 # -1 // 2, special numerical operation handling
 # see how others handle math problem
 # deal with n < 2, e.g. n == -1 , n == 0
+
+# 
 
 # NOTE 
 # python + operator used when O(1)
