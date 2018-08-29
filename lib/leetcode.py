@@ -303,10 +303,11 @@ right | left  or  right | pivot | left
 def qsort(self, nums, start, end):
     if start >= end:
         return
+        # return nums[k], since partition finished
 
     pivot = nums[(start + end) // 2]
 
-    left, right = start, end-1
+    left, right = start, end
     while left <= right: 
         if nums[left] < pivot:
             left += 1
@@ -318,16 +319,14 @@ def qsort(self, nums, start, end):
             right -= 1
 
     # qsort  
-    self.qsort(nums, start, right)
+    self.qsort(nums, start, left-1)
     self.qsort(nums, left, end)
  
     # qselect kth idx
-    if k <= right:
-        self.qselect(nums, start, right, k)
-    elif k >= left:
-        self.qselect(nums, left, end, k)
-    else: 
-        return pivot
+    if k < left:
+        return self.qselect(nums, start, left-1, k)
+    else:
+        return self.qselect(nums, left, end, k)
 
 ### Other Sorting
 def bubble(nums):
