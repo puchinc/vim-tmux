@@ -150,7 +150,9 @@ public class usefullibrary{
         set.isEmpty();
         set.remove(e);
         set.size();
+        for (E k: set)
         set.toArray();
+
 
         /* Iterator */
         Iterator<E> iterator = set.iterator();
