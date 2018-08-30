@@ -17,6 +17,10 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 # see how others handle math problem
 # deal with n < 2, e.g. n == -1 , n == 0
 
+# TODO
+# naming for max, min, hash, set, dict...
+# max_, min_, maximum, minimum
+
 # 
 
 # NOTE 
@@ -161,6 +165,18 @@ s.discard(10)
 x in s
 len(s)
 
+# Heap
+from heapq import *
+min_heap = []
+heappush(min_heap, element) # 
+heappop(min_heap)
+min_heap[0] # get smallest
+
+max_heap = []
+heappush(max_heap, -element)
+-heappop(max_heap)
+-max_heap[0] # get smallest
+
 # LINKED LIST
 
 """ 
@@ -197,9 +213,13 @@ main idea:
 
 """
 TWO POINTERS -> <- 
-"""
 
-### TWO SUM related problems
+unstable
+
+1. qsort/qselect
+2. two sum series
+"""
+# Two way partition : ... right | left  ... 
 left, right = 0, len(nums) - 1
 while left <= right:
     if nums[left] <= pivot: # quick sort use < pivot
@@ -211,32 +231,14 @@ while left <= right:
         left += 1
         right -= 1
 
-# unstable
-# Two way partition : ... right | left  ... 
-# can swap left pivot and right pivot to balance the split
-left, right = 0, len(nums) - 1
-while left <= right:
-    while left <= right and nums[left] < pivot:
-        left += 1
-    while left <= right and nums[right] > pivot:
-        right -= 1
-    if left <= right:
-        nums[left], nums[right] = nums[right], nums[left]
-        left += 1
-        right -= 1
-
 """
 TWO POINTERS -> -> 
-"""
-# stable
-# Two way partition : ... | left  ... 
-left, right = 0, 0
-while right < len(nums):
-    if nums[right] < pivot:
-        nums[left], nums[right] = nums[right], nums[left]
-        left += 1
-    right += 1
 
+stable
+1. Two way partition : ... | left  ... 
+2. Sliding Window
+
+"""
 # left = 0
 # for i in range(len(nums)):
     # # nums[i] is left part
@@ -244,18 +246,27 @@ while right < len(nums):
         # nums[left], nums[i] = nums[i], nums[left] 
         # left += 1
 
-# Three way partition: ... | left ... right | ...
-left, i, right = 0, 0, len(nums) - 1
-while i <= right:
-    # nums[i] is right part
-    while i <= right and nums[i] > pivot:
-        nums[i], nums[right] = nums[right], nums[i]
-        right -= 1
-    # nums[i] is left part
-    if nums[i] < pivot:
-        nums[i], nums[left] = nums[left], nums[i]
+# Two way partition: [ ... | left ... ] right 
+left, right = 0, 0
+while right < len(nums):
+    # nums[right] is left part
+    if nums[right] < pivot:
+        nums[left], nums[right] = nums[right], nums[left]
         left += 1
-    i += 1
+    right += 1
+
+# Three way partition: [ ... | left ... right | mid ... ]
+left, mid, right = 0, 0, len(nums) - 1
+while mid <= right:
+    # nums[mid] is right part
+    while mid <= right and nums[mid] > pivot:
+        nums[mid], nums[right] = nums[right], nums[mid]
+        right -= 1
+    # nums[mid] is left part
+    if nums[mid] < pivot:
+        nums[mid], nums[left] = nums[left], nums[mid]
+        left += 1
+    mid += 1
 
 # left, right = 0, len(nums) - 1
 # for i in range(len(nums)):
@@ -268,16 +279,17 @@ while i <= right:
         # nums[i], nums[left] = nums[left], nums[i]
         # left += 1
 
+# left, i, right = 0, 0, len(nums) - 1
 # while i <= right:
-    # if A[i] < pivot:
+    # if A[i] > pivot:
+        # A[right], A[i] = A[i], A[right]
+        # right -= 1
+    # elif A[i] < pivot:
         # A[left], A[i] = A[i], A[left]
         # left += 1
         # i += 1
-    # elif A[i] == pivot:
+    # else:
         # i += 1
-    # elif A[i] > pivot:
-        # A[right], A[i] = A[i], A[right]
-        # right -= 1
 
 # QUICK SORT
 """
@@ -291,8 +303,8 @@ is always <= pivot or >= pivot, divide and conquer
 will divide them into [nums] [] and cause inf loop 
 
 2. balance
-swap pivot value so as to maintain split size silimar
-to equally divided, as the result, when [pivot pivot ... pivot],
+can swap left pivot and right pivot to balance the split
+, as the result, when [pivot pivot ... pivot],
 it will be divided into two subarray and will not cause 
 inf loop
 
@@ -371,8 +383,8 @@ return low >= high # True if palindrom
 from collections import deque
 if not root: 
     return 0
-queue = deque([root])
 
+queue = deque([root])
 while len(queue) > 0:
     num = len(queue)
     for i in range(num - 1, -1, -1):
