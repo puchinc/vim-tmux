@@ -160,6 +160,7 @@ OrderedDict()
 
 # Set
 s = set()
+s = set([1,2,3])
 s.add(1)
 s.discard(10)
 x in s
