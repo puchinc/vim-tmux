@@ -385,16 +385,47 @@ from collections import deque
 if not root: 
     return 0
 
+# Tree
 queue = deque([root])
 while len(queue) > 0:
-    num = len(queue)
-    for i in range(num - 1, -1, -1):
+    for _ in range(len(queue)): # Level Order
         node = queue.popleft()
         if node.left:
             queue.append(node.left)
         if node.right:
             queue.append(node.right)
 
+# Graph, need set
+queue = deque([root])
+visited = set([root])
+while len(queue) > 0:
+    for _ in range(len(queue)): # Level Order
+        node = queue.popleft()
+        for child in [node.left, node.right]:
+            if child and child not in visited:
+                queue.append(child)
+                visited.add(child)
+
+# Topological Sort
+def topSort(graph):
+    in_degree = {v: 0 for v in graph}
+    for v in in_degree:
+        for neighbor in v.neighbors:
+            id_degree[neighbor] += 1
+
+    order = []
+    queue = [v for v in in_degree if in_degree[v] == 0]
+    while queue:
+        node = queue.popleft()
+        order.append(node)
+        for neighbor in node.neighbors:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+    return order
+
+# Bidirectional BFS
+# Given undirected graph, start and end, O(X ^ N) -> O(2 * X ^(N/2))
 
 """
                                     DFS
