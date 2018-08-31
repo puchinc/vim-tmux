@@ -159,3 +159,6 @@ zle -N zle-keymap-select
 
 #Let's reduce after you hit the <ESC> key delay to 0.1 seconds.
 export KEYTIMEOUT=1
+
+autoload -U promptinit; promptinit
+prompt pure
