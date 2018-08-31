@@ -11,9 +11,6 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export LANG=en_US.UTF-8 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
 # Set Vim as default editor
 export EDITOR=vim
 
@@ -41,19 +38,21 @@ bindkey '^T' kill-line
 # zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-# ZSH_THEME="robbyrussell"
-# ZSH_THEME="agnoster"
-ZSH_THEME="ys"
+#ZSH_THEME="robbyrussell"
+#ZSH_THEME="agnoster"
+#ZSH_THEME="ys"
 #ZSH_THEME=""
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions vi-mode autojump)
+plugins=(zsh-autosuggestions vi-mode autojump)
 
 source $ZSH/oh-my-zsh.sh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
+
+
 
 #autoload -U promptinit; promptinit
 #prompt pure
