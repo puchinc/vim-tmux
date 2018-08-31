@@ -390,6 +390,9 @@ queue = deque([root])
 while len(queue) > 0:
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
+        '''
+        Traverse here, do the operation
+        '''
         if node.left:
             queue.append(node.left)
         if node.right:
