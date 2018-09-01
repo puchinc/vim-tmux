@@ -98,6 +98,7 @@ s.isdigit()
 s.split(",")
 ",".join(['first', 'second'])
 ord('a') == 97
+chr(97) == 'a'
 # remove substring
 str.strip("pattern")
 # split
@@ -387,7 +388,7 @@ if not root:
 
 # Tree
 queue = deque([root])
-while len(queue) > 0:
+while queue:
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
         if node.left:
@@ -398,7 +399,7 @@ while len(queue) > 0:
 # Graph, need set
 queue = deque([root])
 visited = set([root])
-while len(queue) > 0:
+while queue:
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
         for child in [node.left, node.right]:
