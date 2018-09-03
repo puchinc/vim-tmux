@@ -170,8 +170,9 @@ len(s)
 # Heap
 from heapq import *
 min_heap = []
-heappush(min_heap, element) # 
-heappop(min_heap)
+heapify(min_heap) # O(N)
+heappush(min_heap, element) # O(logN)
+heappop(min_heap) # O(logN)
 min_heap[0] # get smallest
 
 max_heap = []
@@ -387,8 +388,10 @@ if not root:
     return 0
 
 # Tree
+# level = 0
 queue = deque([root])
 while queue:
+    # level += 1
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
         '''
@@ -406,7 +409,7 @@ while queue:
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
         for child in [node.left, node.right]:
-            if child and child not in visited:
+            if child and child not in visited: # Check possible children
                 queue.append(child)
                 visited.add(child)
 
@@ -417,8 +420,8 @@ def topSort(graph):
         for neighbor in v.neighbors:
             id_degree[neighbor] += 1
 
-    order = []
     queue = [v for v in in_degree if in_degree[v] == 0]
+    order = []
     while queue:
         node = queue.popleft()
         order.append(node)

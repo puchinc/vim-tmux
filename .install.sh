@@ -14,6 +14,7 @@ if [ "$(uname)" == "Darwin" ]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew update
     brew install vim && brew install macvim
+    ln -s /usr/local/bin/mvim vim
     brew install zsh
     brew install tmux
     brew install ctags

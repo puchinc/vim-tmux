@@ -1,4 +1,4 @@
-alias vim='printf "\033[2 q"; mvim -v'
+#alias vim='printf "\033[2 q"; mvim -v'
 #alias vim='printf "\033[2 q"; vim'
 
 # quick directory movement
@@ -39,9 +39,11 @@ alias libnp="vim ~/vim-tmux/lib/numpy.py"
 alias libpandas="vim ~/vim-tmux/lib/pandas.py"
 alias libdocker="vim ~/vim-tmux/lib/docker.sh"
 alias libipy="vim ~/vim-tmux/lib/ipython.py"
+alias libpy="vim ~/vim-tmux/lib/python.py"
 alias libsh="vim ~/vim-tmux/lib/shell.sh"
 alias libvim="vim ~/vim-tmux/lib/vim.vim"
 alias libgit="vim ~/vim-tmux/lib/git.git"
 alias libzsh="vim ~/vim-tmux/lib/zsh.zsh"
 alias libleet="vim ~/vim-tmux/lib/leetcode.py"
+alias libleetcode="vim ~/vim-tmux/lib/leetcode.java"
 alias libjs="vim ~/vim-tmux/lib/JavaScript.js"
