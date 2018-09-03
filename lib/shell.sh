@@ -51,3 +51,8 @@ ssh server_ip 'cd ~/Desktop; ls -a'
 
 # mute all output
 1>/dev/null 2>&1
+
+
+### ln
+# i node
+ls -i file_name

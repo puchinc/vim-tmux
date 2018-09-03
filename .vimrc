@@ -14,24 +14,19 @@ let mapleader = " "
     call vundle#begin()
     Plugin 'VundleVim/Vundle.vim'
     Plugin 'lifepillar/vim-solarized8'
-    Plugin 'mileszs/ack.vim'
-    nnoremap <Leader>a :Ack!<Space>
+    Plugin 'rking/ag.vim'
     Plugin 'tpope/vim-surround'
     Plugin 'tpope/vim-repeat'
     Plugin 'motus/pig.vim'
+    Plugin 'pangloss/vim-javascript'
     Plugin 'djoshea/vim-autoread'
     Plugin 'xolox/vim-reload'
-    " Javascript {{
-        Plugin 'pangloss/vim-javascript'
-        Plugin 'jelera/vim-javascript-syntax'
-        Plugin 'othree/yajs'
-        Plugin 'mxw/vim-jsx'
-    "}}
     " Auto Pairs{{
-    "Plugin 'jiangmiao/auto-pairs'
+    " Cause cursor blinking
+    " Plugin 'jiangmiao/auto-pairs'
         "let g:AutoPairsFlyMode = 0
         "let g:AutoPairsShortcutBackInsert = '<C-b>'
-    ""}}
+    "}}
     "Undotree {{
     Plugin 'mbbill/undotree'
         nnoremap <leader>u :UndotreeToggle<CR>
@@ -99,7 +94,7 @@ let mapleader = " "
     "Nerd commenter/tree  {{
         Plugin 'scrooloose/nerdcommenter'
         map <Leader><Leader> <Leader>c<space>
-        map // <Plug>NERDCommenterAltDelims<leader><leader><Plug>NERDCommenterAltDelims
+        map <leader>a <Plug>NERDCommenterAltDelims
 
         let g:NERDCustomDelimiters = {
             \ 'javascript': { 'left': '//', 'leftAlt': '{/*', 'rightAlt': '*/}' }
@@ -146,12 +141,23 @@ let mapleader = " "
 
         let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
     " }}
+    "Deoplete  {{
+        "if has('nvim')
+        "  Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        "else
+        "  Plugin 'Shougo/deoplete.nvim'
+        "  Plugin 'roxma/nvim-yarp'
+        "  Plugin 'roxma/vim-hug-neovim-rpc'
+        "endif
+        "" Use deoplete.
+        "let g:deoplete#enable_at_startup = 1
+    " }}
     "https://stackoverflow.com/questions/14896327/ultisnips-and-youcompleteme
     Plugin 'ervandew/supertab'
     " YouCompleteMe {{
         Plugin 'Valloric/YouCompleteMe', { 'do': './install.py' } " completion
         "let g:ycm_python_binary_path = 'python'
-        let g:ycm_python_binary_path = '/usr/local/bin/python3.6'
+        "let g:ycm_python_binary_path = '/usr/local/bin/python3.6'
         set completeopt-=preview
     " }}
     " UltiSnips {{
@@ -192,70 +198,6 @@ let mapleader = " "
 
     call vundle#end()            " required
     filetype plugin indent on    " required
-" }}
-" THEME {{
-    " Set colorscheme to solarized
-    colorscheme solarized
-    "colors elflord
-
-    "set background=dark
-    "set background=light
-    " Change the Solarized background to dark or light depending upon the time of 
-    " day (5 refers to 5AM and 17 to 5PM). Change the background only if it is not 
-    " already set to the value we want.
-    function! SetSolarizedBackground()
-        if strftime("%H") >= 6 && strftime("%H") < 8 
-            if &background != 'light'
-                set background=light
-            endif
-        else
-            if &background != 'dark'
-                set background=dark
-            endif
-        endif
-    endfunction
-    call SetSolarizedBackground()
-
-
-    " line numbers
-    set number " show line numbers
-    set rnu " show relative line numbers
-    set numberwidth=4 " line numbers width
-    if &background == 'dark'
-        hi CursorLineNr term=bold ctermfg=white
-    endif
-    hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
-
-    set ruler
-    set rulerformat=%40(%=%1*%m%r%w\ %t%)
-    if &background == 'dark'
-        hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE
-    endif
-
-    set statusline=
-    set statusline+=%2*
-    set statusline+=%3*%=%m%r%w\ %t
-    hi User2 term=NONE cterm=NONE ctermfg=black ctermbg=white
-    hi User3 term=NONE cterm=bold ctermfg=black ctermbg=white
-
-    " how many characters in a line
-    "set textwidth=80 " make it obvious where 80 characters is
-    "set colorcolumn=+1 " color column after 'textwidth
-    "set colorcolumn=81 " color column after 'textwidth
-    "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-    "match OverLength /\%81v./
-
-    if &term =~ '^xterm'
-      " 4 -> solid underscore
-      let &t_SI .= "\<Esc>[3 q"
-      " solid block
-      let &t_SR .= "\<Esc>[2 q"
-      let &t_EI .= "\<Esc>[2 q"
-      " 1 or 0 -> blinking block
-      " 3 -> blinking underscore
-    endif
-    " Eliminate Strange tmux status window disappear bug
-    autocmd VimLeave * execute "echo ''"
 " }}
 " SELF DEFINED FUNCTION {{
 " Rsync {{
@@ -307,7 +249,7 @@ function! Compile()
     elseif expand('%:e') ==# "pig"
         :!pig -x local % 
     elseif expand('%:e') ==# "tex"
-        :!xelatex % && rm %<.out && rm %<.log && rm %<.aux && open %<.pdf
+        :!xelatex % && rm %<.out && rm %<.log && rm %<.aux && cp %<.pdf .. && open %<.pdf
     elseif expand('%:e') ==# "md"
         :MarkdownPreview
 	endif
@@ -391,6 +333,78 @@ if &term =~ "xterm" || &term =~ "screen" || &term =~ "builtin_gui"
   map! <F27> <C-S-Space>
 endif
 " }}
+" }}
+" THEME {{
+    " Set colorscheme to solarized
+    colorscheme solarized
+    "colors elflord
+
+    "set background=dark
+    "set background=light
+    " Change the Solarized background to dark or light depending upon the time of 
+    " day (5 refers to 5AM and 17 to 5PM). Change the background only if it is not 
+    " already set to the value we want.
+    function! SetSolarizedBackground()
+        if strftime("%H") >= 6 && strftime("%H") < 8 
+            if &background != 'light'
+                set background=light
+            endif
+        else
+            if &background != 'dark'
+                set background=dark
+            endif
+        endif
+    endfunction
+    call SetSolarizedBackground()
+
+
+    " line numbers
+    set number " show line numbers
+    set rnu " show relative line numbers
+    set numberwidth=4 " line numbers width
+    if &background == 'dark'
+        hi CursorLineNr term=bold ctermfg=white
+    endif
+    hi LineNr term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
+
+    set ruler
+    set rulerformat=%40(%=%1*%m%r%w\ %t%)
+    if &background == 'dark'
+        hi User1 term=NONE cterm=bold ctermfg=white ctermbg=NONE
+    endif
+
+    set statusline=
+    set statusline+=%2*
+    set statusline+=%3*%=%m%r%w\ %t
+    hi User2 term=NONE cterm=NONE ctermfg=black ctermbg=white
+    hi User3 term=NONE cterm=bold ctermfg=black ctermbg=white
+
+    " how many characters in a line
+    "set textwidth=80 " make it obvious where 80 characters is
+    "set colorcolumn=+1 " color column after 'textwidth
+    "set colorcolumn=81 " color column after 'textwidth
+    "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+    "match OverLength /\%81v./
+    set guicursor=i:blinkwait700-blinkon0-blinkoff0
+        
+    "Ps = 0  -> blinking block.
+    "Ps = 1  -> blinking block (default).
+    "Ps = 2  -> steady block.
+    "Ps = 3  -> blinking underscore.
+    "Ps = 4  -> steady underscore.
+    "Ps = 5  -> blinking bar (xterm).
+    "Ps = 6  -> steady bar (xterm).
+    " right solution but ruler is dirty
+    " autocmd VimEnter * silent !echo "\e[2 q" 
+    " workaround solution
+    autocmd VimEnter * execute "normal \h"
+    if &term =~ '^xterm'
+      let &t_SI .= "\<Esc>[3 q"
+      let &t_SR .= "\<Esc>[2 q"
+      let &t_EI .= "\<Esc>[2 q"
+    endif
+    " Eliminate Strange tmux status window disappear bug
+    autocmd VimLeave * execute "echo ''"
 " }}
  "GENERAL {{
     set hlsearch
