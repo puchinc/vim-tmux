@@ -27,9 +27,9 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 # python + operator used when O(1)
 
 
-"""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 Corner Cases                
-"""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 # BFS
 while queue: continue
 
@@ -73,9 +73,9 @@ float(x)
 1//(-2) == -1 
 (-1)//(-2) == 0
 
-""" 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             SEQUENCE OPERATION 
-"""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 min(sequence)
 max(sequence)
 len(sequence)
@@ -126,9 +126,9 @@ nums[::-1] # new object
 nums[:1:-2] == [5, 3] # first spot is infered as the last number
 
 
-""" 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             DATA STRUCTURE 
-"""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 # Stack [ ...  top]
 stack = [1,2] # 
 stack.append(3) # [1,2,3]
@@ -182,9 +182,9 @@ heappush(max_heap, -element)
 
 # LINKED LIST
 
-""" 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 BINARY SEARCH
-"""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 # OOOOO[O] [X]XXXXXX
 # [1,1] find 1 inf loop if start < end
 def bsearch(self, nums, target):
@@ -208,11 +208,11 @@ def bsearch(self, nums, target):
     return -1
 
 
-"""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 TWO POINTERS
 main idea:
     swap with left or right when idx is not in the correct part
-"""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """
 TWO POINTERS -> <- 
@@ -380,14 +380,16 @@ while low >= 0 and high < len(s) and s[low] == s[high]:
 return low >= high # True if palindrom
 
 
-""" 
-                                    BFS 
-"""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+                                   BFS                               
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 from collections import deque
 if not root: 
     return 0
 
-# Tree
+""" 
+TREE
+""" 
 # level = 0
 queue = deque([root])
 while queue:
@@ -402,24 +404,37 @@ while queue:
         if node.right:
             queue.append(node.right)
 
-# Graph, need set
+"""
+UNDIRECTED GRAPH, need set
+Valid Tree: 
+    1. len(edges) == len(nodes) - 1
+    2. len(visited) == len(nodes), one connected component  
+"""
+level = 0
 queue = deque([root])
 visited = set([root])
 while queue:
+    # level += 1
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
         for child in [node.left, node.right]:
             if child and child not in visited: # Check possible children
                 queue.append(child)
                 visited.add(child)
-
-# Topological Sort
+# has cycle
+# if len(visited) != len(nodes)
+ 
+"""
+TOPOLOGICAL SORT (DAG)
+"""
 def topSort(graph):
     in_degree = {v: 0 for v in graph}
     for v in in_degree:
         for neighbor in v.neighbors:
             id_degree[neighbor] += 1
 
+    # 1. check than one topo order
+    # if len(queue) > 1
     queue = [v for v in in_degree if in_degree[v] == 0]
     order = []
     while queue:
@@ -429,14 +444,19 @@ def topSort(graph):
             in_degree[neighbor] -= 1
             if in_degree[neighbor] == 0:
                 queue.append(neighbor)
+
+    # has cycle
+    # for node in in_degree:
+    #     if in_degree[node] != 0:
+    #         return False
     return order
 
 # Bidirectional BFS
 # Given undirected graph, start and end, O(X ^ N) -> O(2 * X ^(N/2))
 
-"""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                                     DFS
-"""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # BST, INORDER
 class BSTIterator:
