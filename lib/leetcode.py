@@ -26,6 +26,49 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 # NOTE 
 # python + operator used when O(1)
 
+1. 分解问题的角度: fix 某一维度，尝试另一维度上的所有可能
+   a. 可能是array的(i, j)pointers, b. 可能是矩形的长与宽, c. 可能是tree的每一个subtree, d. 可能是情景题的每一对pair...
+2. 求所有解的, 暴力上backtracking吧
+3. 如果问最短/最少的, 先想BFS、DP这对好基友
+4. 如果环相关/重复访问, DFS + visited state雄起
+5. 如果问连通性, 静态靠DFS/BFS, 动态靠Union-Find
+6. 如果有依赖性, 想想Topologic order 和indegree
+7. DAG的万能套路 DFS+memo, 再到DP
+8. 建图的时候想想vertex, edges/neighbors, cost分别是什么。如果出现cycle, 别忘了给vertex增加状态
+9. 树相关, 永远有backtracking 和 pure recursion两条路
+10. 遇到字符串/字典/char board相关的, Trie tree总是可以试试的
+11. Range里求最大/最小/sum等特征值, Segment tree会是不错的选择
+12. Matrix和Array通常都是1. Two Pointers, 2. Sliding Window(fixed & not fixed), 3. DP
+13. DP题型往往是: a. 问你可不可以啊, 数量有多少啊, b. 两个string上match来match去的, c. 1D/2D array 相关, d. 博弈游戏
+14. 破解DAG cycle想想哪个维度是具有单调性的: 常见的steps, directions, paths
+15. Reversed idea非常重要, 可能会帮助你破题: 最长可能是某种最短的反面, 最多可能是某种最少的反面, obstacle的反面是reachable, subarray的反面是array中的剩下元素, left的反面是right。
+16. Look up别忘了HashMap/HashSet, HashMap + DLL是常见hybrid数据结构。
+17. 找规律试试那些旁门左道: 单调Stack/双端Deque
+18. 排序大法总是可以试试的
+19. 时空复杂度: a. backtracking相关, 想想branching factor和height
+                         b. DFS+memo/DP相关, 想想state数量, 以及每个state的cost
+                         c. tree相关, 总是要考虑balanced 和 single linked list的 
+                         d. array/矩阵相关, 先数数你有多少个for loops 
+                         e. binary search application相关, 别忘了check function开销
+                         f. stack/queue/deque相关, 常说的吃进去一次又吐出来一次
+                         g. Java的string是朵奇葩, string concatenation不是免费的
+                         h. 没人知道n是什么, 先告诉别人m，n，k，V，E是什么
+20. 比较不同sol的trade offs: a. Time/Space complexity异同
+                                             b. online/offline算法
+                                             c. pre-computation cost
+                                             d. 不同APIs的call frequency差异会导致不同的时间要求
+                                             e. extension: 是否适用于generic parameters/stream input
+                                             f. 线程安全/large scale
+
+简而言之 DP有六部曲 个人建议面试时写在白板上 清楚明了 一步都不能少 基本上你写出这些 implement起来也非常简单了 
+1. definition: dp 或者 dp[j] 表示什么含义，比如largest subarray sum ending at arr, and must include arr. 注意语言描述, 包括还是不包括arr/matrix[j]
+2. induction rule: dp 的 dependency 是怎么样的，依赖于dp[i-1] 还是 dp[i+1] 还是 dp[k] for all k < i or all k > i 等等，试着过几个小例子推导一下
+3. base case:  往往是dp[0]，二维往往是第一行， 第一列，也就是dp[0], dp[0][j]
+4. result: 往往的dp[n], max(dp) 等等, 从definition 出发
+5. filling order: 也就是你填dp表格的顺序，从induction rule 的 dependency出发 判断的从左到右 还是 从左上到右下
+6. optimized: 分为时间和空间两方面。时间的比较难，因为往往需要你重新define dp state 和 induction rule。空间比较简单，可以根据induction rule看出来，比如斐波那契数列: dp = dp[i - 1] + dp[i - 2], 那么dp 只依赖于前两个元素，就不需要create 整个 dp array，两个variable即可，空间可以从O(n)优化到O(1)。
+最后, 多总题多总结多积累小tips，熟能生巧后dp其实是非常简单，也非常有套路的，一些induction rule 的常见pattern 你一眼就能看出来了。
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 Corner Cases                
@@ -91,7 +134,7 @@ list1 + list2
 s.upper() 
 s.lower()
 s.replace("old", "new")
-s.find("substring") # return index
+s.find("substring") # return index or -1
 "substring" in s # return boolean
 s.isalpha()
 s.isdigit()
@@ -106,7 +149,8 @@ str.split(',')
 
 # List
 l.append(x) # equals to l[len(l):] = [x]
-l.insert(i, x)
+l.pop() # remove last element
+l.insert(i, x) # O(N)
 l.sort() # in-place
 l.sort(reverse=True)
 l.sort(key=lambda x: x[1])
@@ -124,7 +168,6 @@ nums = [1,2,3,4,5]
 nums.reverse() # in-place
 nums[::-1] # new object 
 nums[:1:-2] == [5, 3] # first spot is infered as the last number
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             DATA STRUCTURE 
