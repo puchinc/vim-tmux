@@ -1,5 +1,40 @@
+"""""""""""""""""""""
+Environment Setting:
+
+bash
+pip install --upgrade virtualenv
+virtualenv -p python3
+brew install pyenv
+pyenv install python3.5.6
+pyenv global 3.5.6
+"""""""""""""""""""""
+
+# Test Tensorflow installed
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
+hello = tf.constant('Hello, TensorFlow!')
+sess = tf.Session()
+print(sess.run(hello))
+
+
+"""""""""
+" NUMPY "
+"""""""""
 import numpy as np 
+
+np.load('data.npz')
+data = np.arange(6) # array([0, 1, 2, 3, 4, 5])
+data.reshape((3, 2))
+
+np.zeros((3, 28, 28)).reshape((3, -1)) # (10, 784)
+
+
+
+""""""""""""""
+" TENSORFLOW "
+""""""""""""""
+import tensorflow as tf
 
 ### VARIABLE ###
 with tf.name_scope():
@@ -21,8 +56,8 @@ with tf.variable_scope("encoder", reuse=reuse) as scope:
     print(W.get_shape().as_list())
     print(tf.shape(W))
 
-
 ### ARITHMITIC ###
+tf.add(a, b)
 tf.add(a, b)
 tf.matmul(A, B)
 tf.log(a)

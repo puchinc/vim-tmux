@@ -26,6 +26,12 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 # NOTE 
 # python + operator used when O(1)
 
+
+"""
+精華總結
+http://www.1point3acres.com/bbs/thread-436925-1-1.html
+http://joshuablog.herokuapp.com/Leetcode-%E6%80%BB%E7%BB%93.html
+
 1. 分解问题的角度: fix 某一维度，尝试另一维度上的所有可能
    a. 可能是array的(i, j)pointers, b. 可能是矩形的长与宽, c. 可能是tree的每一个subtree, d. 可能是情景题的每一对pair...
 2. 求所有解的, 暴力上backtracking吧
@@ -41,7 +47,8 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 12. Matrix和Array通常都是1. Two Pointers, 2. Sliding Window(fixed & not fixed), 3. DP
 13. DP题型往往是: a. 问你可不可以啊, 数量有多少啊, b. 两个string上match来match去的, c. 1D/2D array 相关, d. 博弈游戏
 14. 破解DAG cycle想想哪个维度是具有单调性的: 常见的steps, directions, paths
-15. Reversed idea非常重要, 可能会帮助你破题: 最长可能是某种最短的反面, 最多可能是某种最少的反面, obstacle的反面是reachable, subarray的反面是array中的剩下元素, left的反面是right。
+15. Reversed idea非常重要, 可能会帮助你破题: 最长可能是某种最短的反面, 
+    最多可能是某种最少的反面, obstacle的反面是reachable, subarray的反面是array中的剩下元素, left的反面是right。
 16. Look up别忘了HashMap/HashSet, HashMap + DLL是常见hybrid数据结构。
 17. 找规律试试那些旁门左道: 单调Stack/双端Deque
 18. 排序大法总是可以试试的
@@ -61,13 +68,16 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
                                              f. 线程安全/large scale
 
 简而言之 DP有六部曲 个人建议面试时写在白板上 清楚明了 一步都不能少 基本上你写出这些 implement起来也非常简单了 
-1. definition: dp 或者 dp[j] 表示什么含义，比如largest subarray sum ending at arr, and must include arr. 注意语言描述, 包括还是不包括arr/matrix[j]
+1. definition: dp 或者 dp[j] 表示什么含义，比如largest subarray sum ending at arr, and must include arr. 
+   注意语言描述, 包括还是不包括arr/matrix[j]
 2. induction rule: dp 的 dependency 是怎么样的，依赖于dp[i-1] 还是 dp[i+1] 还是 dp[k] for all k < i or all k > i 等等，试着过几个小例子推导一下
 3. base case:  往往是dp[0]，二维往往是第一行， 第一列，也就是dp[0], dp[0][j]
 4. result: 往往的dp[n], max(dp) 等等, 从definition 出发
 5. filling order: 也就是你填dp表格的顺序，从induction rule 的 dependency出发 判断的从左到右 还是 从左上到右下
-6. optimized: 分为时间和空间两方面。时间的比较难，因为往往需要你重新define dp state 和 induction rule。空间比较简单，可以根据induction rule看出来，比如斐波那契数列: dp = dp[i - 1] + dp[i - 2], 那么dp 只依赖于前两个元素，就不需要create 整个 dp array，两个variable即可，空间可以从O(n)优化到O(1)。
+6. optimized: 分为时间和空间两方面。时间的比较难，因为往往需要你重新define dp state 和 induction rule。
+   空间比较简单，可以根据induction rule看出来，比如斐波那契数列: dp = dp[i - 1] + dp[i - 2], 那么dp 只依赖于前两个元素，就不需要create 整个 dp array，两个variable即可，空间可以从O(n)优化到O(1)。
 最后, 多总题多总结多积累小tips，熟能生巧后dp其实是非常简单，也非常有套路的，一些induction rule 的常见pattern 你一眼就能看出来了。
+"""
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
@@ -190,6 +200,7 @@ len(hash)
 hash[key] = 10
 hash.get(key) # 10
 hash.get(key, 20) # getOrDefault
+defaultdict(int) # str, list, lambda: "init"
 del hash[key]
 for k, v in hash.iteritems():
 # Check hash contains key  

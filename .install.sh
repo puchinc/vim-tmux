@@ -26,9 +26,9 @@ fi
 
 # Python
 unlink /usr/local/bin/python
-ln -s /usr/local/bin/python3.6 /usr/local/bin/python
+ln -s /usr/local/bin/python3 /usr/local/bin/python
 unlink /usr/local/bin/pip
-ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
+ln -s /usr/local/bin/pip3 /usr/local/bin/pip
 
 # ZSH
 git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
