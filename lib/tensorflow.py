@@ -30,7 +30,6 @@ data.reshape((3, 2))
 np.zeros((3, 28, 28)).reshape((3, -1)) # (10, 784)
 
 
-
 """"""""""""""
 " TENSORFLOW "
 """"""""""""""
@@ -89,6 +88,11 @@ pool1_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
 dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
 dropout = tf.layers.dropout(inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
 
+# Activation
+tf.nn.sigmoid
+tf.nn.tanh
+tf.nn.relu(tf.add(tf.matmul(x, weights['decoder_h3']), biases['decoder_b3']))
+
 # Logits Layer
 logits = tf.layers.dense(inputs=dropout, units=10)
 
@@ -113,7 +117,12 @@ with tf.Session() as sess:
     sess.run(init)
     sess.run([train_op], 
             feed_dict={x: np.random.normal((batch_size, 28, 28, 1)})
-    sess.close()
+
+# Interactive Session
+sess = tf.InteractiveSession()
+# training
+# testing
+sess.close()
 
 ### GPU MANAGEMENT ###
 from tensorflow.python.client import device_lib

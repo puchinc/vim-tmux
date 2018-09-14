@@ -90,3 +90,27 @@ product = reduce((lambda x, y: x * y), [1, 2, 3, 4])
 # zip
 zipped = list(zip([1,2], [3,4])) # [(1,3), (2,4)]
 unzipped = list(zip(*zipped)) #[(1,2), (3,4)]
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+# Close SSL verification
+import ssl
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+import requests
+# Write this line before creating pyVmomi session
+requests.packages.urllib3.disable_warnings()
+
+# export PYTHONHTTPSVERIFY=0
+# python your_script
+# or
+# PYTHONHTTPSVERIFY=0 python your_script
