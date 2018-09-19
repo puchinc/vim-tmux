@@ -1,7 +1,6 @@
 cd ~
 
-# Download all dotfiles by hard link
-#ls -a vim-tmux | xargs rm -rf
+# Download all dotfiles by hard link #ls -a vim-tmux | xargs rm -rf
 src=vim-tmux
 dst=~
 absolute_dst=$(umask 077 && mkdir -p -- "$dst" && cd -P -- "$dst" && pwd -P) &&
@@ -29,6 +28,17 @@ unlink /usr/local/bin/python
 ln -s /usr/local/bin/python3 /usr/local/bin/python
 unlink /usr/local/bin/pip
 ln -s /usr/local/bin/pip3 /usr/local/bin/pip
+
+# Jupyter Notebook
+python3 -m pip install jupyter
+# Vim Binding
+# Create required directory in case (optional)
+mkdir -p $(jupyter --data-dir)/nbextensions
+# Clone the repository
+cd $(jupyter --data-dir)/nbextensions
+git clone https://github.com/lambdalisue/jupyter-vim-binding vim_binding
+# Activate the extension
+jupyter nbextension enable vim_binding/vim_binding
 
 # ZSH
 git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh

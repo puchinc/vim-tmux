@@ -56,3 +56,8 @@ ssh server_ip 'cd ~/Desktop; ls -a'
 ### ln
 # i node
 ls -i file_name
+
+
+### kill running port
+lsof -i tcp:3000
+kill -9 PID
