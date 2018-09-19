@@ -66,6 +66,8 @@ class ExtendedTest(Test):
     def __init__(self, realpart, imagpart):
         super().__init__()
 
+    if __name__ == '__main__':
+        pass
 
 """ 
 @ Functional Programming 
@@ -90,3 +92,19 @@ product = reduce((lambda x, y: x * y), [1, 2, 3, 4])
 # zip
 zipped = list(zip([1,2], [3,4])) # [(1,3), (2,4)]
 unzipped = list(zip(*zipped)) #[(1,2), (3,4)]
+
+# enumerate
+for idx, element in enumerate([4,3,2]):
+    print(idx, element)
+
+"""
+@ Special Usage
+"""
+# true if all conditions are satisfied
+all(val < x for val in nums) 
+
+# assume nums is sorted, insert val and maintain the sorted order
+bisect.insort(nums, val) 
+
+# print without newline
+print(string, end = '')

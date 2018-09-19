@@ -1,9 +1,6 @@
 if !exists("g:syntax_on")
     syntax enable
-    "https://stackoverflow.com/a/25276429
-    set re=1
 endif
-
 
  "fold setting
 set foldmarker={{,}} foldlevel=0
@@ -20,19 +17,11 @@ let mapleader = " "
     Plugin 'rking/ag.vim'
     Plugin 'tpope/vim-surround'
     Plugin 'tpope/vim-repeat'
+    Plugin 'motus/pig.vim'
+    Plugin 'pangloss/vim-javascript'
     Plugin 'djoshea/vim-autoread'
     Plugin 'xolox/vim-reload'
-    Plugin 'motus/pig.vim'
-    " JavaScript {{
-    Plugin 'pangloss/vim-javascript'
-    Plugin 'mxw/vim-jsx'
-    "Plugin 'w0rp/ale'
-        "let g:ale_sign_error = '●' " Less aggressive than the default '>>'
-        "let g:ale_sign_warning = '.'
-        "let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
-        "let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
-        "highlight clear ALEWarningSign
-    "}}
+    Plugin 'vim-scripts/auto-pairs-gentle'
     " Auto Pairs{{
     " Cause cursor blinking
     " Plugin 'jiangmiao/auto-pairs'

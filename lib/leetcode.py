@@ -9,7 +9,6 @@ myPow
 https://www.jiuzhang.com/tutorial/segment-tree/237
 https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 
-
 """
 
 # TODO Pow(x, n)
@@ -21,11 +20,8 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 # naming for max, min, hash, set, dict...
 # max_, min_, maximum, minimum
 
-# 
-
 # NOTE 
 # python + operator used when O(1)
-
 
 """
 精華總結
@@ -92,7 +88,7 @@ if tree_node is not None: continue
 
 # Linked List
 if not head or not head.next: return None
-
+      
                           
 """                             TYPE CHECKING 
 value equal: ==, != 
@@ -107,10 +103,13 @@ Check false:
     if not input: pass
 """
 # Logical Operator
-and, or, not
+and, or, no
 
 # Numeric type
 # Integers have unlimited precision.
+float('inf')
+-float('inf')
+
 import sys
 sys.maxsize
 -sys.maxsize-1
@@ -118,6 +117,7 @@ sys.maxsize
 abs(x)
 int(x)
 float(x)
+round(x)
 5 / 2 == 2.5
 # The result is always rounded towards minus infinity: 
 5//2 == 2
@@ -135,7 +135,7 @@ len(sequence)
 
 # initialize sequence
 [False] * 5 # 1D init
-[[0] * 3 for _ in range(10)] # 2D init
+[[0] * 3 for _ in range(10)] # 2D init, copy reference
 
 # concat sequence
 list1 + list2
@@ -152,15 +152,21 @@ s.split(",")
 ",".join(['first', 'second'])
 ord('a') == 97
 chr(97) == 'a'
-# remove substring
+# remove leading or trailing substring
 str.strip("pattern")
 # split
 str.split(',')
 
+# Regex
+re.findall(r'\w+', 'app, book. code') # ['app', 'book', 'code']
+
+
 # List
 l.append(x) # equals to l[len(l):] = [x]
 l.pop() # remove last element
+l.pop(0) # remove first element
 l.insert(i, x) # O(N)
+l.extend([1,2,3])
 l.sort() # in-place
 l.sort(reverse=True)
 l.sort(key=lambda x: x[1])
@@ -168,6 +174,7 @@ l.index("element")
 
 sorted(l) # iterable -> new list
 sorted({1:'a', 2: 'b'}) == [1, 2] # collect keys O(N), sort O(NlogN)
+sorted(List, key=lambda x: x[1])
 
 # list comprehension
 vec = [[1,2,3], [4,5,6], [7,8,9]]
@@ -186,12 +193,14 @@ nums[:1:-2] == [5, 3] # first spot is infered as the last number
 stack = [1,2] # 
 stack.append(3) # [1,2,3]
 stack.pop()
+stack[-1]
 
-# Queue [ enqueue ... dequeue]
+# Queue [ dequeue ... enqueue]
 from collections import deque
 queue = deque([])
 queue.append(3)
 queue.popleft()
+queue[0]
 
 # Hash
 hash = {}
@@ -511,8 +520,32 @@ def topSort(graph):
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                                     DFS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                   
+# POSTORDER, Divide and Conquer
+def dfs(self, root):
+    if not root:
+        # return 0 / None
 
-# BST, INORDER
+    # divide
+    left = self.dfs(root.left)
+    right = self.dfs(root.right)
+
+    # merge
+    res = 
+    return res
+
+def iterativeInorder(node):
+    s = []
+    while s or node:
+        if node:
+            s.add(node)
+            node =  node.left
+        else:
+            node = s.pop()
+            visit(node)
+            node = node.right
+
+# INORDER, BST
 class BSTIterator:
     """
     @param: root: The root of binary tree.
@@ -534,7 +567,7 @@ class BSTIterator:
     """
     def next(self):
         node = self.stack[-1]
-        if node.right is not None:
+        if node.right:
             n = node.right
             while n != None:
                 self.stack.append(n)
