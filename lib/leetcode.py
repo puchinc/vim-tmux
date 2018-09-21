@@ -158,7 +158,12 @@ str.strip("pattern")
 str.split(',')
 
 # Regex
-re.findall(r'\w+', 'app, book. code') # ['app', 'book', 'code']
+import re
+re.findall('\w+', 'app, book. code') # ['app', 'book', 'code']
+re.search('\d{3,5}', '1234d(3333)').group(0) #  first location
+# \d == [0-9]
+# \w == [a-zA-Z0-9_]
+# \W == [^a-zA-Z0-9_]
 
 
 # List
@@ -170,6 +175,7 @@ l.extend([1,2,3])
 l.sort() # in-place
 l.sort(reverse=True)
 l.sort(key=lambda x: x[1])
+l.sort(key=lambda x: (-x[1], x[0])) # sort by multiple attributes
 l.index("element")
 
 sorted(l) # iterable -> new list
@@ -178,7 +184,8 @@ sorted(List, key=lambda x: x[1])
 
 # list comprehension
 vec = [[1,2,3], [4,5,6], [7,8,9]]
-[num for elem in vec for num in elem]
+[if num > 0 else 0 num for elem in vec for num in elem]
+[num for elem in vec for num in elem if num > 0] # filter
 
 # reverse
 nums = [1,2,3,4,5]
@@ -531,19 +538,21 @@ def dfs(self, root):
     right = self.dfs(root.right)
 
     # merge
-    res = 
+    res = left + right
     return res
 
 def iterativeInorder(node):
-    s = []
-    while s or node:
-        if node:
-            s.add(node)
-            node =  node.left
-        else:
-            node = s.pop()
+    stack = []
+    while stack or node:
+        # visit node from stack, move node ->
+        if not node:
+            node = stack.pop()
             visit(node)
             node = node.right
+        # push all / branch
+        else:
+            stack.append(node)
+            node = node.left
 
 # INORDER, BST
 class BSTIterator:
@@ -552,6 +561,7 @@ class BSTIterator:
     """
     def __init__(self, root):
         self.stack = []
+        # push all / branch
         while root != None:
             self.stack.append(root)
             root = root.left
@@ -566,15 +576,56 @@ class BSTIterator:
     @return: return next node
     """
     def next(self):
-        node = self.stack[-1]
-        if node.right:
-            n = node.right
-            while n != None:
-                self.stack.append(n)
-                n = n.left
-        else:
-            n = self.stack.pop()
-            while self.stack and self.stack[-1].right == n:
-                n = self.stack.pop()
-        
+        stack = self.stack
+        node = stack.pop()
+
+        # push all right / branch 
+        right = node.right
+        while right:
+            stack.append(right)
+            right = right.left
         return node
+
+    def prev(self):
+        stack = self.stack
+        node = stack.pop()
+
+        # push all left \ branch
+        left = node.left
+        while left:
+            stack.append(left)
+            left = left.right
+        return node
+
+# COMBINATION DFS
+def subset(nums):
+    def helper(nums, path, res, start):
+        res.append(path[:])
+        for i in range(start, len(nums)):
+            # i > 0     avoid repeat same element in path
+            # i > start avoid repeat same path in result
+            if i > 0 and nums[i] == nums[i - 1]: 
+                continue
+            path.append(nums[i])
+            helper(nums, path, res, i + 1) # i if repeat choose
+            path.pop()
+
+    res = []
+    nums.sort()
+    helper(nums, [], res, 0)
+    return res
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                            Union Find
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+parents = [i for i in range(n)]
+def find(p):
+    while p != parents[p]:
+        parents[p] = parents[parents[p]]
+        p = parents[p]
+    return p
+
+def union(p, q):
+    parents[find(p)] = find(q)
+

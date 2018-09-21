@@ -21,13 +21,6 @@ let mapleader = " "
     Plugin 'pangloss/vim-javascript'
     Plugin 'djoshea/vim-autoread'
     Plugin 'xolox/vim-reload'
-    Plugin 'vim-scripts/auto-pairs-gentle'
-    " Auto Pairs{{
-    " Cause cursor blinking
-    " Plugin 'jiangmiao/auto-pairs'
-        "let g:AutoPairsFlyMode = 0
-        "let g:AutoPairsShortcutBackInsert = '<C-b>'
-    "}}
     "Undotree {{
     Plugin 'mbbill/undotree'
         nnoremap <leader>u :UndotreeToggle<CR>

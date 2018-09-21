@@ -8,7 +8,6 @@ Sets: {1, 2, 3}
 @ TYPE
 """
 # int, float, complex
-
 # type annotation
 # static type checker: mypy
 from typing import List, Tuple, Dict
@@ -16,6 +15,7 @@ def annotation(name: str, id: int) -> List[int]:
     print(name)
     print(id)
     return [3,4]
+ 
 
 """ 
 @ NAMING 
@@ -88,6 +88,8 @@ list(filter(lambda x: x < 0, range(-10, 10)))
 # Reduce
 from functools import reduce
 product = reduce((lambda x, y: x * y), [1, 2, 3, 4])
+# sum, min, max
+sum(nums)
 
 # zip
 zipped = list(zip([1,2], [3,4])) # [(1,3), (2,4)]
@@ -112,6 +114,20 @@ print(string, end = '')
 if __name__ == '__main__':
     main()
 
+
+"""
+@ File I/O
+"""
+fp = input() # read from stdin
+with open(fp, 'r') as f:
+    # data = f.readlines()
+    data = f.read().split('\n')
+    
+
+with open(fp, 'w') as f:
+    f.write(data)
+
+
 # Close SSL verification
 import ssl
 try:
@@ -129,3 +145,5 @@ requests.packages.urllib3.disable_warnings()
 # python your_script
 # or
 # PYTHONHTTPSVERIFY=0 python your_script
+    
+
