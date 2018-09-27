@@ -99,6 +99,19 @@ unzipped = list(zip(*zipped)) #[(1,2), (3,4)]
 for idx, element in enumerate([4,3,2]):
     print(idx, element)
 
+
+"""
+@ File I/O
+"""
+fp = input() # read from stdin
+with open(fp, 'r') as f:
+    # data = f.readlines()
+    data = f.read().split('\n')
+    
+
+with open(fp, 'w') as f:
+    f.write(data)
+
 """
 @ Special Usage
 """
@@ -115,18 +128,9 @@ if __name__ == '__main__':
     main()
 
 
-"""
-@ File I/O
-"""
-fp = input() # read from stdin
-with open(fp, 'r') as f:
-    # data = f.readlines()
-    data = f.read().split('\n')
-    
-
-with open(fp, 'w') as f:
-    f.write(data)
-
+# pretty print
+from pprint import pprint 
+pprint(string)
 
 # Close SSL verification
 import ssl

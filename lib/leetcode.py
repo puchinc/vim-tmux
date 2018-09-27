@@ -165,7 +165,6 @@ re.search('\d{3,5}', '1234d(3333)').group(0) #  first location
 # \w == [a-zA-Z0-9_]
 # \W == [^a-zA-Z0-9_]
 
-
 # List
 l.append(x) # equals to l[len(l):] = [x]
 l.pop() # remove last element
@@ -190,8 +189,13 @@ vec = [[1,2,3], [4,5,6], [7,8,9]]
 # reverse
 nums = [1,2,3,4,5]
 nums.reverse() # in-place
+list(reversed(nums[2:])) # need list
 nums[::-1] # new object 
 nums[:1:-2] == [5, 3] # first spot is infered as the last number
+
+# random sample
+import random
+nums[random.randint(0, len(nums) - 1)]
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             DATA STRUCTURE 
@@ -233,7 +237,7 @@ OrderedDict()
 s = set()
 s = set([1,2,3])
 s.add(1)
-s.discard(10)
+s.discard(10) # remove will raise KeyError
 x in s
 len(s)
 
@@ -250,7 +254,23 @@ heappush(max_heap, -element)
 -heappop(max_heap)
 -max_heap[0] # get smallest
 
-# LINKED LIST
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+                                LINKED LIST
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+# Reverse
+prev, cur = head, head.next
+prev.next = None
+while cur:
+    next = cur.next
+    cur.next = prev
+    prev, cur = cur, next
+new_head = prev
+
+# Slow Fast => slow will >= middle
+slow, fast = head, head.next
+while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 BINARY SEARCH
@@ -579,7 +599,7 @@ class BSTIterator:
         stack = self.stack
         node = stack.pop()
 
-        # push all right / branch 
+        # push all right / branch, from left to right
         right = node.right
         while right:
             stack.append(right)
@@ -590,30 +610,127 @@ class BSTIterator:
         stack = self.stack
         node = stack.pop()
 
-        # push all left \ branch
+        # push all left \ branch, from right to left
         left = node.left
         while left:
             stack.append(left)
             left = left.right
         return node
 
-# COMBINATION DFS
+# COMBINATION DFS, using START
 def subset(nums):
-    def helper(nums, path, res, start):
+    def helper(nums, res, path, start):
         res.append(path[:])
         for i in range(start, len(nums)):
-            # i > 0     avoid repeat same element in path
-            # i > start avoid repeat same path in result
+            # i > 0     distinct subset elements (e.g. [1, 2, 3])
+            # i > start distinct subsets (e.g. [1, 2, 2])
             if i > 0 and nums[i] == nums[i - 1]: 
                 continue
             path.append(nums[i])
-            helper(nums, path, res, i + 1) # i if repeat choose
+            helper(nums, res, path, i + 1) # i if repeat choose
             path.pop()
 
     res = []
-    nums.sort()
-    helper(nums, [], res, 0)
+    nums.sort() # having repeat
+    helper(nums, res, [], 0)
     return res
+
+# PERMUTATION DFS, using VISITED
+def permutation(nums):
+    def helper(nums, res, path, visited):
+        if len(path) == len(nums):
+            res.append(path[:])
+
+        for i in range(len(nums)):
+            if visited[i]:
+                continue
+            # [1_, 2_, not visited 2, cur -> 2_, 3] is not allowed
+            # i > 0     distinct permutation elements (e.g. [1, 2, 3])
+            # i > start distinct permutations (e.g. [1, 2, 2])
+            if i > 0 and nums[i] == nums[i - 1] and not visited[i  -1]: 
+                continue                                                
+
+            visited[i] = True
+            path.append(nums[i])
+            helper(nums, res, path, visited)
+            path.pop()
+            visited[i] = False
+
+    res = []
+    nums.sort() # having repeat
+    helper(nums, res, [], [False] * len(nums))
+    return res
+
+# ITERATIVE PERMUTATION
+
+# prev  _2 4  3 1 (find 2 < 4)
+#       _3 4 _2 1
+# next  _3 1  2 4 (find 3 > 1)
+def next_permutation(nums):
+    for pivot in range(len(nums) - 2, -1, -1):
+        if nums[pivot] < nums[pivot + 1]:
+            for right in range(len(nums) - 1, pivot, -1):
+                if nums[pivot] < nums[right]:
+                    nums[pivot], nums[right] = nums[right], nums[pivot]
+                    nums[pivot + 1:] = nums[:pivot:-1]
+                    return nums
+                    # return True 
+
+    return nums[::-1]
+    # return False
+
+def prev_permutation(nums):
+    for pivot in range(len(nums) - 2, -1, -1):
+        if nums[pivot] > nums[pivot + 1]:
+            for right in range(len(nums), pivot, -1):
+                if nums[pivot] > nums[right]:
+                    nums[pivot], nums[right] = nums[right], nums[pivot]
+                    nums[pivot + 1:] = nums[:pivot:-1]
+                    return nums
+                    # return True
+    return nums[::-1]
+    # return False
+
+# MEMOIZATION: when parameter easy e.g. i, j
+# word break / wildcard matching return sufix combinations
+# palindrom memoization
+# use hash memo[(i, j)] in some cases
+def memoization(s):
+    n = len(s)
+    memo = [[False] * n for _ in range(n)]
+    for i in range(n):
+        memo[i][i] = True
+    for i in range(1, n):
+        memo[i][i-1] = True
+    
+    for span in range(1, n):
+        for i in range(n - span):
+            j = i + span
+            memo[i][j] = memo[i+1][j-1] and s[i] == s[j]
+    return memo
+
+def enumeratePalindrome(s):
+    def middle(s, i, j):
+        while i >= 0 and j < len(s) and s[i] == s[j]:
+            i, j = i -1, j + 1
+        return s[i + 1: j] # longest palindrome
+    middle(s, mid, mid)
+    middle(s, mid, mid+1)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                            Array, Interval
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# PREFIX SUM
+prefix = [0] * (n + 1)
+for i in range(n):
+    prefix[i + 1] = prefix[i] + nums[i]
+sum(i, j) = prefix[j + 1] - prefix[i]
+
+# PREFIX SUM DP
+prefix = 0
+for i in range(n):
+    prefix = prefix + nums[i]
+sum(i, j) = prefix[j + 1] - prefix[i]
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                             Union Find
@@ -629,3 +746,44 @@ def find(p):
 def union(p, q):
     parents[find(p)] = find(q)
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                        Dynamic Programming
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# SOLVE MATH PROBLEM FIRST
+# Step 1: (LHS) State Definition, from last state
+# Step 2: (RHS) Transition Function
+# Step 3: (IF)  Edge Case, initial
+# Step 4: (FOR) Compute Order
+
+# CATEGORIES
+# Max/Min, e.g. path
+coin[n] = min(coin[n - c1], coin[n - c2]...) + 1
+# Count
+count[i][j] = count[i-1][j] + count[i][j-1]
+# Exist
+for j in range(i-1):
+    jump[i] = jump[i] or (jump[j] and A[j] + j >= i)
+
+
+# Print Path
+pi = sizeof(dp) # dp[i][j] choose dp[i-1][??]
+dp[i][j] = value
+pi[i][j] = choice 
+
+
+# Space Optimize
+# pattern: transition function
+#          e.g. f[i] = f[i-1] + ... , i == now, i - 1 == old
+dp = [[0] * n for _ in range(len([old, now]))]
+old, now = -1, 0
+for loop:
+    old, now = now, 1 - now
+    # old, now = (old + 1) % 2, (now + 1) % 2
+
+
+# Time Optimize
+# 1. Look at transition function
+# 2. Draw picture
+
+# 序列型：初始化容易
+# 座標型
