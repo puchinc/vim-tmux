@@ -44,6 +44,11 @@ lexical_scoping(3)(4)
 add3 = lexical_scoping(3)
 add3(4) == 7
 
+def global_var():
+    global x
+    print(x) # 10
+x = 10
+
 # confusing 
 i = 4
 def foo(x):
@@ -151,3 +156,7 @@ requests.packages.urllib3.disable_warnings()
 # PYTHONHTTPSVERIFY=0 python your_script
     
 
+# HTTPS/URL Encoding
+from urllib.parse import parse_url, parse_qs
+url = 'amount=1000&merchant=123456789&destination[account]=111111&destination[amount]=877'
+print(parse_qs(url))

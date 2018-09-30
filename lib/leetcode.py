@@ -181,6 +181,9 @@ sorted(l) # iterable -> new list
 sorted({1:'a', 2: 'b'}) == [1, 2] # collect keys O(N), sort O(NlogN)
 sorted(List, key=lambda x: x[1])
 
+# insertion sort
+bisect.insort(nums, val)
+
 # list comprehension
 vec = [[1,2,3], [4,5,6], [7,8,9]]
 [if num > 0 else 0 num for elem in vec for num in elem]
@@ -200,6 +203,19 @@ nums[random.randint(0, len(nums) - 1)]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             DATA STRUCTURE 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+# List 
+l = [1, 2]
+t = (3, 4)
+array = []
+# append
+array.append(l)
+array.append(t) # [[1, 2], (3, 4)]
+# extend
+array += l
+array += t # [1, 2, 3, 4]
+# list extend list
+l + list(t) # [1, 2, 3, 4]
+
 # Stack [ ...  top]
 stack = [1,2] # 
 stack.append(3) # [1,2,3]
@@ -229,7 +245,7 @@ if dict_.get(key) is not None: pass
 if key in dict_: pass
 if e not in list_: pass
 
-# RBTree
+# LinkedHashMap
 from collections import OrderedDict
 OrderedDict()
 
@@ -507,6 +523,7 @@ while queue:
     # level += 1
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
+        traverse(node)
         for child in [node.left, node.right]:
             if child and child not in visited: # Check possible children
                 queue.append(child)
@@ -647,7 +664,7 @@ def permutation(nums):
             # [1_, 2_, not visited 2, cur -> 2_, 3] is not allowed
             # i > 0     distinct permutation elements (e.g. [1, 2, 3])
             # i > start distinct permutations (e.g. [1, 2, 2])
-            if i > 0 and nums[i] == nums[i - 1] and not visited[i  -1]: 
+            if i > start and nums[i] == nums[i - 1] and not visited[i -1]: 
                 continue                                                
 
             visited[i] = True
@@ -746,6 +763,25 @@ def find(p):
 def union(p, q):
     parents[find(p)] = find(q)
 
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                            Bitwise Operation
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def count_one(n):
+    count = 0
+    while n:
+        n = n & (n - 1)
+        count += 1
+    return count
+
+def count_ones(n):
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = dp[i >> 1] + i % 2
+    return dp
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                         Dynamic Programming
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -754,6 +790,7 @@ def union(p, q):
 # Step 2: (RHS) Transition Function
 # Step 3: (IF)  Edge Case, initial
 # Step 4: (FOR) Compute Order
+# Be careful about dp table and original list 
 
 # CATEGORIES
 # Max/Min, e.g. path
@@ -764,12 +801,10 @@ count[i][j] = count[i-1][j] + count[i][j-1]
 for j in range(i-1):
     jump[i] = jump[i] or (jump[j] and A[j] + j >= i)
 
-
 # Print Path
 pi = sizeof(dp) # dp[i][j] choose dp[i-1][??]
 dp[i][j] = value
 pi[i][j] = choice 
-
 
 # Space Optimize
 # pattern: transition function
@@ -780,10 +815,13 @@ for loop:
     old, now = now, 1 - now
     # old, now = (old + 1) % 2, (now + 1) % 2
 
-
 # Time Optimize
 # 1. Look at transition function
 # 2. Draw picture
 
-# 序列型：初始化容易
+# 序列型：初始化容易 = 0
 # 座標型
+# Partition: continuous
+
+# Backpack
+# dp size = weight
