@@ -1,3 +1,4 @@
+# TODO {{
 """ 
 @ Redo again
 
@@ -10,7 +11,6 @@ https://www.jiuzhang.com/tutorial/segment-tree/237
 https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 
 """
-
 # TODO Pow(x, n)
 # -1 // 2, special numerical operation handling
 # see how others handle math problem
@@ -22,12 +22,12 @@ https://www.jiuzhang.com/solution/strstr-ii/#tag-highlight-lang-python
 
 # NOTE 
 # python + operator used when O(1)
+# }}
 
+# 精華總結 {{
 """
-精華總結
 http://www.1point3acres.com/bbs/thread-436925-1-1.html
 http://joshuablog.herokuapp.com/Leetcode-%E6%80%BB%E7%BB%93.html
-
 1. 分解问题的角度: fix 某一维度，尝试另一维度上的所有可能
    a. 可能是array的(i, j)pointers, b. 可能是矩形的长与宽, c. 可能是tree的每一个subtree, d. 可能是情景题的每一对pair...
 2. 求所有解的, 暴力上backtracking吧
@@ -74,11 +74,12 @@ http://joshuablog.herokuapp.com/Leetcode-%E6%80%BB%E7%BB%93.html
    空间比较简单，可以根据induction rule看出来，比如斐波那契数列: dp = dp[i - 1] + dp[i - 2], 那么dp 只依赖于前两个元素，就不需要create 整个 dp array，两个variable即可，空间可以从O(n)优化到O(1)。
 最后, 多总题多总结多积累小tips，熟能生巧后dp其实是非常简单，也非常有套路的，一些induction rule 的常见pattern 你一眼就能看出来了。
 """
-
+# }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 Corner Cases                
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+# {{
 # BFS
 while queue: continue
 
@@ -125,10 +126,12 @@ round(x)
 (-1)//2 == -1 
 1//(-2) == -1 
 (-1)//(-2) == 0
+# }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             SEQUENCE OPERATION 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+# {{
 min(sequence)
 max(sequence)
 len(sequence)
@@ -199,10 +202,12 @@ nums[:1:-2] == [5, 3] # first spot is infered as the last number
 # random sample
 import random
 nums[random.randint(0, len(nums) - 1)]
+# }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             DATA STRUCTURE 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+# {{
 # List 
 l = [1, 2]
 t = (3, 4)
@@ -250,8 +255,8 @@ from collections import OrderedDict
 OrderedDict()
 
 # Set
-s = set()
-s = set([1,2,3])
+s = {}
+s = {1, 2, (2,4)}
 s.add(1)
 s.discard(10) # remove will raise KeyError
 x in s
@@ -269,10 +274,12 @@ max_heap = []
 heappush(max_heap, -element)
 -heappop(max_heap)
 -max_heap[0] # get smallest
+# }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 LINKED LIST
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+# {{
 # Reverse
 prev, cur = head, head.next
 prev.next = None
@@ -287,11 +294,12 @@ slow, fast = head, head.next
 while fast and fast.next:
     slow = slow.next
     fast = fast.next.next
+# }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 BINARY SEARCH
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-# OOOOO[O] [X]XXXXXX
+# OOOOO[O] [X]XXXXXX  {{
 # [1,1] find 1 inf loop if start < end
 def bsearch(self, nums, target):
     if not nums: 
@@ -312,7 +320,7 @@ def bsearch(self, nums, target):
     if nums[end] == target:
         return end
     return -1
-
+# }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 TWO POINTERS
@@ -320,15 +328,15 @@ main idea:
     swap with left or right when idx is not in the correct part
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+# TWO POINTERS -> <-  {{
 """
-TWO POINTERS -> <- 
-
 unstable
 
 1. qsort/qselect
 2. two sum series
 """
-# Two way partition : ... right | left  ... 
+
+# Two way partition : ... right | left  ...  
 left, right = 0, len(nums) - 1
 while left <= right:
     if nums[left] <= pivot: # quick sort use < pivot
@@ -339,10 +347,10 @@ while left <= right:
         nums[left], nums[right] = nums[right], nums[left]
         left += 1
         right -= 1
+# }}
 
+# TWO POINTERS -> -> {{
 """
-TWO POINTERS -> -> 
-
 stable
 1. Two way partition : ... | left  ... 
 2. Sliding Window
@@ -473,10 +481,9 @@ def insertion(nums):
         while i > 0 and nums[i-1] > nums[i]:
             nums[i-1], nums[i] = nums[i], nums[i-1]
             i -= 1
+# }}
 
-"""
-TWO POINTERS <- ->  
-"""
+# TWO POINTERS <- ->  {{
 # Palindrome
 left, right = middle, middle # odd
 left, right = middle, middle + 1 # even
@@ -484,7 +491,7 @@ while low >= 0 and high < len(s) and s[low] == s[high]:
     low -= 1
     high += 1
 return low >= high # True if palindrom
-
+# }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                    BFS                               
@@ -493,9 +500,11 @@ from collections import deque
 if not root: 
     return 0
 
+# Tree {{
 """ 
 TREE
 """ 
+
 # level = 0
 queue = deque([root])
 while queue:
@@ -509,16 +518,18 @@ while queue:
             queue.append(node.left)
         if node.right:
             queue.append(node.right)
+# }}
 
+UNDIRECTED GRAPH, need set # {{
 """
-UNDIRECTED GRAPH, need set
 Valid Tree: 
     1. len(edges) == len(nodes) - 1
     2. len(visited) == len(nodes), one connected component  
 """
+
 level = 0
 queue = deque([root])
-visited = set([root])
+visited = {root}
 while queue:
     # level += 1
     for _ in range(len(queue)): # Level Order
@@ -530,10 +541,9 @@ while queue:
                 visited.add(child)
 # has cycle
 # if len(visited) != len(nodes)
- 
-"""
-TOPOLOGICAL SORT (DAG)
-"""
+ # }}
+
+# TOPOLOGICAL SORT (DAG) {{
 def topSort(graph):
     in_degree = {v: 0 for v in graph}
     for v in in_degree:
@@ -560,12 +570,13 @@ def topSort(graph):
 
 # Bidirectional BFS
 # Given undirected graph, start and end, O(X ^ N) -> O(2 * X ^(N/2))
+# }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                                     DFS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                    
-# POSTORDER, Divide and Conquer
+# POSTORDER, Divide and Conquer # {{
 def dfs(self, root):
     if not root:
         # return 0 / None
@@ -633,8 +644,9 @@ class BSTIterator:
             stack.append(left)
             left = left.right
         return node
+# }}
 
-# COMBINATION DFS, using START
+# COMBINATION DFS, using START{{
 def subset(nums):
     def helper(nums, res, path, start):
         res.append(path[:])
@@ -651,8 +663,9 @@ def subset(nums):
     nums.sort() # having repeat
     helper(nums, res, [], 0)
     return res
+# }}
 
-# PERMUTATION DFS, using VISITED
+# PERMUTATION DFS, using VISITED{{
 def permutation(nums):
     def helper(nums, res, path, visited):
         if len(path) == len(nums):
@@ -707,8 +720,9 @@ def prev_permutation(nums):
                     # return True
     return nums[::-1]
     # return False
+# }}
 
-# MEMOIZATION: when parameter easy e.g. i, j
+# MEMOIZATION: when parameter easy e.g. i, j{{
 # word break / wildcard matching return sufix combinations
 # palindrom memoization
 # use hash memo[(i, j)] in some cases
@@ -733,26 +747,36 @@ def enumeratePalindrome(s):
         return s[i + 1: j] # longest palindrome
     middle(s, mid, mid)
     middle(s, mid, mid+1)
+# }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                             Array, Interval
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# PREFIX SUM
+
+# PREFIX SUM {{
 prefix = [0] * (n + 1)
 for i in range(n):
     prefix[i + 1] = prefix[i] + nums[i]
 sum(i, j) = prefix[j + 1] - prefix[i]
+# }}
 
-# PREFIX SUM DP
+# PREFIX SUM DP{{
 prefix = 0
 for i in range(n):
     prefix = prefix + nums[i]
 sum(i, j) = prefix[j + 1] - prefix[i]
+# }}
+
+# SWEEP LINE{{
+start = sorted([(i.start, 1) for i in intervals])
+end = sorted([(i.end, -1) for i in intervals])
+# }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                             Union Find
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+# {{
 parents = [i for i in range(n)]
 def find(p):
     while p != parents[p]:
@@ -762,12 +786,12 @@ def find(p):
 
 def union(p, q):
     parents[find(p)] = find(q)
-
-
+# }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                             Bitwise Operation
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# {{
 def count_one(n):
     count = 0
     while n:
@@ -780,7 +804,7 @@ def count_ones(n):
     for i in range(1, n + 1):
         dp[i] = dp[i >> 1] + i % 2
     return dp
-
+# }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                         Dynamic Programming
@@ -825,3 +849,5 @@ for loop:
 
 # Backpack
 # dp size = weight
+
+
