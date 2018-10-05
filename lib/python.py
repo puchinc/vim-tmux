@@ -99,6 +99,8 @@ sum(nums)
 # zip
 zipped = list(zip([1,2], [3,4])) # [(1,3), (2,4)]
 unzipped = list(zip(*zipped)) #[(1,2), (3,4)]
+for [a, b], c in zip([[1,2], [3,4]], [5,6]):
+    print(a, b, c)
 
 # enumerate
 for idx, element in enumerate([4,3,2]):

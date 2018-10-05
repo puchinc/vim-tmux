@@ -5,6 +5,7 @@
 https://www.lintcode.com/problem/window-sum/description
 https://www.lintcode.com/problem/triangle-count/description
 myPow
+https://www.lintcode.com/problem/palindrome-partitioning-ii/description # use memo
 
 @ Review Later
 https://www.jiuzhang.com/tutorial/segment-tree/237
@@ -749,43 +750,73 @@ def enumeratePalindrome(s):
     middle(s, mid, mid+1)
 # }}
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                            Array, Interval
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# GRAPH DFS, Backtrack Path only, Record Visited forever {{
 
-# PREFIX SUM {{
-prefix = [0] * (n + 1)
-for i in range(n):
-    prefix[i + 1] = prefix[i] + nums[i]
-sum(i, j) = prefix[j + 1] - prefix[i]
-# }}
+# cycle detection 
+def dfs(graph, cycle, path, root, parent, visited):
+    for child in graph[root]:
+        if child not in visited:
+            visited.add(child)
+            path.append(child)
+            dfs(graph, cycle, path, child, root, visited)
+            path.pop()
+            # visited.remove(child) # shouldn't remove
+        elif child != parent:
+            for i in range(len(path)-1, -1, -1):
+                if path[i] == child:
+                    cycle.append(path[i:] + [child])
 
-# PREFIX SUM DP{{
-prefix = 0
-for i in range(n):
-    prefix = prefix + nums[i]
-sum(i, j) = prefix[j + 1] - prefix[i]
-# }}
-
-# SWEEP LINE{{
-start = sorted([(i.start, 1) for i in intervals])
-end = sorted([(i.end, -1) for i in intervals])
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                             Union Find
+
+M union and find operations on N objects takes O(N + M lg* N) time. 
+lg*N similar to O(1)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-# {{
-parents = [i for i in range(n)]
+# Simplist {{
+parent = [i for i in range(n)]
 def find(p):
-    while p != parents[p]:
-        parents[p] = parents[parents[p]]
-        p = parents[p]
-    return p
+    if p != parent[p]:
+        parent[p] = find(parent[p])
+    return parent[p]
 
-def union(p, q):
-    parents[find(p)] = find(q)
+def union(p, q): # p -> q's root parent
+    parent[find(p)] = find(q)
+# }}
+
+# Component Nums, Component Size {{
+
+parent = [-1 for i in range(n)]
+# parent = {i: -1 for i in range(n)}
+count = len(parent)
+def find(p): # quick find with path compression O(log* N)
+    if parent[p] < 0:
+        return p
+    parent[p] = find(parent[p])
+    return parent[p]
+
+def union(p, q): # quick union by size O(log* N)
+    root_p, root_q = find(p), find(q)
+    if root_p == root_q:
+        return
+
+    if parent[root_p] < parent[root_q]:
+        root_p, root_q = root_q, root_p
+
+    parent[root_q] += parent[root_p]
+    parent[root_p] = root_q
+    count -= 1
+# }}
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                            Array, Interval
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# SWEEP LINE {{
+start = sorted([(i.start, 1) for i in intervals])
+end = sorted([(i.end, -1) for i in intervals])
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -805,6 +836,7 @@ def count_ones(n):
         dp[i] = dp[i >> 1] + i % 2
     return dp
 # }}
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                         Dynamic Programming
@@ -834,20 +866,108 @@ pi[i][j] = choice
 # pattern: transition function
 #          e.g. f[i] = f[i-1] + ... , i == now, i - 1 == old
 dp = [[0] * n for _ in range(len([old, now]))]
-old, now = -1, 0
+old, now = 0, 1
 for loop:
-    old, now = now, 1 - now
+    old, now = now, old
     # old, now = (old + 1) % 2, (now + 1) % 2
 
 # Time Optimize
 # 1. Look at transition function
 # 2. Draw picture
 
-# 序列型：初始化容易 = 0
-# 座標型
-# Partition: continuous
+# COORDINATE{{
 
-# Backpack
-# dp size = weight
+# Unique Path
+dp[i][j] = dp[i-1][j] + dp[i][j-1] 
+dp[0][0] = 1
+
+# Maximum Product Subarray
+max_prod[i] = max(nums[i], nums[i] * max_prod[i-1], nums[i] * min_prod[i-1])
+min_prod[i] = min(nums[i], nums[i] * max_prod[i-1], nums[i] * min_prod[i-1])
+
+# Longest Continuous Increasing Subsequence
+dp[i] = max(1, dp[i-1] | nums[i-1] < nums[i])
+
+# Longest Increasing Subsequence
+dp[i] = max(1, [dp[j] for j in range(i) if nums[j] < nums[i]])
+
+# Bomb Enemy
+up[i][j] = up[i-1][j] + grid[i-1][j] == 'E'
+
+# }}
+
+# SEQUENCE{{
+"""
+dp[0] = empty                        
+"""
+
+# PREFIX SUM 
+prefix = [0] * (n + 1)
+for i in range(n):
+    prefix[i + 1] = prefix[i] + nums[i]
+interval_sum(i, j) = prefix[j + 1] - prefix[i]
+
+# Maximum Subarray
+min_sum[i + 1] = min(min_sum[i], prefix[i + 1])
+max_sum[i + 1] = max(max_sum[i], prefix[i + 1] - min_sum[i])
+
+# Best Time Buy and Sell
+min_val[i + 1] = min(min_val[i], nums[i])
+max_profix[i + 1] = max(max_profit[i], nums[i] - min_val[i])
+
+# Best Time Buy and Sell III
+dp[i + 1][j] = max(dp[i][j], dp[i][j-1] + P[i] - P[i - 1]) # Sell 
+dp[i + 1][j] = max(dp[i][j] + P[i] - P[i - 1], dp[i][j-1]) # Buy
+
+# Paint House
+dp[0] = [0] * k
+dp[i + 1][j] = min(dp[i][k] | k != j) + cost[i][j]
+
+# Digital Flip
+dp[i + 1][0] = min(dp[i][0], dp[i][1]) + nums[i] == 1
+dp[i + 1][1] = dp[i][1] + nums[i] == 0
 
 
+# }}
+
+# PARTITION{{
+"""
+continous
+"""
+
+# Decode Ways
+dp[0] = 1
+dp[i + 1] = (dp[i] if 1 <= s[i] <= 9) + (dp[i-1] if 11 <= s[i-1:i+1] <=26)
+
+# Perfect Square
+dp[i] = min(dp[i - j * j] for 1 <= j * j <= i) + 1
+
+# Palindrome Partitioning II
+dp[i + 1] = min(dp[j] + 1 for j in range(i + 1) if is_palindrome[j][i])
+
+# Copy Books
+dp[i][k] = min(dp[i][k], max(dp[j][k-1], sum(A[j:i])))
+dp <- inf
+dp[0][k] = 0
+
+# }}
+
+# BACKPACK {{
+"""
+dp = [] * weight
+"""
+
+# }}
+
+# Interval{{
+
+
+# }}
+
+# GAMBLE
+"""
+Define state from the 1st step
+"""
+# Coins in a Line {{
+dp[i] = (not dp[i - 1]) or (not dp[i - 2]) # choose one you lose or choose two you lose
+# }}
