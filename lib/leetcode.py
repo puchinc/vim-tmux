@@ -753,6 +753,10 @@ def enumeratePalindrome(s):
 # GRAPH DFS, Backtrack Path only, Record Visited forever {{
 
 # cycle detection 
+for a, b in edges:
+    graph[a].add(b) # DAG
+    graph[b].add(a) # Undirected Graph
+
 def dfs(graph, cycle, path, root, parent, visited):
     for child in graph[root]:
         if child not in visited:
@@ -771,10 +775,10 @@ def dfs(graph, cycle, path, root, parent, visited):
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                             Union Find
 
+UNDIRECTED GRAPH
 M union and find operations on N objects takes O(N + M lg* N) time. 
 lg*N similar to O(1)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 # Simplist {{
 parent = [i for i in range(n)]
 def find(p):
@@ -789,7 +793,7 @@ def union(p, q): # p -> q's root parent
 # Component Nums, Component Size {{
 
 parent = [-1 for i in range(n)]
-# parent = {i: -1 for i in range(n)}
+# named_set_parent = {i: -1 for i in range(n)} 
 count = len(parent)
 def find(p): # quick find with path compression O(log* N)
     if parent[p] < 0:
@@ -799,15 +803,19 @@ def find(p): # quick find with path compression O(log* N)
 
 def union(p, q): # quick union by size O(log* N)
     root_p, root_q = find(p), find(q)
-    if root_p == root_q:
-        return
+    if root_p != root_q:
+        if parent[root_p] < parent[root_q]:
+            root_p, root_q = root_q, root_p
 
-    if parent[root_p] < parent[root_q]:
-        root_p, root_q = root_q, root_p
+        parent[root_q] += parent[root_p]
+        parent[root_p] = root_q
+        count -= 1
 
-    parent[root_q] += parent[root_p]
-    parent[root_p] = root_q
-    count -= 1
+# cycle detection of undirected graph:
+# for v1, v2 in edges:
+#   if find(v1) == find(v2): find cycle
+#   else: union(v1, v2)
+
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -841,7 +849,7 @@ def count_ones(n):
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                         Dynamic Programming
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# SOLVE MATH PROBLEM FIRST
+# SOLVE MATH PROBLEM FIRST{{
 # Step 1: (LHS) State Definition, from last state
 # Step 2: (RHS) Transition Function
 # Step 3: (IF)  Edge Case, initial
@@ -874,12 +882,13 @@ for loop:
 # Time Optimize
 # 1. Look at transition function
 # 2. Draw picture
+# }}
 
 # COORDINATE{{
 
 # Unique Path
-dp[i][j] = dp[i-1][j] + dp[i][j-1] 
 dp[0][0] = 1
+dp[i][j] = dp[i-1][j] + dp[i][j-1] 
 
 # Maximum Product Subarray
 max_prod[i] = max(nums[i], nums[i] * max_prod[i-1], nums[i] * min_prod[i-1])
@@ -946,9 +955,9 @@ dp[i] = min(dp[i - j * j] for 1 <= j * j <= i) + 1
 dp[i + 1] = min(dp[j] + 1 for j in range(i + 1) if is_palindrome[j][i])
 
 # Copy Books
-dp[i][k] = min(dp[i][k], max(dp[j][k-1], sum(A[j:i])))
-dp <- inf
+init: inf
 dp[0][k] = 0
+dp[i][k] = min(dp[i][k], max(dp[j][k-1], sum(A[j:i])))
 
 # }}
 
@@ -957,6 +966,17 @@ dp[0][k] = 0
 dp = [] * weight
 """
 
+# Backpack (Max Weight)
+init: False
+dp[0][0] = True
+dp[i][j] = dp[i][j-1] or dp[i - A[j-1]][j-1] # j items can weigh to i
+
+init: 0
+for i in range(len(A)):
+    for j in range(w, A[i] - 1, -1)
+        dp[i] = max(dp[i], dp[i - A[j]] + A[j]) 
+
+
 # }}
 
 # Interval{{
@@ -964,10 +984,12 @@ dp = [] * weight
 
 # }}
 
-# GAMBLE
+# GAMBLE{{
 """
 Define state from the 1st step
 """
-# Coins in a Line {{
+# Coins in a Line 
 dp[i] = (not dp[i - 1]) or (not dp[i - 2]) # choose one you lose or choose two you lose
+
 # }}
+
