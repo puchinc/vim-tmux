@@ -884,7 +884,7 @@ for loop:
 # 2. Draw picture
 # }}
 
-# COORDINATE{{
+# COORDINATE {{
 
 # Unique Path
 dp[0][0] = 1
@@ -905,36 +905,36 @@ up[i][j] = up[i-1][j] + grid[i-1][j] == 'E'
 
 # }}
 
-# SEQUENCE{{
+# SEQUENCE {{
 """
 dp[0] = empty                        
 """
 
 # PREFIX SUM 
 prefix = [0] * (n + 1)
-for i in range(n):
-    prefix[i + 1] = prefix[i] + nums[i]
+for i in range(1, n + 1):
+    prefix[i] = prefix[i - 1] + nums[i - 1]
 interval_sum(i, j) = prefix[j + 1] - prefix[i]
 
 # Maximum Subarray
-min_sum[i + 1] = min(min_sum[i], prefix[i + 1])
-max_sum[i + 1] = max(max_sum[i], prefix[i + 1] - min_sum[i])
+min_sum[i] = min(min_sum[i - 1], prefix[i])
+max_sum[i] = max(max_sum[i - 1], prefix[i] - min_sum[i - 1])
 
 # Best Time Buy and Sell
-min_val[i + 1] = min(min_val[i], nums[i])
-max_profix[i + 1] = max(max_profit[i], nums[i] - min_val[i])
+min_val[i] = min(min_val[i - 1], nums[i - 1])
+max_profix[i] = max(max_profit[i - 1], nums[i - 1] - min_val[i - ])
 
 # Best Time Buy and Sell III
-dp[i + 1][j] = max(dp[i][j], dp[i][j-1] + P[i] - P[i - 1]) # Sell 
-dp[i + 1][j] = max(dp[i][j] + P[i] - P[i - 1], dp[i][j-1]) # Buy
+dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - 1] + P[i - 1] - P[i - 2]) # Sell 
+dp[i][j] = max(dp[i - 1][j] + P[i - 1] - P[i - 2], dp[i - 1][j - 1]) # Buy
 
 # Paint House
 dp[0] = [0] * k
-dp[i + 1][j] = min(dp[i][k] | k != j) + cost[i][j]
+dp[i][j] = min(dp[i - 1][k] | k != j) + cost[i - 1][j]
 
 # Digital Flip
-dp[i + 1][0] = min(dp[i][0], dp[i][1]) + nums[i] == 1
-dp[i + 1][1] = dp[i][1] + nums[i] == 0
+dp[i][0] = min(dp[i - 1][0], dp[i - 1][1]) + nums[i - 1] == 1
+dp[i][1] = dp[i - 1][1] + nums[i - 1] == 0
 
 
 # }}
@@ -946,13 +946,13 @@ continous
 
 # Decode Ways
 dp[0] = 1
-dp[i + 1] = (dp[i] if 1 <= s[i] <= 9) + (dp[i-1] if 11 <= s[i-1:i+1] <=26)
+dp[i] = (dp[i - 1] if 1 <= s[i - 1] <= 9) + (dp[i - 2] if 11 <= s[i - 2:i] <=26)
 
 # Perfect Square
 dp[i] = min(dp[i - j * j] for 1 <= j * j <= i) + 1
 
 # Palindrome Partitioning II
-dp[i + 1] = min(dp[j] + 1 for j in range(i + 1) if is_palindrome[j][i])
+dp[i] = min(dp[j] + 1 for j in range(i) if is_palindrome[j][i - 1])
 
 # Copy Books
 init: inf
@@ -966,16 +966,25 @@ dp[i][k] = min(dp[i][k], max(dp[j][k-1], sum(A[j:i])))
 dp = [] * weight
 """
 
-# Backpack (Max Weight)
-init: False
+# Backpack (Max Weight), Space Optimize O(W) <--
+dp = [[False] * (w + 1) for _ in range(n + 1)]
 dp[0][0] = True
-dp[i][j] = dp[i][j-1] or dp[i - A[j-1]][j-1] # j items can weigh to i
+dp[i][j] = dp[i - 1][j] or dp[i - 1][j - A[i - 1]] # j items can weigh to i
 
-init: 0
+dp = [0] * (w + 1)
 for i in range(len(A)):
     for j in range(w, A[i] - 1, -1)
-        dp[i] = max(dp[i], dp[i - A[j]] + A[j]) 
+        dp[j] = max(dp[j], dp[j - A[i]] + A[i]) 
 
+# Backpack (Combination, Distinct Items), Space Optimize O(W) <--
+dp = [[0] * (w + 1) for _ in range(n + 1)]
+dp[0][0] = 1
+dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i-1]] # [COUNT]
+
+# Backpack (Combination, Repeat Sample), Space Optimize O(W) <--
+dp = [0] * (w + 1)
+dp[0] = 1 # easy to forget this
+dp[i] = sum(dp[i - A[j]] for j in range(n)) # [COUNT]
 
 # }}
 
@@ -992,4 +1001,10 @@ Define state from the 1st step
 dp[i] = (not dp[i - 1]) or (not dp[i - 2]) # choose one you lose or choose two you lose
 
 # }}
+
+# DOUBLE SEQUENCE {{
+
+
+# }}
+
 
