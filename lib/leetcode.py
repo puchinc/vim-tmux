@@ -116,8 +116,10 @@ import sys
 sys.maxsize
 -sys.maxsize-1
 
+from math import floor, ceil
 abs(x)
 int(x)
+int(x, 16) # decimal to hex
 float(x)
 round(x)
 5 / 2 == 2.5
@@ -127,6 +129,22 @@ round(x)
 (-1)//2 == -1 
 1//(-2) == -1 
 (-1)//(-2) == 0
+
+# Exception Handling
+try:
+    pass
+
+except A:
+    print('Catch exception')
+except:
+    raise
+else:
+    # if no exception
+    pass
+
+finally:
+    pass
+
 # }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
@@ -652,8 +670,8 @@ def subset(nums):
     def helper(nums, res, path, start):
         res.append(path[:])
         for i in range(start, len(nums)):
-            # i > 0     distinct subset elements (e.g. [1, 2, 3])
-            # i > start distinct subsets (e.g. [1, 2, 2])
+            # i > 0     : distinct subset elements (e.g. [1, 2, 3])
+            # i > start : distinct subsets (e.g. [1, 2, 2])
             if i > 0 and nums[i] == nums[i - 1]: 
                 continue
             path.append(nums[i])
@@ -676,9 +694,9 @@ def permutation(nums):
             if visited[i]:
                 continue
             # [1_, 2_, not visited 2, cur -> 2_, 3] is not allowed
-            # i > 0     distinct permutation elements (e.g. [1, 2, 3])
-            # i > start distinct permutations (e.g. [1, 2, 2])
-            if i > start and nums[i] == nums[i - 1] and not visited[i -1]: 
+            # i > 0            : distinct permutation elements (e.g. [1, 2, 3])
+            # not visited[i-1] : distinct permutations (e.g. [1, 2, 2])
+            if i > 0 and nums[i] == nums[i - 1] and not visited[i -1]: 
                 continue                                                
 
             visited[i] = True
@@ -754,7 +772,7 @@ def enumeratePalindrome(s):
 
 # cycle detection 
 for a, b in edges:
-    graph[a].add(b) # DAG
+    graph[a].add(b) # Directed Graph
     graph[b].add(a) # Undirected Graph
 
 def dfs(graph, cycle, path, root, parent, visited):
@@ -775,16 +793,19 @@ def dfs(graph, cycle, path, root, parent, visited):
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                             Union Find
 
-UNDIRECTED GRAPH
-M union and find operations on N objects takes O(N + M lg* N) time. 
+1. M union and find operations on N objects takes O(N + M lg* N) time. 
 lg*N similar to O(1)
+2. Dynamic Graph
+
+DAG: no cycle 
+Tree: DAG + single parent
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # Simplist {{
 parent = [i for i in range(n)]
 def find(p):
-    if p != parent[p]:
-        parent[p] = find(parent[p])
-    return parent[p]
+    while parent[p] >= 0:
+        parent[p] = parent[parent[p]]
+    return p
 
 def union(p, q): # p -> q's root parent
     parent[find(p)] = find(q)
@@ -801,14 +822,15 @@ def find(p): # quick find with path compression O(log* N)
     parent[p] = find(parent[p])
     return parent[p]
 
-def union(p, q): # quick union by size O(log* N)
-    root_p, root_q = find(p), find(q)
-    if root_p != root_q:
-        if parent[root_p] < parent[root_q]:
-            root_p, root_q = root_q, root_p
+# p -> q, p is parent
+def union(p, q): # quick union by size O(log* N) 
+    root1, root2 = find(p), find(q)
+    if root1 != root2:
+        if parent[root2] < parent[root1]:
+            root1, root2 = root2, root1
 
-        parent[root_q] += parent[root_p]
-        parent[root_p] = root_q
+        parent[root1] += parent[root2]
+        parent[root2] = root1
         count -= 1
 
 # cycle detection of undirected graph:
@@ -895,10 +917,10 @@ max_prod[i] = max(nums[i], nums[i] * max_prod[i-1], nums[i] * min_prod[i-1])
 min_prod[i] = min(nums[i], nums[i] * max_prod[i-1], nums[i] * min_prod[i-1])
 
 # Longest Continuous Increasing Subsequence
-dp[i] = max(1, dp[i-1] | nums[i-1] < nums[i])
+dp[i] = max(1, dp[i - 1] | nums[i-1] < nums[i])
 
 # Longest Increasing Subsequence
-dp[i] = max(1, [dp[j] for j in range(i) if nums[j] < nums[i]])
+dp[i] = max(1, dp[j] | 0 <= j < i and nums[j] < nums[i])
 
 # Bomb Enemy
 up[i][j] = up[i-1][j] + grid[i-1][j] == 'E'
@@ -922,17 +944,21 @@ max_sum[i] = max(max_sum[i - 1], prefix[i] - min_sum[i - 1])
 
 # Best Time Buy and Sell
 min_val[i] = min(min_val[i - 1], nums[i - 1])
-max_profix[i] = max(max_profit[i - 1], nums[i - 1] - min_val[i - ])
+max_profix[i] = max(max_profit[i - 1], nums[i - 1] - min_val[i - 1])
 
 # Best Time Buy and Sell III
+dp = [[0] * (k + 1) for _ in range(n + 1)]
 dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - 1] + P[i - 1] - P[i - 2]) # Sell 
 dp[i][j] = max(dp[i - 1][j] + P[i - 1] - P[i - 2], dp[i - 1][j - 1]) # Buy
 
 # Paint House
+dp = [[float('inf')] * k for _ in range(n + 1)]
 dp[0] = [0] * k
 dp[i][j] = min(dp[i - 1][k] | k != j) + cost[i - 1][j]
 
 # Digital Flip
+dp = [[float('inf')] * 2 for _ in range(n + 1)]
+dp[0] = [0] * 2
 dp[i][0] = min(dp[i - 1][0], dp[i - 1][1]) + nums[i - 1] == 1
 dp[i][1] = dp[i - 1][1] + nums[i - 1] == 0
 
@@ -945,43 +971,51 @@ continous
 """
 
 # Decode Ways
+dp = [0] * (n + 1)
 dp[0] = 1
 dp[i] = (dp[i - 1] if 1 <= s[i - 1] <= 9) + (dp[i - 2] if 11 <= s[i - 2:i] <=26)
 
 # Perfect Square
-dp[i] = min(dp[i - j * j] for 1 <= j * j <= i) + 1
+dp = [float('inf')] * (n + 1)
+dp[0] = 0
+dp[i] = min(dp[i - j * j] | 1 <= j * j <= i) + 1
 
 # Palindrome Partitioning II
-dp[i] = min(dp[j] + 1 for j in range(i) if is_palindrome[j][i - 1])
+dp = [float('inf')] * (n + 1) 
+dp[0] = 0
+dp[i] = min(dp[j] + 1 | 0 <= j < i and is_palindrome[j][i - 1])
 
 # Copy Books
-init: inf
-dp[0][k] = 0
+dp = [[float('inf')] * (k + 1) for _ in range(n + 1)]
+dp[0] = [0] * (k + 1)
 dp[i][k] = min(dp[i][k], max(dp[j][k-1], sum(A[j:i])))
 
 # }}
 
 # BACKPACK {{
 """
-dp = [] * weight
+dp = [] * (weight + 1)
 """
 
 # Backpack (Max Weight), Space Optimize O(W) <--
+# last step: 
 dp = [[False] * (w + 1) for _ in range(n + 1)]
 dp[0][0] = True
-dp[i][j] = dp[i - 1][j] or dp[i - 1][j - A[i - 1]] # j items can weigh to i
+dp[i][j] = dp[i - 1][j] or dp[i - 1][j - A[i - 1]] # [EXIST] j items can weigh to i
 
 dp = [0] * (w + 1)
 for i in range(len(A)):
     for j in range(w, A[i] - 1, -1)
-        dp[j] = max(dp[j], dp[j - A[i]] + A[i]) 
+        dp[j] = max(dp[j], dp[j - A[i]] + A[i]) # [MAX/MIN]
 
 # Backpack (Combination, Distinct Items), Space Optimize O(W) <--
+# last step: _ 2 + 4 _ = 6 or 1 + 2 + _ 3 _ = 6
 dp = [[0] * (w + 1) for _ in range(n + 1)]
 dp[0][0] = 1
-dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i-1]] # [COUNT]
+dp[i][j] = dp[i - 1][j] + dp[i - 1][j - A[i - 1]] # [COUNT]
 
 # Backpack (Combination, Repeat Sample), Space Optimize O(W) <--
+# last step: 1 + 3 + 2 + _1_ = 7
 dp = [0] * (w + 1)
 dp[0] = 1 # easy to forget this
 dp[i] = sum(dp[i - A[j]] for j in range(n)) # [COUNT]
@@ -1006,5 +1040,4 @@ dp[i] = (not dp[i - 1]) or (not dp[i - 2]) # choose one you lose or choose two y
 
 
 # }}
-
 

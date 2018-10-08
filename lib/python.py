@@ -34,7 +34,7 @@ def _private_method():
 @ SCOPE 
 """
 
-# functions, classes, 
+# functions, classes, no block scope
 # list comprehension, generator
 def lexical_scoping(x):
     def adder(y):
