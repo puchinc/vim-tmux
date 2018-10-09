@@ -871,7 +871,8 @@ def count_ones(n):
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                         Dynamic Programming
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# SOLVE MATH PROBLEM FIRST{{
+# SOLVE MATH PROBLEM FIRST {{
+
 # Step 1: (LHS) State Definition, from last state
 # Step 2: (RHS) Transition Function
 # Step 3: (IF)  Edge Case, initial
@@ -892,16 +893,34 @@ pi = sizeof(dp) # dp[i][j] choose dp[i-1][??]
 dp[i][j] = value
 pi[i][j] = choice 
 
-# Space Optimize
-# pattern: transition function
-#          e.g. f[i] = f[i-1] + ... , i == now, i - 1 == old
-dp = [[0] * n for _ in range(len([old, now]))]
-old, now = 0, 1
-for loop:
-    old, now = now, old
-    # old, now = (old + 1) % 2, (now + 1) % 2
+# }}
 
-# Time Optimize
+# OPTIMIZATION {{
+
+### SPACE OPTIMIZATION  
+
+# REDUCE TO 2 DIEMENTION: transition function
+
+# f[i] = f[i-1] + ... , i == now, i - 1 == old
+old, now = now, old
+
+# REDUCE TO 1 DIEMENTION: draw pictures
+
+# From Left to Right
+for i in range(left, right):
+    old  |               dp[i-1][j]
+         |                     |
+         |                     v
+    new  | dp[i][...] --->  dp[i][j]
+
+# From Right to Left
+for i in range(right - 1, -1, -1):
+    old  | dp[i-1][...]  dp[i-1][j]
+         |              \      |
+         |               \     v
+    new  |                dp[i][j]
+
+### TIME OPTIMIZATION
 # 1. Look at transition function
 # 2. Draw picture
 # }}
@@ -965,6 +984,11 @@ dp[i][1] = dp[i - 1][1] + nums[i - 1] == 0
 
 # }}
 
+# DOUBLE SEQUENCE {{
+
+
+# }}
+
 # PARTITION{{
 """
 continous
@@ -999,26 +1023,35 @@ dp = [] * (weight + 1)
 
 # Backpack (Max Weight), Space Optimize O(W) <--
 # last step: 
-dp = [[False] * (w + 1) for _ in range(n + 1)]
+dp = [[False] * (weight + 1) for _ in range(n + 1)]
 dp[0][0] = True
-dp[i][j] = dp[i - 1][j] or dp[i - 1][j - A[i - 1]] # [EXIST] j items can weigh to i
+dp[i][w] = dp[i - 1][w] or dp[i - 1][w - A[i - 1]] # [EXIST] i items can weigh to w
 
-dp = [0] * (w + 1)
+dp = [0] * (weight + 1)
 for i in range(len(A)):
-    for j in range(w, A[i] - 1, -1)
-        dp[j] = max(dp[j], dp[j - A[i]] + A[i]) # [MAX/MIN]
+    for w in range(weight, A[i] - 1, -1)
+        dp[w] = max(dp[w], dp[w - A[i]] + A[i]) # [MAX/MIN]
 
-# Backpack (Combination, Distinct Items), Space Optimize O(W) <--
+# Backpack (Combination Count, Distinct Items), Space Optimize O(W) <--
 # last step: _ 2 + 4 _ = 6 or 1 + 2 + _ 3 _ = 6
-dp = [[0] * (w + 1) for _ in range(n + 1)]
+dp = [[0] * (weight + 1) for _ in range(n + 1)]
 dp[0][0] = 1
-dp[i][j] = dp[i - 1][j] + dp[i - 1][j - A[i - 1]] # [COUNT]
+dp[i][w] = dp[i - 1][w] + dp[i - 1][w - A[i - 1]] # [COUNT]
 
-# Backpack (Combination, Repeat Sample), Space Optimize O(W) <--
+# Backpack (Combination Count, Repeat Items), Space Optimize O(W) <--
 # last step: 1 + 3 + 2 + _1_ = 7
-dp = [0] * (w + 1)
+dp = [0] * (weight + 1)
 dp[0] = 1 # easy to forget this
-dp[i] = sum(dp[i - A[j]] for j in range(n)) # [COUNT]
+dp[i] = sum(dp[i - A[w]] for w in range(n)) # [COUNT]
+
+# Backpack (Max Value, Distinct Items)
+dp = [[0] * (weight + 1) for _ in range(n + 1)]
+dp[i][w] = max(dp[i - 1][w], dp[i - 1][w - W[i - 1]] + V[i - 1]) # i items, exclude i itself
+
+# Backpack (Max Value, Repeat Items)
+# dp[i][w] = max(dp[i - 1][w], dp[i - 1][w - k * W[i - 1]] + k * V[i - 1] | 1 <= k) 
+dp[i][w] = max(dp[i - 1][w], dp[i][w - W[i - 1]] + V[i - 1]) # i items, include i itself
+
 
 # }}
 
@@ -1033,11 +1066,6 @@ Define state from the 1st step
 """
 # Coins in a Line 
 dp[i] = (not dp[i - 1]) or (not dp[i - 2]) # choose one you lose or choose two you lose
-
-# }}
-
-# DOUBLE SEQUENCE {{
-
 
 # }}
 
