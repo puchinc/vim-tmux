@@ -471,9 +471,9 @@ def qsort(self, nums, start, end):
     self.qsort(nums, left, end)
  
     # qselect kth idx
-    if k < left:
+    if left < k # k in left part
         return self.qselect(nums, start, left-1, k)
-    else:
+    else: # k in right part
         return self.qselect(nums, left, end, k)
 
 ### Other Sorting
@@ -845,8 +845,11 @@ def union(p, q): # quick union by size O(log* N)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # SWEEP LINE {{
-start = sorted([(i.start, 1) for i in intervals])
-end = sorted([(i.end, -1) for i in intervals])
+points = []
+for i in intervals:
+    points.append([i.start, 1])
+    points.append([i.end, -1])
+points.sort()
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -992,12 +995,18 @@ dp[i][1] = dp[i - 1][1] + nums[i - 1] == 0
 # PARTITION{{
 """
 continous
+限定段數 -> 加狀態
 """
 
 # Decode Ways
 dp = [0] * (n + 1)
 dp[0] = 1
 dp[i] = (dp[i - 1] if 1 <= s[i - 1] <= 9) + (dp[i - 2] if 11 <= s[i - 2:i] <=26)
+
+# Word Break
+dp = [False] * (n + 1)
+dp[0] = True
+dp[i] = dp[i] or (dp[j] and s[j:i] in words | max(0, i - max_len) <= j < i)
 
 # Perfect Square
 dp = [float('inf')] * (n + 1)

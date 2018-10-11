@@ -46,10 +46,16 @@ add3(4) == 7
 
 def global_var():
     global x
-    print(x) # 10
+    print(x == True) # 10
+x = 10
+
+def unboundError():
+    print(x == True) # Error
+    x = 1
 x = 10
 
 # confusing 
+# If there is an assignment to a variable inside a function, that variable is considered local.
 i = 4
 def foo(x):
     def bar():
