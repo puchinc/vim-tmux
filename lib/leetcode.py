@@ -174,6 +174,8 @@ s.split(",")
 ",".join(['first', 'second'])
 ord('a') == 97
 chr(97) == 'a'
+# a - z
+list(map(chr, range(ord('a'), ord('z')+1)))
 # remove leading or trailing substring
 str.strip("pattern")
 # split
@@ -308,7 +310,7 @@ while cur:
     prev, cur = cur, next
 new_head = prev
 
-# Slow Fast => slow will >= middle
+# Slow Fast =>  ... middle(n // 2) | slow ...
 slow, fast = head, head.next
 while fast and fast.next:
     slow = slow.next
@@ -744,6 +746,7 @@ def prev_permutation(nums):
 # MEMOIZATION: when parameter easy e.g. i, j{{
 # word break / wildcard matching return sufix combinations
 # palindrom memoization
+# word pattern cannot use memo since hash cannot be record
 # use hash memo[(i, j)] in some cases
 def memoization(s):
     n = len(s)
@@ -819,19 +822,23 @@ count = len(parent)
 def find(p): # quick find with path compression O(log* N)
     if parent[p] < 0:
         return p
-    parent[p] = find(parent[p])
+
+    parent[p] = find(parent[p]) # edge connection
+    # edge value e.g. parent[p].val *= p.val 
     return parent[p]
 
 # p -> q, p is parent
 def union(p, q): # quick union by size O(log* N) 
     root1, root2 = find(p), find(q)
-    if root1 != root2:
-        if parent[root2] < parent[root1]:
-            root1, root2 = root2, root1
+    if root1 == root2:
+        return
 
-        parent[root1] += parent[root2]
-        parent[root2] = root1
-        count -= 1
+    if parent[root2] < parent[root1]:
+        root1, root2 = root2, root1
+
+    parent[root1] += parent[root2]
+    parent[root2] = root1
+    count -= 1
 
 # cycle detection of undirected graph:
 # for v1, v2 in edges:
