@@ -550,7 +550,7 @@ Valid Tree:
 
 level = 0
 queue = deque([root])
-visited = {root}
+visited = set([root])
 while queue:
     # level += 1
     for _ in range(len(queue)): # Level Order
@@ -1072,7 +1072,47 @@ dp[i][w] = max(dp[i - 1][w], dp[i][w - W[i - 1]] + V[i - 1]) # i items, include 
 # }}
 
 # Interval{{
+"""
+dp[i][j] = dp[i + 1][j - 1]
 
+# Filling Order by length
+for length in range(2, n + 1):
+    for i in range(n - length + 1):
+        j = i + length - 1
+        dp[i][j] = dp[i+1][j-1]
+
+# Tricky way
+# [i] = ...[i + 1], <-- from right to left
+# [j] = ...[j - 1], --> from left to right 
+for i in range(n - 1, -1, -1):
+    for j in range(i + 1, n): 
+        pass
+
+"""
+
+# isPalindrome
+for length in range(2, n + 1):
+    for i in range(n - length + 1):
+        j = i + length - 1
+        memo[i][j] = memo[i+1][j-1] and s[i] == s[j]
+
+# Longest Palindromic Subsequence
+for length in range(3, n + 1):
+    for i in range(n - length + 1):
+        j = i + length - 1
+        dp[i][j] = max(dp[i+1][j], dp[i][j-1], dp[i+1][j-1] + 2 | s[i] == s[j])
+
+# Scramble String
+for length in range(2, n + 1):
+    for i in range(n - length + 1):
+        for j in range(n - length + 1):
+            for k in range(1, length):
+                if dp[i][j][k] and dp[i + k][j + k][length - k]:
+                    dp[i][j][length] = True
+                    break
+                if dp[i][j + length - k][k] and dp[i + k][j][length - k]:
+                    dp[i][j][length] = True
+                    break
 
 # }}
 
@@ -1082,6 +1122,15 @@ Define state from the 1st step
 """
 # Coins in a Line 
 dp[i] = (not dp[i - 1]) or (not dp[i - 2]) # choose one you lose or choose two you lose
+
+# Coins in a Line III
+# S_x = max(- S_y + last coin)
+dp = [[0] * n for _ in range(n)]
+dp[i][i] = coins[i]
+for length in range(2, n + 1):
+    for i in range(n - length + 1):
+        j = i + length - 1
+        dp[i][j] = max(- dp[i + 1][j] + coins[i], - dp[i][j - 1] + coins[j])
 
 # }}
 
