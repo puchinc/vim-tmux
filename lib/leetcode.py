@@ -406,29 +406,6 @@ while mid <= right:
         left += 1
     mid += 1
 
-# left, right = 0, len(nums) - 1
-# for i in range(len(nums)):
-    # if i > right:
-        # break
-    # while i <= right and nums[i] > pivot:
-        # nums[i], nums[right] = nums[right], nums[i]
-        # right -= 1
-    # if nums[i] < pivot:
-        # nums[i], nums[left] = nums[left], nums[i]
-        # left += 1
-
-# left, i, right = 0, 0, len(nums) - 1
-# while i <= right:
-    # if A[i] > pivot:
-        # A[right], A[i] = A[i], A[right]
-        # right -= 1
-    # elif A[i] < pivot:
-        # A[left], A[i] = A[i], A[left]
-        # left += 1
-        # i += 1
-    # else:
-        # i += 1
-
 # QUICK SORT
 """
 tricky part when encountering pivot value
@@ -451,6 +428,7 @@ right | left  or  right | pivot | left
 
 """
 def qsort(self, nums, start, end):
+    # remains one element or empty
     if start >= end:
         return
         # return nums[k], since partition finished
@@ -468,13 +446,13 @@ def qsort(self, nums, start, end):
             left += 1
             right -= 1
 
-    # qsort  
-    self.qsort(nums, start, left-1)
-    self.qsort(nums, left, end)
+    # qsort                           # ... right | left ... or ... right == left ...
+    self.qsort(nums, start, left - 1) #  left - 1 |
+    self.qsort(nums, left, end)       #           |  left
  
     # qselect kth idx
     if left < k # k in left part
-        return self.qselect(nums, start, left-1, k)
+        return self.qselect(nums, start, left - 1, k)
     else: # k in right part
         return self.qselect(nums, left, end, k)
 
