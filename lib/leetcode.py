@@ -286,9 +286,9 @@ len(s)
 # Heap
 from heapq import *
 min_heap = []
-heapify(min_heap) # O(N)
-heappush(min_heap, (key1, key2)) # O(log N) , sorted by key1 -> key2
-heappop(min_heap) # O(log N)
+heapify(min_heap) # O(n log n)
+heappush(min_heap, (key1, key2)) # O(log n) , sorted by key1 -> key2
+heappop(min_heap) # O(log n)
 min_heap[0] # get smallest
 
 max_heap = []
@@ -370,72 +370,7 @@ while left <= right:
         right -= 1
 # }}
 
-# TWO POINTERS -> -> {{
-"""
-stable
-1. Two way partition : ... | left  ... 
-2. Sliding Window
-
-"""
-# left = 0
-# for i in range(len(nums)):
-    # # nums[i] is left part
-    # if nums[i] < pivot:
-        # nums[left], nums[i] = nums[i], nums[left] 
-        # left += 1
-
-# Two way partition: [ ... | left ... ] right 
-left, right = 0, 0
-while right < len(nums):
-    # nums[right] is left part
-    if nums[right] < pivot:
-        nums[left], nums[right] = nums[right], nums[left]
-        left += 1
-    right += 1
-
-# Three way partition: [ ... | left ... right | mid ... ]
-left, mid, right = 0, 0, len(nums) - 1
-while mid <= right:
-    # nums[mid] is right part
-    while mid <= right and nums[mid] > pivot:
-        nums[mid], nums[right] = nums[right], nums[mid]
-        right -= 1
-    # nums[mid] is left part
-    if nums[mid] < pivot:
-        nums[mid], nums[left] = nums[left], nums[mid]
-        left += 1
-    mid += 1
-
-# SLIDING WINDOW
-# | left ... right |, window_size and window_val
-W = defaultdict(int)
-count = len(pattern)
-left = right = 0
-res = []
-
-# later, W[ch] < 0 means it is in pattern, needs to change count
-for p in pattern:
-    W[p] -= 1
-    
-while right < len(s):
-    if W[s[right]] < 0: # 
-        count += 1
-    W[s[right]] += 1
-    right += 1
-
-    # fix window size == len(p)
-    if right < len(p):
-        continue
-
-    while count == len(p): # conunt satisfy condition
-        res.append(left) # compute result
-
-        W[s[left]] -= 1
-        if W[s[left]] < 0:
-            count -= 1
-        left += 1
-
-# QUICK SORT
+# QUICK SORT  {{
 """
 tricky part when encountering pivot value
 nums[left] < pivot: left++
@@ -511,7 +446,83 @@ def insertion(nums):
             i -= 1
 # }}
 
+# TWO POINTERS -> -> {{
+"""
+stable
+1. Two way partition : ... | left  ... 
+2. Sliding Window
+
+"""
+# left = 0
+# for i in range(len(nums)):
+    # # nums[i] is left part
+    # if nums[i] < pivot:
+        # nums[left], nums[i] = nums[i], nums[left] 
+        # left += 1
+
+# Two way partition: [ ... | left ... ] right 
+left, right = 0, 0
+while right < len(nums):
+    # nums[right] is left part
+    if nums[right] < pivot:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+    right += 1
+
+# Three way partition: [ ... | left ... right | mid ... ]
+left, mid, right = 0, 0, len(nums) - 1
+while mid <= right:
+    # nums[mid] is right part
+    while mid <= right and nums[mid] > pivot:
+        nums[mid], nums[right] = nums[right], nums[mid]
+        right -= 1
+    # nums[mid] is left part
+    if nums[mid] < pivot:
+        nums[mid], nums[left] = nums[left], nums[mid]
+        left += 1
+    mid += 1
+
+# }}
+
+# SLIDING WINDOW   {{
+# Window: ... pattern characters ...  0 |  ... non pattern ...
+#                                     ^
+#                                     |
+#                       Window[ch] satisfy pattern[ch] amount
+# pattern chars in Window always <= 0, 
+# Window[right] < 0 means we encounter pattern, so count++
+# Window[left] <= 0 means we encounter pattern, so count--
+
+W = defaultdict(int)
+count = len(pattern)
+left = right = 0
+res = []
+
+for p in pattern:
+    W[p] -= 1
+    
+while right < len(s):
+    if W[s[right]] < 0:  
+        count += 1
+    W[s[right]] += 1
+    right += 1
+
+    # fix window size == len(p)
+    if right < len(p):
+        continue
+
+    # while for dynamic window
+    while count == len(p): # conunt satisfy condition
+        res.append(left) # compute result
+
+        if W[s[left]] <= 0:
+            count -= 1
+        W[s[left]] -= 1
+        left += 1
+# }}
+
 # TWO POINTERS <- ->  {{
+
 # Palindrome
 left, right = middle, middle # odd
 left, right = middle, middle + 1 # even
@@ -519,6 +530,7 @@ while low >= 0 and high < len(s) and s[low] == s[high]:
     low -= 1
     high += 1
 return low >= high # True if palindrom
+
 # }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
@@ -548,14 +560,14 @@ while queue:
             queue.append(node.right)
 # }}
 
-UNDIRECTED GRAPH, need set # {{
+UNDIRECTED GRAPH, need visited # {{
 """
 Valid Tree: 
     1. len(edges) == len(nodes) - 1
     2. len(visited) == len(nodes), one connected component  
 """
 
-level = 0
+level = 0 # if root element is 1, o.w. -1
 queue = deque([root])
 visited = set([root])
 while queue:
@@ -616,25 +628,23 @@ def dfs(self, root):
     # merge
     res = left + right
     return res
+# }}
 
+# INORDER, BST {{
 def iterativeInorder(node):
     stack = []
     while stack or node:
+        # push all / branch
+        if node:
+            stack.append(node)
+            node = node.left
         # visit node from stack, move node ->
-        if not node:
+        else:
             node = stack.pop()
             visit(node)
             node = node.right
-        # push all / branch
-        else:
-            stack.append(node)
-            node = node.left
 
-# INORDER, BST
 class BSTIterator:
-    """
-    @param: root: The root of binary tree.
-    """
     def __init__(self, root):
         self.stack = []
         # push all / branch
@@ -642,15 +652,9 @@ class BSTIterator:
             self.stack.append(root)
             root = root.left
 
-    """
-    @return: True if there has next node, or false
-    """
     def hasNext(self):
         return len(self.stack) > 0
 
-    """
-    @return: return next node
-    """
     def next(self):
         stack = self.stack
         node = stack.pop()
@@ -705,18 +709,18 @@ def permutation(nums):
             # [1_, 2_, not visited 2, cur -> 2_, 3] is not allowed
             # i > 0            : distinct permutation elements (e.g. [1, 2, 3])
             # not visited[i-1] : distinct permutations (e.g. [1, 2, 2])
-            if i > 0 and nums[i] == nums[i - 1] and not visited[i -1]: 
+            if i > 0 and nums[i] == nums[i - 1] and i - 1 not in visited:
                 continue                                                
 
-            visited[i] = True
+            visited.add(i)
             path.append(nums[i])
             helper(nums, res, path, visited)
             path.pop()
-            visited[i] = False
+            visited.remove(i)
 
     res = []
     nums.sort() # having repeat
-    helper(nums, res, [], [False] * len(nums))
+    helper(nums, res, [], set())
     return res
 
 # ITERATIVE PERMUTATION
@@ -793,6 +797,8 @@ def dfs(graph, cycle, path, root, parent, visited):
             dfs(graph, cycle, path, child, root, visited)
             path.pop()
             # visited.remove(child) # shouldn't remove
+
+        # get cycle path
         elif child != parent:
             for i in range(len(path)-1, -1, -1):
                 if path[i] == child:
