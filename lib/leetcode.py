@@ -287,8 +287,8 @@ len(s)
 from heapq import *
 min_heap = []
 heapify(min_heap) # O(N)
-heappush(min_heap, element) # O(logN)
-heappop(min_heap) # O(logN)
+heappush(min_heap, (key1, key2)) # O(log N) , sorted by key1 -> key2
+heappop(min_heap) # O(log N)
 min_heap[0] # get smallest
 
 max_heap = []
@@ -405,6 +405,35 @@ while mid <= right:
         nums[mid], nums[left] = nums[left], nums[mid]
         left += 1
     mid += 1
+
+# SLIDING WINDOW
+# | left ... right |, window_size and window_val
+W = defaultdict(int)
+count = len(pattern)
+left = right = 0
+res = []
+
+# later, W[ch] < 0 means it is in pattern, needs to change count
+for p in pattern:
+    W[p] -= 1
+    
+while right < len(s):
+    if W[s[right]] < 0: # 
+        count += 1
+    W[s[right]] += 1
+    right += 1
+
+    # fix window size == len(p)
+    if right < len(p):
+        continue
+
+    while count == len(p): # conunt satisfy condition
+        res.append(left) # compute result
+
+        W[s[left]] -= 1
+        if W[s[left]] < 0:
+            count -= 1
+        left += 1
 
 # QUICK SORT
 """
