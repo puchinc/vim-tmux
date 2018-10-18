@@ -286,7 +286,7 @@ len(s)
 # Heap
 from heapq import *
 min_heap = []
-heapify(min_heap) # O(n log n)
+heapify(min_heap) # O(N)
 heappush(min_heap, (key1, key2)) # O(log n) , sorted by key1 -> key2
 heappop(min_heap) # O(log n)
 min_heap[0] # get smallest
@@ -295,6 +295,11 @@ max_heap = []
 heappush(max_heap, -element)
 -heappop(max_heap)
 -max_heap[0] # get smallest
+
+# Top K online algorithm
+# min heap: need O(K) space, compare with heap[0]
+# max heap: need O(N) space, cannot compare with largest on top
+
 # }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
@@ -329,18 +334,15 @@ def bsearch(self, nums, target):
     start, end = 0, len(nums) - 1
     while start + 1 < end;
         mid = (start + end) // 2
-        if nums[mid] < target:
+        if nums[mid] < target: # left part
             start = mid
-        elif nums[mid] > target:
+        else: # right part
             end = mid
-        else:
-            return mid
 
-    if nums[start] == target:
+    if nums[start] == target: # check start satisfy condition
         return start
-    if nums[end] == target:
-        return end
-    return -1
+    return end
+
 # }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
@@ -890,6 +892,31 @@ def count_ones(n):
     return dp
 # }}
 
+# States {{
+
+https://www.allaboutcircuits.com/textbook/digital/chpt-7/converting-truth-tables-boolean-expressions/
+https://leetcode.com/problems/single-number-ii/discuss/43296/An-General-Way-to-Handle-All-this-sort-of-questions.
+https://www.cnblogs.com/bjwu/p/9323808.html
+Single Number II
+collect output is 1 and | alltogether
+current   incoming  next
+a b            c    a b
+1 0            0    1 0
+0 1            1    1 0
+a = a & ~b & ~c | ~a & b &c
+
+current   incoming  next
+a b            c    a b
+0 1            0    0 1
+0 0            1    0 1
+b = ~a & b & ~c | ~a & ~b &c
+
+mapping
+00 => 0
+01 => 1
+10 => 1
+
+# }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                         Dynamic Programming
@@ -1004,11 +1031,24 @@ dp[0] = [0] * 2
 dp[i][0] = min(dp[i - 1][0], dp[i - 1][1]) + nums[i - 1] == 1
 dp[i][1] = dp[i - 1][1] + nums[i - 1] == 0
 
-
 # }}
 
 # DOUBLE SEQUENCE {{
 
+# Regular Expression Matching
+dp = [[False] * (m + 1) for _ in range(n + 1)]
+dp[0][0] = True
+dp[i][0] = False
+for i in range(1, len(p) + 1):
+    if p[i - 1] == '*':
+        dp[0][i] = dp[0][i - 2]
+
+for i in range(1, m + 1):
+    for j in range(1, n + 1):
+        if p[j-1] == '*': # match 0 or match .*
+            dp[i][j] = dp[i][j - 2] or (dp[i-1][j] and match(s[i-1], p[j-2]))
+        else: # match one char
+            dp[i][j] = dp[i-1][j-1] and match(s[i-1], p[j-1])
 
 # }}
 
@@ -1147,3 +1187,11 @@ for length in range(2, n + 1):
 
 # }}
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                           Stream Data (One Pass)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# 295. Find Median from Data Stream
+[ ... small in max_heap | larget in min_heap ... ]
+len(max_heap) == len(min_heap) or len(max_heap) + 1 == len(min_heap)

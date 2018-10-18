@@ -46,13 +46,13 @@ current   incoming  next
 a b            c    a b
 1 0            0    1 0
 0 1            1    1 0
-a = a&~b&~c | ~a&b&c
+a = a & ~b & ~c | ~a & b &c
 
 current   incoming  next
 a b            c    a b
 0 1            0    0 1
 0 0            1    0 1
-b = ~a&b&~c | ~a&~b&c
+b = ~a & b & ~c | ~a & ~b &c
 
 mapping
 00 => 0
