@@ -15,6 +15,13 @@ def annotation(name: str, id: int) -> List[int]:
     print(name)
     print(id)
     return [3,4]
+
+x is y equals id(x) == id(y)
+
+# Immutable objects can be hashable, mutable objects can't be hashable.
+spam = {('a', 'b', [1, 2, 3]): 'hello'} # hashing error if immutable object contains mutable list
+
+# Pros of imuutability: garbage collection efficiency, lock-free operation, efficient substructure sharing
  
 
 """ 
@@ -128,6 +135,35 @@ with open(fp, 'w') as f:
 """
 @ Special Usage
 """
+
+# callable
+# Good for building API
+# https://zhuanlan.zhihu.com/p/33227806
+import hashlib
+
+class Hasher(object):
+    """
+    A wrapper around the hashlib hash algorithms that allows an entire file to
+    be hashed in a chunked manner.
+    """
+    def __init__(self, algorithm):
+        self.algorithm = algorithm
+
+    def __call__(self, file):
+        hash = self.algorithm()
+        with open(file, 'rb') as f:
+            for chunk in iter(lambda: f.read(4096), ''):
+                hash.update(chunk)
+        return hash.hexdigest()
+
+md5    = Hasher(hashlib.md5)
+sha1   = Hasher(hashlib.sha1)
+
+from filehash import sha1
+print sha1('somefile.txt')
+
+
+
 # true if all conditions are satisfied
 all(val < x for val in nums) 
 

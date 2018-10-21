@@ -143,7 +143,7 @@ run:
 # CONVOLUTION NUERAL NETWORK
 
 # Padding
-The general rule now, if a matrix nxn is convolved with fxf filter/kernel and padding p give us n+2p-f+1,n+2p-f+1 matrix.
+The general rule now, if a matrix NxN is convolved with fxf filter/kernel and padding p give us n+2p-f+1,n+2p-f+1 matrix.
 
 
 

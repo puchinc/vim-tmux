@@ -226,7 +226,7 @@ nums[random.randint(0, len(nums) - 1)]
 # }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-                            DATA STRUCTURE 
+                                DATA STRUCTURE 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 # {{
 # List 
@@ -270,6 +270,14 @@ if dict_.get(key) is not None: pass
 # Sequence (e.g. list, dict, tuple, str) Contains
 if key in dict_: pass
 if e not in list_: pass
+def hashfunc(string, hashsize):
+    code = 0
+    for c in string:
+        code = code * 31 + ord(c)
+        code = code % hashsize
+
+    return code
+
 
 # LinkedHashMap
 from collections import OrderedDict
@@ -802,9 +810,21 @@ def dfs(graph, cycle, path, root, parent, visited):
 
         # get cycle path
         elif child != parent:
-            for i in range(len(path)-1, -1, -1):
+            for i in range(len(path) - 1, -1, -1):
                 if path[i] == child:
                     cycle.append(path[i:] + [child])
+
+def dfs(matrix, res, path, x, y, visited):
+    dx, dy = 0, 1
+    for _ in range(4):
+        i, j = x + dx, y + dy
+        if valid((i, j)) and (i, j) not in visited:
+            visited.add((i, j)) # every point should be visited only once
+            path.append(matrix[i][j])
+            dfs(matrix, res, path, i, j, visited)
+        dx, dy = -dy, dx
+        # Rotation matrix:    | cosø -sinø | , ø = 90º, | 0 -1 | * (x, y) == (-y, x)  
+        #                     | sinø  cosø |            | 1  0 |
 
 # }}
 
@@ -899,12 +919,25 @@ https://leetcode.com/problems/single-number-ii/discuss/43296/An-General-Way-to-H
 https://www.cnblogs.com/bjwu/p/9323808.html
 Single Number II
 collect output is 1 and | alltogether
+
+# original table
+current   incoming  next
+a b            c    a b
+0 0            0    0 0
+0 1            0    0 1
+1 0            0    1 0
+0 0            1    0 1
+0 1            1    1 0
+1 0            1    0 0
+
+# a table
 current   incoming  next
 a b            c    a b
 1 0            0    1 0
 0 1            1    1 0
 a = a & ~b & ~c | ~a & b &c
 
+# b table
 current   incoming  next
 a b            c    a b
 0 1            0    0 1
@@ -1141,6 +1174,7 @@ for i in range(n - 1, -1, -1):
     for j in range(i + 1, n): 
         pass
 
+# 去頭去尾、消去型
 """
 
 # isPalindrome
@@ -1167,6 +1201,14 @@ for length in range(2, n + 1):
                     dp[i][j][length] = True
                     break
 
+# Burst Balloons
+# dp[i][j] = max(dp[i][k] + nums[i] * nums[k] * nums[j] + dp[k][j]) | i < k < j
+for length in range(3, n + 1):
+    for i in range(n - length + 1):
+        j = i + length - 1
+        for k in range(i + 1, j):
+            dp[i][j] = max(dp[i][j], dp[i][k] + nums[i] * nums[k] * nums[j] + dp[k][j])
+
 # }}
 
 # GAMBLE{{
@@ -1189,9 +1231,24 @@ for length in range(2, n + 1):
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                           Stream Data (One Pass)
+                   Big Data / Stream Data (One Pass)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# {{
+# Top K freq
+# hash + heap
+# Largest K: min heap, Smallest K: max heap
+
+# Memory cannot fit
+
+# hash = [memory size array]
+# hash[ hash_function(key) % len(hash) ] += 1
+# low probability lose accuracy, but long tail will decrease this happen
+
+# Bucketize to use larger granuality
+
 
 # 295. Find Median from Data Stream
 [ ... small in max_heap | larget in min_heap ... ]
 len(max_heap) == len(min_heap) or len(max_heap) + 1 == len(min_heap)
+# }}
