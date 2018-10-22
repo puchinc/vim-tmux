@@ -229,6 +229,7 @@ nums[random.randint(0, len(nums) - 1)]
                                 DATA STRUCTURE 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 # {{
+
 # List 
 l = [1, 2]
 t = (3, 4)
@@ -277,7 +278,6 @@ def hashfunc(string, hashsize):
         code = code % hashsize
 
     return code
-
 
 # LinkedHashMap
 from collections import OrderedDict
@@ -328,6 +328,21 @@ slow, fast = head, head.next
 while fast and fast.next:
     slow = slow.next
     fast = fast.next.next
+
+# Linked List Cycle
+# start from head, head.next
+
+# Formula:
+# 1. fast = 2 * slow 
+# 2. fast - slow = C
+
+# => fast = 2 * slow = slow + C
+# => C = slow
+
+# How far fast need to walk to cycle point?
+# fast pos = slow
+# C - (slow - L) = L
+
 # }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
@@ -495,6 +510,10 @@ while mid <= right:
 # }}
 
 # SLIDING WINDOW   {{
+# Count: Two Pointers
+# Max/Min: Monotonous Deque
+# Median: Heap + Hash
+
 # Window: ... pattern characters ...  0 |  ... non pattern ...
 #                                     ^
 #                                     |
@@ -540,6 +559,77 @@ while low >= 0 and high < len(s) and s[low] == s[high]:
     low -= 1
     high += 1
 return low >= high # True if palindrom
+
+# }}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+                            MONOTONOUS STACK / DEQUE                               
+
+Find max: monotonically decrease []
+Find min: monotonically increase []                     
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+# MONOTONOUS STACK   {{
+
+# stack([1,2,8,10]).push(5) => stack([1,2,5])
+
+def push(stack, nums, i):
+    while stack and nums[stack[-1]] < nums[i]:
+        # get result from each pop, stack[-1]
+        # res[stack[-1]] = i - stack[-1]
+        stack.pop()
+    stack.append(i)
+
+# i < j, find minimum j – i such that arr[i] < arr[j] for each element
+def min_dist(nums):
+    res = [0] * len(nums)
+    stack = [] # descending stack # ascending if arr[i] > arr[j]
+    for i in range(len(nums)):
+        while stack and nums[stack[-1]] < nums[i]: # > if arr[i] > arr[j]
+            res[stack[-1]] = i - stack[-1]
+            stack.pop()
+        stack.append(i)
+    return res
+
+assert min_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == [5, 1, 3, 2, 1, 0, 1, 0, 0]
+
+# i < j, find maximum j – i such that arr[i] < arr[j]
+def max_dist(nums):
+    res = 0
+    stack = [] # descending stack # ascending if arr[i] > arr[j]
+    for i in range(len(nums)):
+        if not stack or nums[stack[-1]] > nums[i]: # < if arr[i] > arr[j]
+            stack.append(i)
+
+    for i in range(len(nums) - 1, -1, -1):
+        while stack and nums[stack[-1]] < nums[i]: # > if arr[i] > arr[j]
+            res = max(res, i - stack[-1])
+            stack.pop()
+    return res
+
+assert max_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == 6
+assert max_dist_asc([9, 2, 3, 4, 5, 6, 7, 8, 18, 0]) == 8 
+assert max_dist_asc([1, 2, 3, 4, 5, 6]) == 5  
+assert max_dist_asc([6, 5, 4, 3, 2, 1]) == 0 
+
+
+# }}
+
+# DEQUE  {{
+
+for i in range(k - 1, len(nums)):
+    push(dq, nums, i)
+    # get result from dq[0]
+    # res.append(nums[dq[0]])
+    left = i + k - 1
+    if dq[0] == nums[left]:
+        dq.popleft()
+
+def push(dq, nums, i):
+    while dq and nums[dq[-1]] < nums[i]:
+        dq.pop()
+    dq.append(i)
 
 # }}
 
@@ -591,6 +681,19 @@ while queue:
                 visited.add(child)
 # has cycle
 # if len(visited) != len(nodes)
+
+# Grid/Matrix
+queue = deque([(x, y)])
+visited = set([(x, y)])
+while queue:
+    x, y = queue.popleft()
+    traverse(grid[x][y])
+    for dx, dy in [[0,1], [0,-1], [1,0], [-1,0]]:
+        i, j = x + dx, y + dy
+        if 0 <= i < m and 0 <= j < n and (i, j) not in visited:
+            queue.append((i, j))
+            visited.add((i, j))
+
  # }}
 
 # TOPOLOGICAL SORT (DAG) {{
@@ -653,6 +756,18 @@ def iterativeInorder(node):
             node = stack.pop()
             visit(node)
             node = node.right
+
+def next_node(root, target):
+    stack = []
+    node = root
+    while node != target:
+        if node.val < target.val:
+            node = node.right
+        else: # >= target put into stack
+            stack.append(node)
+            node = node.left
+    target == next(node)
+    return next(node)
 
 class BSTIterator:
     def __init__(self, root):
@@ -815,21 +930,22 @@ def dfs(graph, cycle, path, root, parent, visited):
                     cycle.append(path[i:] + [child])
 
 def dfs(matrix, res, path, x, y, visited):
-    dx, dy = 0, 1
-    for _ in range(4):
+    for dx, dy in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
         i, j = x + dx, y + dy
         if valid((i, j)) and (i, j) not in visited:
             visited.add((i, j)) # every point should be visited only once
             path.append(matrix[i][j])
             dfs(matrix, res, path, i, j, visited)
-        dx, dy = -dy, dx
+            path.pop()
+
+        # dx, dy = -dy, dx
         # Rotation matrix:    | cosø -sinø | , ø = 90º, | 0 -1 | * (x, y) == (-y, x)  
         #                     | sinø  cosø |            | 1  0 |
 
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                            Union Find
+                              Union Find
 
 1. M union and find operations on N objects takes O(N + M lg* N) time. 
 lg*N similar to O(1)
