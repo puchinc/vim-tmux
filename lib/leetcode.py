@@ -510,7 +510,7 @@ while mid <= right:
 # }}
 
 # SLIDING WINDOW   {{
-# Count: Two Pointers
+# Count: Two Pointers + Hash
 # Max/Min: Monotonous Deque
 # Median: Heap + Hash
 
@@ -524,17 +524,16 @@ while mid <= right:
 
 W = defaultdict(int)
 count = len(pattern)
-left = right = 0
 res = []
 
 for p in pattern:
     W[p] -= 1
     
-while right < len(s):
-    if W[s[right]] < 0:  
+left = 0
+for right in range(len(s)):
+    if W[s[right]] < 0:
         count += 1
     W[s[right]] += 1
-    right += 1
 
     # fix window size == len(p)
     if right < len(p):
@@ -542,12 +541,13 @@ while right < len(s):
 
     # while for dynamic window
     while count == len(p): # conunt satisfy condition
-        res.append(left) # compute result
+        res.append(s[left:right+1]) # compute result
 
-        if W[s[left]] <= 0:
-            count -= 1
         W[s[left]] -= 1
+        if W[s[left]] < 0:
+            count -= 1
         left += 1
+
 # }}
 
 # TWO POINTERS <- ->  {{
@@ -565,10 +565,9 @@ return low >= high # True if palindrom
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             MONOTONOUS STACK / DEQUE                               
 
-Find max: monotonically decrease []
-Find min: monotonically increase []                     
+Find increase in array / : monotonically decrease stack \
+Find decrease in array \ : monotonically increase stack /
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 
 # MONOTONOUS STACK   {{
 
@@ -592,7 +591,7 @@ def min_dist(nums):
         stack.append(i)
     return res
 
-assert min_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == [5, 1, 3, 2, 1, 0, 1, 0, 0]
+# assert min_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == [5, 1, 3, 2, 1, 0, 1, 0, 0]
 
 # i < j, find maximum j – i such that arr[i] < arr[j]
 def max_dist(nums):
@@ -608,15 +607,12 @@ def max_dist(nums):
             stack.pop()
     return res
 
-assert max_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == 6
-assert max_dist_asc([9, 2, 3, 4, 5, 6, 7, 8, 18, 0]) == 8 
-assert max_dist_asc([1, 2, 3, 4, 5, 6]) == 5  
-assert max_dist_asc([6, 5, 4, 3, 2, 1]) == 0 
-
+# assert max_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == 6
 
 # }}
 
 # DEQUE  {{
+# Monotone Stack with Left limitation
 
 for i in range(k - 1, len(nums)):
     push(dq, nums, i)
@@ -954,42 +950,38 @@ lg*N similar to O(1)
 DAG: no cycle 
 Tree: DAG + single parent
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# Simplist {{
-parent = [i for i in range(n)]
-def find(p):
-    while parent[p] >= 0:
-        parent[p] = parent[parent[p]]
-    return p
-
-def union(p, q): # p -> q's root parent
-    parent[find(p)] = find(q)
-# }}
 
 # Component Nums, Component Size {{
 
 parent = [-1 for i in range(n)]
 # named_set_parent = {i: -1 for i in range(n)} 
 count = len(parent)
-def find(p): # quick find with path compression O(log* N)
-    if parent[p] < 0:
-        return p
 
-    parent[p] = find(parent[p]) # edge connection
-    # edge value e.g. parent[p].val *= p.val 
-    return parent[p]
+# Quick Find with path compression O(log* N)
+def find(x): 
+    if parent[x] < 0:
+        return x
 
-# p -> q, p is parent
-def union(p, q): # quick union by size O(log* N) 
-    root1, root2 = find(p), find(q)
-    if root1 == root2:
+    parent[x] = find(parent[x]) # edge connection
+    # edge value e.g. parent[x].val *= x.val 
+    return parent[x]
+
+# Quick Union by size O(log* N) 
+def union(x, y): 
+    p1, p2 = find(x), find(y)
+    if p1 == p2:
         return
 
-    if parent[root2] < parent[root1]:
-        root1, root2 = root2, root1
+    if parent[p1] > parent[p2]:
+        p1, p2 = p2, p1
 
-    parent[root1] += parent[root2]
-    parent[root2] = root1
+    parent[p1] += parent[p2]
+    parent[p2] = p1
     count -= 1
+
+# x -> y, x is parent
+def easy_union(x, y): # x -> y's root parent
+    parent[find(x)] = find(y)
 
 # cycle detection of undirected graph:
 # for v1, v2 in edges:
@@ -1017,7 +1009,7 @@ points.sort()
 def count_one(n):
     count = 0
     while n:
-        n = n & (n - 1)
+        n &= (n - 1) # remove rightmost 1 bit
         count += 1
     return count
 
@@ -1100,8 +1092,15 @@ pi[i][j] = choice
 
 # REDUCE TO 2 DIEMENTION: transition function
 
-# f[i] = f[i-1] + ... , i == now, i - 1 == old
-old, now = now, old
+# f[i] = f[i-1] + ... , i == new, i - 1 == old
+old, now = 0, 1
+for i in range(m):
+    old, now = now, old
+
+# f[i] = f[i-1] + f[i-2] + ..., i == 
+old, prev, now = 0, 1, 2
+for i in range(m):
+    old, prev, now = prev, now, old
 
 # REDUCE TO 1 DIEMENTION: draw pictures
 
@@ -1110,14 +1109,14 @@ for i in range(left, right):
     old  |               dp[i-1][j]
          |                     |
          |                     v
-    new  | dp[i][...] --->  dp[i][j]
+    now  | dp[i][...] --->  dp[i][j]
 
 # From Right to Left
 for i in range(right - 1, -1, -1):
     old  | dp[i-1][...]  dp[i-1][j]
          |              \      |
          |               \     v
-    new  |                dp[i][j]
+    now  |                dp[i][j]
 
 ### TIME OPTIMIZATION
 # 1. Look at transition function

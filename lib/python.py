@@ -23,6 +23,8 @@ spam = {('a', 'b', [1, 2, 3]): 'hello'} # hashing error if immutable object cont
 
 # Pros of imuutability: garbage collection efficiency, lock-free operation, efficient substructure sharing
  
+type(2) == int
+type((1,2)) == tuple
 
 """ 
 @ NAMING 

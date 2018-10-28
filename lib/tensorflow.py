@@ -134,16 +134,10 @@ mnist = tf.contrib.learn.datasets.load_dataset("mnist")
 run:
 /Applications/Python 3.6/Install Certificates.command
 
-
-
 """"""""""""
 " APPENDIZ "
 """"""""""""
-
 # CONVOLUTION NUERAL NETWORK
 
 # Padding
 The general rule now, if a matrix NxN is convolved with fxf filter/kernel and padding p give us n+2p-f+1,n+2p-f+1 matrix.
-
-
-
