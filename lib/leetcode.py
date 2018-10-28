@@ -350,19 +350,38 @@ while fast and fast.next:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 # OOOOO[O] [X]XXXXXX  {{
 # [1,1] find 1 inf loop if start < end
-def bsearch(self, nums, target):
-    if not nums: 
-        return -1
 
+# bsearch on index
+def bsearch(self, nums, target):
     start, end = 0, len(nums) - 1
     while start + 1 < end;
         mid = (start + end) // 2
-        if nums[mid] < target: # left part
+        # start belong to left part
+        if nums[mid] < target: 
             start = mid
-        else: # right part
+        # end belong to right part
+        else: 
             end = mid
 
-    if nums[start] == target: # check start satisfy condition
+    # find 1st xxx by checking start then end, from left to right
+    if nums[start] == target: 
+        return start
+    # find last xxx by checking end then start, from right to left
+    return end
+
+# bsearch on value
+def bsearch(self, nums, target):
+    def count(val): pass
+    start, end = min_val, max_val
+
+    while start + 1e-5 < end: # minimum diff
+        mid = (start + end) / 2
+        if count(mid) < target: 
+            start = mid
+        else: 
+            end = mid
+
+    if count(start) == target: 
         return start
     return end
 
