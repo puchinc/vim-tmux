@@ -61,3 +61,6 @@ ls -i file_name
 ### kill running port
 lsof -i tcp:3000
 kill -9 PID
+
+### count lines of code
+find directory -name '*.py' | xargs wc -l

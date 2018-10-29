@@ -532,6 +532,7 @@ while mid <= right:
 # Count: Two Pointers + Hash
 # Max/Min: Monotonous Deque
 # Median: Heap + Hash
+# Window sum + max/min: Heap
 
 # Window: ... pattern characters ...  0 |  ... non pattern ...
 #                                     ^
@@ -549,18 +550,18 @@ for p in pattern:
     W[p] -= 1
     
 left = 0
-for right in range(len(s)):
-    if W[s[right]] < 0:
+for i in range(len(s)):
+    if W[s[i]] < 0:
         count += 1
-    W[s[right]] += 1
+    W[s[i]] += 1
 
     # fix window size == len(p)
-    if right < len(p):
+    if i < len(p) - 1:
         continue
 
     # while for dynamic window
     while count == len(p): # conunt satisfy condition
-        res.append(s[left:right+1]) # compute result
+        res.append(s[left:i+1]) # compute result
 
         W[s[left]] -= 1
         if W[s[left]] < 0:
@@ -584,8 +585,8 @@ return low >= high # True if palindrom
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                             MONOTONOUS STACK / DEQUE                               
 
-Find increase in array / : monotonically decrease stack \
-Find decrease in array \ : monotonically increase stack /
+Find max or left < right / in array : monotonically decrease stack \
+Find min or left > right \ in array : monotonically increase stack /
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # MONOTONOUS STACK   {{
@@ -666,13 +667,11 @@ while queue:
     # level += 1
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
-        '''
-        Traverse here, do the operation
-        '''
-        if node.left:
-            queue.append(node.left)
-        if node.right:
-            queue.append(node.right)
+        traverse(node)
+        for child in [node.left, node.right]:
+            if not child:
+                continue
+            queue.append(child)
 # }}
 
 UNDIRECTED GRAPH, need visited # {{
@@ -1010,6 +1009,39 @@ def easy_union(x, y): # x -> y's root parent
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                                Trie
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# {{
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for c in word:
+            if c not in node.children:
+                node.children[c] = TrieNode()
+            node = node.children[c]
+
+        node.is_word = True
+
+    def find(self, word):
+        node = self.root
+        for c in word:
+            if c not in node.children:
+                return None
+            node = node.children[c]
+        return node
+
+# }}
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                             Array, Interval
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -1076,6 +1108,29 @@ mapping
 01 => 1
 10 => 1
 
+# }}
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                   Big Data / Stream Data (One Pass)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# {{
+# Top K freq
+# hash + heap
+# Largest K: min heap, Smallest K: max heap
+
+# Memory cannot fit
+
+# hash = [memory size array]
+# hash[ hash_function(key) % len(hash) ] += 1
+# low probability lose accuracy, but long tail will decrease this happen
+
+# Bucketize to use larger granuality
+
+
+# 295. Find Median from Data Stream
+[ ... small in max_heap | larget in min_heap ... ]
+len(max_heap) == len(min_heap) or len(max_heap) + 1 == len(min_heap)
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1364,25 +1419,3 @@ for length in range(2, n + 1):
 # }}
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                   Big Data / Stream Data (One Pass)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-# {{
-# Top K freq
-# hash + heap
-# Largest K: min heap, Smallest K: max heap
-
-# Memory cannot fit
-
-# hash = [memory size array]
-# hash[ hash_function(key) % len(hash) ] += 1
-# low probability lose accuracy, but long tail will decrease this happen
-
-# Bucketize to use larger granuality
-
-
-# 295. Find Median from Data Stream
-[ ... small in max_heap | larget in min_heap ... ]
-len(max_heap) == len(min_heap) or len(max_heap) + 1 == len(min_heap)
-# }}
