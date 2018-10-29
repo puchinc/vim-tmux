@@ -304,6 +304,10 @@ heappush(max_heap, -element)
 -heappop(max_heap)
 -max_heap[0] # get smallest
 
+def remove(heap, num): # O(N)
+    heap[heap.index(num)] = heap.pop()
+    heapify(heap)
+
 # Top K online algorithm
 # min heap: need O(K) space, compare with heap[0]
 # max heap: need O(N) space, cannot compare with largest on top
@@ -971,11 +975,10 @@ Tree: DAG + single parent
 
 # Component Nums, Component Size {{
 
-parent = [-1 for i in range(n)]
-# named_set_parent = {i: -1 for i in range(n)} 
+parent = {num: -1 for num in nums} 
 count = len(parent)
 
-# Quick Find with path compression O(log* N)
+# Quick Find with path compression O(1)
 def find(x): 
     if parent[x] < 0:
         return x
@@ -984,7 +987,8 @@ def find(x):
     # edge value e.g. parent[x].val *= x.val 
     return parent[x]
 
-# Quick Union by size O(log* N) 
+# Quick Union by size O(1) 
+# x -> y, x is parent
 def union(x, y): 
     p1, p2 = find(x), find(y)
     if p1 == p2:
@@ -997,8 +1001,19 @@ def union(x, y):
     parent[p2] = p1
     count -= 1
 
-# x -> y, x is parent
-def easy_union(x, y): # x -> y's root parent
+
+# Simple Union Find
+parent = [i for i in range(n)]
+# count = [1 for i in range(n)]
+# group = len(parent)
+def find(x):
+    while parent[x] != parent[parent[x]]:
+        parent[x] = parent[parent[x]]
+    return parent[x]
+
+def union(x, y): 
+    # count[find(x)] += count[find(y)]
+    # group -= 1
     parent[find(x)] = find(y)
 
 # cycle detection of undirected graph:
@@ -1037,6 +1052,7 @@ class Trie:
             if c not in node.children:
                 return None
             node = node.children[c]
+
         return node
 
 # }}
