@@ -265,6 +265,7 @@ hash.get(key) # 10
 hash.get(key, 20) # getOrDefault
 defaultdict(int) # str, list, lambda: "init"
 del hash[key]
+print(hash.keys())
 for k, v in hash.iteritems():
 # Check hash contains key  
 if dict_.get(key) is not None: pass
@@ -305,7 +306,8 @@ heappush(max_heap, -element)
 -max_heap[0] # get smallest
 
 def remove(heap, num): # O(N)
-    heap[heap.index(num)] = heap.pop()
+    heap[heap.index(num)] = heap[-1]
+    heap.pop()
     heapify(heap)
 
 # Top K online algorithm
@@ -1025,6 +1027,13 @@ def union(x, y):
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                                 Trie
+
+Ending condition:
+DFS:
+    if i == len(word): return
+BFS:
+    init dist = -1 
+    if dist == len(word): return
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # {{
@@ -1433,5 +1442,4 @@ for length in range(2, n + 1):
         dp[i][j] = max(- dp[i + 1][j] + coins[i], - dp[i][j - 1] + coins[j])
 
 # }}
-
 
