@@ -228,7 +228,7 @@ nums[random.randint(0, len(nums) - 1)]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 DATA STRUCTURE 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-# {{
+# Built-in Function {{
 
 # List 
 l = [1, 2]
@@ -257,13 +257,23 @@ queue.popleft()
 queue[0]
 
 # Hash
+from collections import defaultdict, Counter
 hash = {}
 hash = {x: 0 for x in range(10)}
 len(hash)
 hash[key] = 10
 hash.get(key) # 10
 hash.get(key, 20) # getOrDefault
-defaultdict(int) # str, list, lambda: "init"
+
+count = defaultdict(int) # str, list, lambda: "init"
+# if called count['non_key'], then count['non_key'] == 0
+c = Counter() 
+# if called c['non_key'], then non_key still not in c
+c + d # add two counters together:  c[x] + d[x]
+c - d # subtract (keeping only positive counts)
+c & d # intersection:  min(c[x], d[x]) 
+c | d # union:  max(c[x], d[x])
+
 del hash[key]
 print(hash.keys())
 for k, v in hash.iteritems():
@@ -316,10 +326,8 @@ def remove(heap, num): # O(N)
 
 # }}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-                                LINKED LIST
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-# {{
+# LINKED LIST {{
+
 # Reverse
 prev, cur = head, head.next
 prev.next = None
@@ -351,6 +359,31 @@ while fast and fast.next:
 
 # }}
 
+# Hash + Singly LinkedList{{
+
+pos = {} # store previous pointer
+dummy = tail = ListNode(0)
+def LRU_add(num):
+    if num in pos:
+        remove(num)
+
+    pos[num] = dummy
+    dummy.next = ListNode(num)
+    pos[dummy.next.next.val] = dummy.next  
+
+def remove(num):
+    prev = pos[num]
+    del pos[num]
+
+    if prev.next == tail:
+        tail = prev
+    else:
+        prev.next = prev.next.next
+        # move back pos of next node of removed node 
+        pos[prev.next] = prev
+
+# }}
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                 BINARY SEARCH
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
@@ -362,13 +395,18 @@ def bsearch(self, nums, target):
     start, end = 0, len(nums) - 1
     while start + 1 < end;
         mid = (start + end) // 2
-        # start belong to left part
+        
         if nums[mid] < target: 
-            start = mid
-        # end belong to right part
+            start = mid # start belong to left part
         else: 
-            end = mid
+            end = mid # end belong to right part
 
+    # nums[mid] < target: 
+    #    1. [ ... start | end(target) ... ]
+    #    2. [start(target) | end ... ] <- corner case
+    # nums[mid <= target: 
+    #    1. [ ... start(target) | end ... ]
+    #    2. [ ... start | end(target)] <- corner case
     # find 1st xxx by checking start then end, from left to right
     if nums[start] == target: 
         return start
@@ -465,7 +503,7 @@ def qsort(self, nums, start, end):
     self.qsort(nums, left, end)       #           |  left
  
     # qselect kth idx
-    if left < k # k in left part
+    if k < left: # k in left part
         return self.qselect(nums, start, left - 1, k)
     else: # k in right part
         return self.qselect(nums, left, end, k)
@@ -503,34 +541,33 @@ stable
 2. Sliding Window
 
 """
-# left = 0
-# for i in range(len(nums)):
-    # # nums[i] is left part
-    # if nums[i] < pivot:
-        # nums[left], nums[i] = nums[i], nums[left] 
+# Two way partition: [ ... | left ... ] i 
+left = 0
+for i in range(len(nums)):
+    # nums[i] is left part
+    if nums[i] < pivot:
+        nums[left], nums[i] = nums[i], nums[left] 
+        left += 1
+
+# left, right = 0, 0
+# while right < len(nums):
+    # if nums[right] < pivot:
+        # nums[left], nums[right] = nums[right], nums[left]
         # left += 1
+    # right += 1
 
-# Two way partition: [ ... | left ... ] right 
-left, right = 0, 0
-while right < len(nums):
-    # nums[right] is left part
-    if nums[right] < pivot:
-        nums[left], nums[right] = nums[right], nums[left]
-        left += 1
-    right += 1
-
-# Three way partition: [ ... | left ... right | mid ... ]
-left, mid, right = 0, 0, len(nums) - 1
-while mid <= right:
-    # nums[mid] is right part
-    while mid <= right and nums[mid] > pivot:
-        nums[mid], nums[right] = nums[right], nums[mid]
+# Three way partition: [ ... | left ... right | i ... ]
+left, i, right = 0, 0, len(nums) - 1
+while i <= right:
+    # nums[i] is right part
+    while i <= right and nums[i] > pivot:
+        nums[i], nums[right] = nums[right], nums[i]
         right -= 1
-    # nums[mid] is left part
-    if nums[mid] < pivot:
-        nums[mid], nums[left] = nums[left], nums[mid]
+    # nums[i] is left part
+    if nums[i] < pivot:
+        nums[i], nums[left] = nums[left], nums[i]
         left += 1
-    mid += 1
+    i += 1
 
 # }}
 
@@ -585,73 +622,6 @@ while low >= 0 and high < len(s) and s[low] == s[high]:
     low -= 1
     high += 1
 return low >= high # True if palindrom
-
-# }}
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-                            MONOTONOUS STACK / DEQUE                               
-
-Find max or left < right / in array : monotonically decrease stack \
-Find min or left > right \ in array : monotonically increase stack /
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-# MONOTONOUS STACK   {{
-
-# stack([1,2,8,10]).push(5) => stack([1,2,5])
-
-def push(stack, nums, i):
-    while stack and nums[stack[-1]] < nums[i]:
-        # get result from each pop, stack[-1]
-        # res[stack[-1]] = i - stack[-1]
-        stack.pop()
-    stack.append(i)
-
-# i < j, find minimum j – i such that arr[i] < arr[j] for each element
-def min_dist(nums):
-    res = [0] * len(nums)
-    stack = [] # descending stack # ascending if arr[i] > arr[j]
-    for i in range(len(nums)):
-        while stack and nums[stack[-1]] < nums[i]: # > if arr[i] > arr[j]
-            res[stack[-1]] = i - stack[-1]
-            stack.pop()
-        stack.append(i)
-    return res
-
-# assert min_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == [5, 1, 3, 2, 1, 0, 1, 0, 0]
-
-# i < j, find maximum j – i such that arr[i] < arr[j]
-def max_dist(nums):
-    res = 0
-    stack = [] # descending stack # ascending if arr[i] > arr[j]
-    for i in range(len(nums)):
-        if not stack or nums[stack[-1]] > nums[i]: # < if arr[i] > arr[j]
-            stack.append(i)
-
-    for i in range(len(nums) - 1, -1, -1):
-        while stack and nums[stack[-1]] < nums[i]: # > if arr[i] > arr[j]
-            res = max(res, i - stack[-1])
-            stack.pop()
-    return res
-
-# assert max_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == 6
-
-# }}
-
-# DEQUE  {{
-# Monotone Stack with Left limitation
-
-for i in range(k - 1, len(nums)):
-    push(dq, nums, i)
-    # get result from dq[0]
-    # res.append(nums[dq[0]])
-    left = i + k - 1
-    if dq[0] == nums[left]:
-        dq.popleft()
-
-def push(dq, nums, i):
-    while dq and nums[dq[-1]] < nums[i]:
-        dq.pop()
-    dq.append(i)
 
 # }}
 
@@ -1009,9 +979,10 @@ parent = [i for i in range(n)]
 # count = [1 for i in range(n)]
 # group = len(parent)
 def find(x):
-    while parent[x] != parent[parent[x]]:
+    while x != parent[x]:
         parent[x] = parent[parent[x]]
-    return parent[x]
+        x = parent[x]
+    return x
 
 def union(x, y): 
     # count[find(x)] += count[find(y)]
@@ -1066,8 +1037,76 @@ class Trie:
 
 # }}
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+                            MONOTONOUS STACK / DEQUE                               
+
+Find max or left < right / in array : monotonically decrease stack \
+Find min or left > right \ in array : monotonically increase stack /
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                            Array, Interval
+
+# MONOTONOUS STACK   {{
+
+# stack([1,2,8,10]).push(5) => stack([1,2,5])
+
+def push(stack, nums, i):
+    while stack and nums[stack[-1]] < nums[i]:
+        # get result from each pop, stack[-1]
+        # res[stack[-1]] = i - stack[-1]
+        stack.pop()
+    stack.append(i)
+
+# i < j, find minimum j – i such that arr[i] < arr[j] for each element
+def min_dist(nums):
+    res = [0] * len(nums)
+    stack = [] # descending stack # ascending if arr[i] > arr[j]
+    for i in range(len(nums)):
+        while stack and nums[stack[-1]] < nums[i]: # > if arr[i] > arr[j]
+            res[stack[-1]] = i - stack[-1]
+            stack.pop()
+        stack.append(i)
+    return res
+
+# assert min_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == [5, 1, 3, 2, 1, 0, 1, 0, 0]
+
+# i < j, find maximum j – i such that arr[i] < arr[j]
+def max_dist(nums):
+    res = 0
+    stack = [] # descending stack # ascending if arr[i] > arr[j]
+    for i in range(len(nums)):
+        if not stack or nums[stack[-1]] > nums[i]: # < if arr[i] > arr[j]
+            stack.append(i)
+
+    for i in range(len(nums) - 1, -1, -1):
+        while stack and nums[stack[-1]] < nums[i]: # > if arr[i] > arr[j]
+            res = max(res, i - stack[-1])
+            stack.pop()
+    return res
+
+# assert max_dist_asc([34, 8, 10, 3, 2, 80, 30, 33, 1]) == 6
+
+# }}
+
+# DEQUE  {{
+# Monotone Stack with Left limitation
+
+# Max/Min Sliding Window 
+for i in range(k - 1, len(nums)):
+    push(dq, nums, i)
+    # get result from dq[0]
+    # res.append(nums[dq[0]])
+    left = i + k - 1
+    if dq[0] == nums[left]:
+        dq.popleft()
+
+def push(dq, nums, i):
+    while dq and nums[dq[-1]] < nums[i]:
+        dq.pop()
+    dq.append(i)
+
+# }}
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                   Sweep Line / Interval / Segment Tree
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # SWEEP LINE {{
@@ -1076,6 +1115,89 @@ for i in intervals:
     points.append([i.start, 1])
     points.append([i.end, -1])
 points.sort()
+
+# Skyline Problem: sweep x, store y on heap
+# Time Intersections, count (start 2, end 1)
+# Meeting Rooms II, max(count)
+# Merge Intervals
+#   1. sweep line and count (start 1, end 1)
+#   2. sort by start, if overlap: update end, else: output interval
+
+# }}
+
+# Greedy Sort by End {{
+# if overlap (cur_start < prev_end):
+# else: prev_end = cur_start 
+
+# Burst Ballons, ignore cur_start < prev_end
+# Non-overlapping Intervals, remove cur_start < prev_end
+
+# }}
+
+# Segment Tree {{
+#
+# from    [1, 4, 2, 3]
+#
+#
+# to          [0,3]
+#            (val=4)
+#          /         \
+#      [0,1]         [2,3]
+#     (val=4)       (val=3)
+#     /    \         /    \
+#  [0,0]  [1,1]   [2,2]  [3,3]
+# (val=1)(val=4) (val=2)(val=3)
+
+
+class SegmentTreeNode:
+    def __init__(self, start, end):
+        this.start, this.end = start, end
+        this.left, this.right, this.val = None, None, None
+
+def build(A, start, end):
+    if start > end:
+        return None
+
+    root = SegTreeNode(start, end)
+    if start < end:
+        mid = (start + end) // 2
+        root.left = build(A, start, mid)
+        root.right = build(A, mid + 1, end)
+        root.val = sum/max/min(root.left.val, root.right.val)
+    return root
+
+def query(root, start, end):
+    if end < root.start or root.end < start:
+        return None
+
+    if start <= root.start and root.end <= end:
+        return root.val
+
+    left = query(root.left, start, end)
+    right = query(root.right, start, end)
+    return sum/max/min(left, right)
+
+def modify(root, index, val):
+    if not root:
+        return
+
+    if root.start == root.end:
+        root.val = val
+        return 
+
+    # index in the left part
+    if index <= root.left.end: 
+        modify(root.left, index, val)
+    else:
+        modify(root.right, index, val)
+
+    root.val = sum/max/min(root.left.val, root.right.val)
+
+# }}
+
+
+# Binary Indexed Tree  {{
+
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1139,8 +1261,8 @@ mapping
                    Big Data / Stream Data (One Pass)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-# {{
-# Top K freq
+# Top K freq {{
+# 
 # hash + heap
 # Largest K: min heap, Smallest K: max heap
 
@@ -1156,6 +1278,25 @@ mapping
 # 295. Find Median from Data Stream
 [ ... small in max_heap | larget in min_heap ... ]
 len(max_heap) == len(min_heap) or len(max_heap) + 1 == len(min_heap)
+# }}
+
+# Reservoir Sampling {{
+# Randomly choosing a sample of k items from n items in streaming data
+#
+# Algo: 对于前k个数，我们全部保留，对于第i（i>k）个数，我们以 k / i 的概率保留第i个数，并以 1 / k  的概率与前面已选择的k个数中的任意一个替换。
+
+def ReservoirSampling(nums, k):
+    res = []
+    n = len(nums)
+    for i in range(k):
+        res.append(nums[i])
+
+    for i in range(k, n):
+        rand = random.randint(0, i - 1)
+        if rand < k:
+            res[rand] = nums[i]
+    return res
+
 # }}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -8,9 +8,13 @@
 
 ### Thread
 > deal with shared data, same program
+* pthread_create
+* use when need high communication
 
 ### Process
 > different programs in natural
+* fork
+* parallel by one cpu running one process at one time
 
 
 ## Parallel belongs to Concurrency

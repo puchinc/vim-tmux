@@ -26,18 +26,6 @@ spam = {('a', 'b', [1, 2, 3]): 'hello'} # hashing error if immutable object cont
 type(2) == int
 type((1,2)) == tuple
 
-""" 
-@ NAMING 
-"""
-# keywords_, convention to break naming conflict
-hash_
-def_
-class_
-# _variable, weak internal use, from M import * will exclude
-_id
-# _function, private method
-def _private_method(): 
-    pass
 
 """ 
 @ SCOPE 
@@ -75,19 +63,70 @@ def foo(x):
 foo([1,2,3]) # 1 2 3 3
 
 """ 
-@ CLASS 
+@ Objected Oriented Programming
 """
 
-class Test:
-    def __init__(self, realpart, imagpart):
+# CLASS Object
+# https://blog.csdn.net/brucewong0516/article/details/79121179
+class Animal(object):  # 类对象
+
+    class_attr = 0  # 公有类属性
+    __class_private_attr = None  # 私有类属性
+
+    def __init__(self):  # 魔法方法
+        self.instance_attr = ‘haha’  # 公有实例属性
+        self.__instance_private_att = ‘man’  # 私有实例属性
+
+    def public_method(self):  # 公有方法  self指向实例对象
         pass
 
-class ExtendedTest(Test):
-    def __init__(self, realpart, imagpart):
+    def __private_method(self):  # 私有方法
+        pass
+
+    def _import_exclusive_method(self):
+        pass
+
+    @classmethod
+    def class_method(cls):  # 类方法  cls 指向类对象
+        pass
+
+    @staticmethod
+    def static_method():  # 静态方法，可以没有参数
+        pass
+
+# INHERITENCE
+# https://blog.csdn.net/jinxiaonian11/article/details/53727339?utm_source=blogxgwz1
+
+class Base:
+    def __init__(self):
+        print('Base')
+class A(Base):
+    def __init__(self):
         super().__init__()
+        print('A')
 
-    if __name__ == '__main__':
-        pass
+class B(Base):
+    def __init__(self):
+        super().__init__()
+        print('B')
+
+class C(A,B):
+    def __init__(self):
+        super().__init__()
+        print('C')
+
+# using super, Base only initialize once
+c = C() # Base B A C
+
+# Super will traverse mro tuple, find next method
+print(C.__mro__)
+(<class '__main__.C'>, <class '__main__.A'>, <class '__main__.B'>, <class '__main__.Base'>, <class 'object'>)
+
+--------------------- 
+作者：浓酒不消愁，代码渐瘦 
+来源：CSDN 
+原文：https://blog.csdn.net/jinxiaonian11/article/details/53727339 
+版权声明：本文为博主原创文章，转载请附上博文链接！
 
 """ 
 @ Functional Programming 
@@ -201,6 +240,9 @@ requests.packages.urllib3.disable_warnings()
 # or
 # PYTHONHTTPSVERIFY=0 python your_script
     
+if __name__ == '__main__':
+    pass
+
 
 # HTTPS/URL Encoding
 from urllib.parse import parse_url, parse_qs

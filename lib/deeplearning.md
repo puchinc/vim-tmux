@@ -7,6 +7,21 @@
     L(y, y') = -y * log(y') + (1 - y) * log(1 - y')
              = - ∑ p(y) * log(p(y'))
 
+分类问题，都用 onehot + cross entropy
+training 过程中，分类问题用 cross entropy，回归问题用 mean squared error。
+training 之后，validation / testing 时，使用 classification error，更直观，而且是我们最关注的指标。
+
+
+
+deep = Flatten()(deep)
+deep = Dropout(p_dropout)(deep)
+deep = Dense(deep_output_size)(deep)
+deep = BatchNormalization()(deep) # solve gradient vanish
+deep = Activation('relu')(deep) # solve gradient vanish
+
+# Batch Normalization
+Machine learning methods tend to work better when their input data consists of uncorrelated features with zero mean and unit variance. 
+It is possible that this normalization strategy could reduce the representational power of the network, since it may sometimes be optimal for certain layers to have features that are not zero-mean or unit variance. To this end, the batch normalization layer includes learnable shift and scale parameters for each feature dimension.
 
 # Activation Functions
 * Sigmoid [0, 1] can lead us to gradient decent problem where the updates are so low.
