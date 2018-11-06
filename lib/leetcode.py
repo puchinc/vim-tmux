@@ -390,7 +390,7 @@ def remove(num):
 # OOOOO[O] [X]XXXXXX  {{
 # [1,1] find 1 inf loop if start < end
 
-# bsearch on index
+# Bsearch on Index
 def bsearch(self, nums, target):
     start, end = 0, len(nums) - 1
     while start + 1 < end;
@@ -407,13 +407,15 @@ def bsearch(self, nums, target):
     # nums[mid <= target: 
     #    1. [ ... start(target) | end ... ]
     #    2. [ ... start | end(target)] <- corner case
-    # find 1st xxx by checking start then end, from left to right
+
+    # find first, check start -> end
     if nums[start] == target: 
         return start
-    # find last xxx by checking end then start, from right to left
+    # find last, check start <- end
     return end
 
-# bsearch on value
+# Bsearch on Value
+# e.g. Median of 2 sorted lists / k-th in 2D matrix / copy books 
 def bsearch(self, nums, target):
     def count(val): pass
     start, end = min_val, max_val
@@ -720,32 +722,48 @@ def topSort(graph):
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                    
 # POSTORDER, Divide and Conquer # {{
-def dfs(self, root):
+def dfs(root):
     if not root:
         # return 0 / None
 
     # divide
-    left = self.dfs(root.left)
-    right = self.dfs(root.right)
+    left = dfs(root.left)
+    right = dfs(root.right)
 
     # merge
     res = left + right
     return res
+
+def postorder_iterative(root):
+    stack, node = [], root
+    while stack or node:
+        # push all /\ branch
+        while node:
+            stack.append(node)
+            node = node.left if node.left else node.right
+
+        node = stack.pop()
+        visit(node)
+        # backtrack from left, then add right 
+        if stack and stack[-1].left == node:
+            node = stack[-1].right
+        else:
+            node = None
+
 # }}
 
 # INORDER, BST {{
-def iterativeInorder(node):
+def inorder_iterative(node):
     stack = []
     while stack or node:
         # push all / branch
-        if node:
+        while node:
             stack.append(node)
             node = node.left
         # visit node from stack, move node ->
-        else:
-            node = stack.pop()
-            visit(node)
-            node = node.right
+        node = stack.pop()
+        visit(node)
+        node = node.right
 
 def next_node(root, target):
     stack = []
@@ -1013,27 +1031,29 @@ class TrieNode:
         self.children = {}
         self.is_word = False
 
-class Trie:
-    def __init__(self):
-        self.root = TrieNode()
+def build(words):
+    root = TrieNode()
+    for word in words:
+        insert(root, word)
+    return root
 
-    def insert(self, word):
-        node = self.root
-        for c in word:
-            if c not in node.children:
-                node.children[c] = TrieNode()
-            node = node.children[c]
+def insert(root, word):
+    node = root
+    for c in word:
+        if c not in node.children:
+            node.children[c] = TrieNode()
+        node = node.children[c]
 
-        node.is_word = True
+    node.is_word = True
 
-    def find(self, word):
-        node = self.root
-        for c in word:
-            if c not in node.children:
-                return None
-            node = node.children[c]
+def find(root word):
+    node = root
+    for c in word:
+        if c not in node.children:
+            return None
+        node = node.children[c]
 
-        return node
+    return node
 
 # }}
 
@@ -1135,6 +1155,8 @@ points.sort()
 # }}
 
 # Segment Tree {{
+# 1. O(logN) interval query sum/max/min, O(logN)  
+# 2. cannot use if add / delete array elements
 #
 # from    [1, 4, 2, 3]
 #
@@ -1154,6 +1176,7 @@ class SegmentTreeNode:
         this.start, this.end = start, end
         this.left, this.right, this.val = None, None, None
 
+# T: O(N), S: O(N)
 def build(A, start, end):
     if start > end:
         return None
@@ -1166,9 +1189,10 @@ def build(A, start, end):
         root.val = sum/max/min(root.left.val, root.right.val)
     return root
 
+# O(log N)
 def query(root, start, end):
     if end < root.start or root.end < start:
-        return None
+        return 0/-inf/inf
 
     if start <= root.start and root.end <= end:
         return root.val
@@ -1177,6 +1201,7 @@ def query(root, start, end):
     right = query(root.right, start, end)
     return sum/max/min(left, right)
 
+# O(log N)
 def modify(root, index, val):
     if not root:
         return
@@ -1194,7 +1219,6 @@ def modify(root, index, val):
     root.val = sum/max/min(root.left.val, root.right.val)
 
 # }}
-
 
 # Binary Indexed Tree  {{
 
