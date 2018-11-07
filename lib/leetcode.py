@@ -630,14 +630,11 @@ return low >= high # True if palindrom
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
                                    BFS                               
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# Tree {{
+
 from collections import deque
 if not root: 
     return 0
-
-# Tree {{
-""" 
-TREE
-""" 
 
 # level = 0
 queue = deque([root])
@@ -667,7 +664,7 @@ while queue:
     for _ in range(len(queue)): # Level Order
         node = queue.popleft()
         traverse(node)
-        for child in [node.left, node.right]:
+        for child in node.neighbors:
             if child and child not in visited: # Check possible children
                 queue.append(child)
                 visited.add(child)
@@ -720,7 +717,7 @@ def topSort(graph):
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                                     DFS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                   
+
 # POSTORDER, Divide and Conquer # {{
 def dfs(root):
     if not root:
@@ -811,6 +808,56 @@ class BSTIterator:
         return node
 # }}
 
+# PREORDER {{
+def preorder_iterative(root):
+    if not root: return 
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        visit(node)
+        if node.right: # push right first
+            stack.append(node.right)
+        if node.left: # then left
+            stack.append(node.left)
+# }}
+
+# GRAPH DFS, Backtrack Path only, Record Visited forever {{
+
+def dfs(matrix, res, path, x, y, visited):
+    for dx, dy in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
+        i, j = x + dx, y + dy
+        if valid((i, j)) and (i, j) not in visited:
+            visited.add((i, j)) # every point should be visited only once
+            path.append(matrix[i][j])
+            dfs(matrix, res, path, i, j, visited)
+            path.pop()
+
+        # dx, dy = -dy, dx
+        # Rotation matrix:    | cosø -sinø | , ø = 90º, | 0 -1 | * (x, y) == (-y, x)  
+        #                     | sinø  cosø |            | 1  0 |
+
+# cycle detection 
+for a, b in edges:
+    graph[a].add(b) # Directed Graph
+    graph[b].add(a) # Undirected Graph
+
+def dfs(graph, cycle, path, root, parent, visited):
+    for child in graph[root]:
+        if child not in visited:
+            visited.add(child)
+            path.append(child)
+            dfs(graph, cycle, path, child, root, visited)
+            path.pop()
+            # visited.remove(child) # shouldn't remove
+
+        # get cycle path
+        elif child != parent:
+            for i in range(len(path) - 1, -1, -1):
+                if path[i] == child:
+                    cycle.append(path[i:] + [child])
+
+# }}
+
 # COMBINATION DFS, using START{{
 def subset(nums):
     def helper(nums, res, path, start):
@@ -818,7 +865,7 @@ def subset(nums):
         for i in range(start, len(nums)):
             # i > 0     : distinct subset elements (e.g. [1, 2, 3])
             # i > start : distinct subsets (e.g. [1, 2, 2])
-            if i > 0 and nums[i] == nums[i - 1]: 
+            if i > start nums[i] == nums[i - 1]: 
                 continue
             path.append(nums[i])
             helper(nums, res, path, i + 1) # i if repeat choose
@@ -828,6 +875,7 @@ def subset(nums):
     nums.sort() # having repeat
     helper(nums, res, [], 0)
     return res
+
 # }}
 
 # PERMUTATION DFS, using VISITED{{
@@ -915,43 +963,6 @@ def enumeratePalindrome(s):
     middle(s, mid, mid+1)
 # }}
 
-# GRAPH DFS, Backtrack Path only, Record Visited forever {{
-
-# cycle detection 
-for a, b in edges:
-    graph[a].add(b) # Directed Graph
-    graph[b].add(a) # Undirected Graph
-
-def dfs(graph, cycle, path, root, parent, visited):
-    for child in graph[root]:
-        if child not in visited:
-            visited.add(child)
-            path.append(child)
-            dfs(graph, cycle, path, child, root, visited)
-            path.pop()
-            # visited.remove(child) # shouldn't remove
-
-        # get cycle path
-        elif child != parent:
-            for i in range(len(path) - 1, -1, -1):
-                if path[i] == child:
-                    cycle.append(path[i:] + [child])
-
-def dfs(matrix, res, path, x, y, visited):
-    for dx, dy in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
-        i, j = x + dx, y + dy
-        if valid((i, j)) and (i, j) not in visited:
-            visited.add((i, j)) # every point should be visited only once
-            path.append(matrix[i][j])
-            dfs(matrix, res, path, i, j, visited)
-            path.pop()
-
-        # dx, dy = -dy, dx
-        # Rotation matrix:    | cosø -sinø | , ø = 90º, | 0 -1 | * (x, y) == (-y, x)  
-        #                     | sinø  cosø |            | 1  0 |
-
-# }}
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                               Union Find
 
@@ -965,37 +976,9 @@ Tree: DAG + single parent
 
 # Component Nums, Component Size {{
 
-parent = {num: -1 for num in nums} 
-count = len(parent)
-
-# Quick Find with path compression O(1)
-def find(x): 
-    if parent[x] < 0:
-        return x
-
-    parent[x] = find(parent[x]) # edge connection
-    # edge value e.g. parent[x].val *= x.val 
-    return parent[x]
-
-# Quick Union by size O(1) 
-# x -> y, x is parent
-def union(x, y): 
-    p1, p2 = find(x), find(y)
-    if p1 == p2:
-        return
-
-    if parent[p1] > parent[p2]:
-        p1, p2 = p2, p1
-
-    parent[p1] += parent[p2]
-    parent[p2] = p1
-    count -= 1
-
-
-# Simple Union Find
-parent = [i for i in range(n)]
-# count = [1 for i in range(n)]
-# group = len(parent)
+parent = {i: i for i in range(n)}
+count = {i: 1 for i in range(n)}
+# group = len(count)
 def find(x):
     while x != parent[x]:
         parent[x] = parent[parent[x]]
@@ -1003,14 +986,47 @@ def find(x):
     return x
 
 def union(x, y): 
-    # count[find(x)] += count[find(y)]
-    # group -= 1
-    parent[find(x)] = find(y)
+    p1, p2 = find(x), find(y)
+    if p1 == p2:
+        return
+
+    parent[p2] = p1 # can comp p1 p2, then p1 -> p2
+    # count[p1] += count[p2]
+    # del count[p2]
 
 # cycle detection of undirected graph:
 # for v1, v2 in edges:
 #   if find(v1) == find(v2): find cycle
 #   else: union(v1, v2)
+
+
+# OPTIMAL UF
+
+# parent = {num: -1 for num in nums} 
+# count = len(parent)
+# # Quick Find with path compression O(1)
+# def find(x): 
+    # if parent[x] < 0:
+        # return x
+
+    # parent[x] = find(parent[x]) # edge connection
+    # # edge value e.g. parent[x].val *= x.val 
+    # return parent[x]
+
+# # Quick Union by size O(1) 
+# # x -> y, x is parent
+# def union(x, y): 
+    # p1, p2 = find(x), find(y)
+    # if p1 == p2:
+        # return
+
+    # if parent[p1] > parent[p2]:
+        # p1, p2 = p2, p1
+
+    # parent[p1] += parent[p2]
+    # parent[p2] = p1
+    # count -= 1
+
 
 # }}
 
