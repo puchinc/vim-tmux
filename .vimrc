@@ -1,10 +1,13 @@
 if !exists("g:syntax_on")
     syntax enable
+    "https://stackoverflow.com/a/25276429
+    set re=1
 endif
 
  "fold setting
 set foldmarker={{,}} foldlevel=0
 autocmd FileType vim setlocal foldmethod=marker
+autocmd FileType python setlocal foldmethod=marker
 let mapleader = " "
 
 " VUNDLE {{
@@ -202,8 +205,9 @@ function! RemoteSync ()
         return
     endif
 
-    let rsync_command = "rsync -avr --exclude='.exrc' --exclude-from=" . g:rsync_exclude . " " . g:rsync_local . " " . g:rsync_remote . " 1>/dev/null 2>&1 &"
-    execute "!" . rsync_command
+    let rsync_command = "rsync -avr --exclude='.exrc' --exclude-from=" . g:rsync_exclude . " " . g:rsync_local . " " . g:rsync_remote . " 1>/dev/null 2>&1"
+    let tmux_prompt = "tmux display \'Rsyn Success\'"
+    execute "!(" . rsync_command . " && " . tmux_prompt . ") &"
 endfunction
 
 " .exrc exists
@@ -349,7 +353,7 @@ endif
             endif
         endif
     endfunction
-    call SetSolarizedBackground()
+    "call SetSolarizedBackground()
 
 
     " line numbers
@@ -430,6 +434,8 @@ endif
     set noeb vb t_vb= " disable sound
     set timeoutlen=500 ttimeoutlen=0
 
+    "autocmd FileType markdown setlocal spell
+
     " Treat long lines as break lines (useful when moving around in them)
     set wrap " wrap lines
     set linebreak
@@ -480,6 +486,8 @@ endif
             inoremap <CR> <Esc>yypC
         endif
     endfunction
-    call MdIndention()
+    "call MdIndention()
+    "
 
 " }}
+
